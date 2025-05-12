@@ -1,1 +1,195 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000, #2F4F4F);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 105vh;
+            color: #000000;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            transition: background 0.5s ease;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            width: 450px;
+            text-align: center;
+            position: relative;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .game-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            background-color: #21618C;
+        }
+
+        .game-item:hover {
+            transform: scale(1.1);
+        }
+
+        .matched {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: none;
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+        .score {
+            font-size: 1.6rem;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container" id="game-container">
+        <div class="game-header">
+            <h1>เกมจับคู่</h1>
+        </div>
+        <div class="game-board" id="game-board"></div>
+        <div class="button-container">
+            <button id="start-btn">เริ่มเกม</button>
+            <button id="next-btn" style="display: none;">ไปต่อ</button>
+        </div>
+        <div class="score">คะแนน: <span id="score">0</span></div>
+    </div>
+
+    <script>
+        const allColors = ["#e74c3c", "#8e44ad", "#f39c12", "#3498db", "#2ecc71", "#1abc9c", "#d35400", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#c0392b"];
+        let colors = [];
+        let shuffledColors = [];
+        let selectedItems = [];
+        let score = 0;
+        let totalScore = 0;
+        let matchedPairs = 0;
+        let difficultyLevel = 6;
+
+        document.getElementById('start-btn').addEventListener('click', startGame);
+        document.getElementById('next-btn').addEventListener('click', nextRound);
+
+        function startGame() {
+            difficultyLevel = 6;
+            totalScore = 0;
+            setupGame();
+        }
+
+        function setupGame() {
+            const gameBoard = document.getElementById("game-board");
+            gameBoard.innerHTML = "";
+            colors = allColors.slice(0, difficultyLevel);
+            shuffledColors = shuffle([...colors, ...colors]);
+            selectedItems = [];
+            score = 0;
+            matchedPairs = 0;
+            document.getElementById("score").textContent = totalScore;
+            document.getElementById("next-btn").style.display = "none";
+
+            let gridSize = Math.ceil(Math.sqrt(difficultyLevel * 2));
+            gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+
+            shuffledColors.forEach((color, index) => {
+                const item = document.createElement("div");
+                item.classList.add("game-item");
+                item.dataset.color = color;
+                item.dataset.index = index;
+                item.addEventListener("click", () => handleItemClick(item));
+                gameBoard.appendChild(item);
+            });
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function handleItemClick(item) {
+            if (selectedItems.length < 2 && !selectedItems.includes(item) && !item.classList.contains("matched")) {
+                item.style.backgroundColor = item.dataset.color;
+                selectedItems.push(item);
+            }
+            if (selectedItems.length === 2) {
+                setTimeout(checkMatch, 500);
+            }
+        }
+
+        function checkMatch() {
+            const [item1, item2] = selectedItems;
+            if (item1.dataset.color === item2.dataset.color) {
+                item1.classList.add("matched");
+                item2.classList.add("matched");
+                totalScore += 10;
+                matchedPairs++;
+                document.getElementById("score").textContent = totalScore;
+                if (matchedPairs === colors.length) {
+                    document.getElementById("next-btn").style.display = "block";
+                }
+            } else {
+                item1.style.backgroundColor = "#21618C";
+                item2.style.backgroundColor = "#21618C";
+            }
+            selectedItems = [];
+        }
+
+        function nextRound() {
+            if (difficultyLevel < allColors.length) {
+                difficultyLevel++;
+            }
+            setupGame();
+        }
+    </script>
+</body>
+</html>
