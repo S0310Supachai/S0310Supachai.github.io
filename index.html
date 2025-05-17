@@ -39,7 +39,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            padding: 40px 0px;
         }
 
         /* ส่วนที่ 1 */
@@ -78,7 +78,7 @@
         h3 {
             font-family: 'Montserrat', sans-serif;
             font-weight: 500;
-            font-size: 28px;
+            font-size: 35px;
             margin-top: 10px;
             color: var(--accent);
         }
@@ -274,6 +274,13 @@
             transform: translateY(0);
             /* เคลื่อนเข้ามาในตำแหน่งที่แสดง */
         }
+
+        .caption {
+            margin-top: 10px;
+            color: var(--text-sub);
+            font-size: 16px;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -292,19 +299,25 @@
             <button class="slider-btn left" onclick="slideLeft()">&#10094;</button>
 
             <div class="slider-container" id="slider">
-                <div class="slide"><img src="1.pdf.png" alt="certificate 1"></div>
-                <div class="slide"><img src="2.pdf.png" alt="certificate 2"></div>
-                <div class="slide"><img src="3.png" alt="certificate 3"></div>
-                <div class="slide"><img src="4.png" alt="certificate 4"></div>
-                <div class="slide"><img src="5.png" alt="certificate 5"></div>
-                <div class="slide"><img src="6.png" alt="certificate 6"></div>
-                <div class="slide"><img src="7.png" alt="certificate 7"></div>
+                <div class="slide"><img src="png/1.pdf.png" alt="certificate 1">
+                    <p class="caption">ผมได้เข้าร่วมงานKU ENGINEERING OPENHOUSE
+                        ได้รับความรู้ในการศึกษาต่อเข้ามหาวิทยาลัยและความสนุกที่ได้เข้าร่วมกิจกรรมที่จัดขึ้นในงาน OPEN
+                        HOUSE </p>
+                </div>
+                <div class="slide"><img src="png/2.pdf.png" alt="certificate 2">
+                    <p class="caption">ผมได้เข้าร่วมอบรมของTHE
+                        SANDBOXได้รับความรู้ในการสร้างเกมโดยผ่านการใช้โปรแกรมGAME MAKERและเข้าใจหลักการทำงานของระบบเกมมากขึ้น</p>
+                </div>
+                <div class="slide"><img src="png/3.png" alt="certificate 3"></div>
+                <div class="slide"><img src="png/4.png" alt="certificate 4"></div>
+                <div class="slide"><img src="png/5.png" alt="certificate 5"></div>
+                <div class="slide"><img src="png/6.png" alt="certificate 6"></div>
+                <div class="slide"><img src="png2/7.png" alt="certificate 7"></div>
             </div>
 
             <button class="slider-btn right" onclick="slideRight()">&#10095;</button>
         </div>
     </section>
-
 
 
     <!-- ส่วนที่ 3 -->
@@ -318,8 +331,6 @@
             เว็บไซต์นี้จัดทำเพื่อให้คณะกรรมการและครูอาจารย์ได้เห็นถึงความสามารถพิเศษของผมในการพิจารณาเพื่อเข้ามหาวิทยาลัย
         </a>
     </section>
-
-
 
     <script>
         const slider = document.getElementById('slider');
@@ -399,14 +410,12 @@
             threshold: 0.3
         });
 
-        
-
         observerText.observe(text);
         observer.observe(section2);
         heroObserver.observe(heroSection);
         footerObserver.observe(footerSection);
-    </script>
 
+    </script>
 </body>
 
 </html>
