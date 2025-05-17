@@ -39,7 +39,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 10px;
+            padding: 40px 20px;
         }
 
         /* ส่วนที่ 1 */
@@ -63,7 +63,6 @@
             font-size: 64px;
             font-weight: 300;
             color: var(--accent);
-
         }
 
         .hero .intro {
@@ -71,16 +70,16 @@
             font-weight: 200;
             color: var(--text-sub);
             margin-top: 20px;
-
-
         }
 
         h3 {
             font-family: 'Montserrat', sans-serif;
             font-weight: 500;
-            font-size: 35px;
+            font-size: 28px;
             margin-top: 10px;
             color: var(--accent);
+            text-align: center;
+            /* จัดข้อความกลางสำหรับหัวข้อ */
         }
 
         .container {
@@ -92,7 +91,8 @@
         .slider-wrapper {
             position: relative;
             max-width: 1000px;
-            margin: auto;
+            margin: 20px auto;
+            /* เพิ่ม margin ด้านบนและล่าง */
             overflow: hidden;
         }
 
@@ -133,13 +133,39 @@
             min-width: 100%;
             box-sizing: border-box;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            /* จัดเรียงรูปภาพและข้อความแนวตั้ง */
+            align-items: center;
+            /* จัดกึ่งกลางแนวนอน */
+            text-align: center;
+            /* จัดข้อความกึ่งกลาง */
         }
 
         .slide img {
             width: 100%;
-            max-height: 500px;
+            /* ปรับให้รูปภาพกว้างเต็ม container */
+            max-width: 800px;
+            /* กำหนดขนาดความกว้างสูงสุด (ลองปรับค่าตามต้องการ) */
+            max-height: 400px;
+            /* ปรับความสูงสูงสุด */
             object-fit: contain;
+            /* หรือ 'cover' ถ้าต้องการให้เต็มกรอบและอาจมีการ crop */
             border-radius: 7px;
+            margin-bottom: 10px;
+            /* เพิ่มระยะห่างระหว่างรูปภาพและข้อความ */
+        }
+
+        .slide a {
+            color: var(--text-sub);
+            font-size: 16px;
+            /* ปรับขนาดตัวอักษรข้อความ */
+            line-height: 1.4;
+            text-decoration: none;
+            max-width: 90%;
+            /* ลองเพิ่ม max-width เพื่อจำกัดความกว้างของข้อความ */
+            word-break: break-word;
+            /* ป้องกันคำยาว ๆ ล้นขอบ */
         }
 
         .slider-btn {
@@ -161,23 +187,50 @@
         }
 
         .slider-btn.left {
-            left: 10px;
+            left: 30px; /* ปรับระยะห่างจากขอบซ้าย */
         }
 
         .slider-btn.right {
-            right: 10px;
+            right: 30px; /* ปรับระยะห่างจากขอบขวา */
         }
 
-
         @media (max-width: 768px) {
+            .hero .logo {
+                font-size: 36px;
+            }
+
+            .hero .intro {
+                font-size: 20px;
+            }
+
+            h3 {
+                font-size: 24px;
+            }
+
+            .slide {
+                padding: 15px;
+            }
+
             .slide img {
-                max-height: 300px;
-                border-radius: 10px;
+                max-height: 250px;
+                max-width: 90%;
+            }
+
+            .slide a {
+                font-size: 14px;
             }
 
             .slider-btn {
-                font-size: 24px;
-                padding: 6px 14px;
+                font-size: 30px;
+                padding: 2px 13px;
+            }
+
+            .slider-btn.left {
+                left: -5px; /* ปรับระยะห่างสำหรับหน้าจอเล็ก */
+            }
+
+            .slider-btn.right {
+                right: -5px; /* ปรับระยะห่างสำหรับหน้าจอเล็ก */
             }
         }
 
@@ -207,33 +260,6 @@
         .footer.show {
             opacity: 1;
             transform: translateZ(0);
-        }
-
-
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .hero .logo {
-                font-size: 36px;
-            }
-
-            .hero .intro {
-                font-size: 20px;
-            }
-
-            h3 {
-                font-size: 24px;
-            }
-
-            .certificate {
-                padding: 20px;
-            }
-
-            .slider .slide img {
-                width: 90%;
-                max-height: 300px;
-                border-radius: 10px;
-            }
         }
 
         .animate-text {
@@ -274,39 +300,32 @@
             transform: translateY(0);
             /* เคลื่อนเข้ามาในตำแหน่งที่แสดง */
         }
-
-        .caption {
-            margin-top: 10px;
-            color: var(--text-sub);
-            font-size: 16px;
-            text-align: center;
-        }
     </style>
 </head>
 
 <body>
 
-    <!-- ส่วนที่ 1 -->
     <section class="hero animate-on-scroll">
         <div class="logo">Portfolio</div>
         <div class="intro">ยินดีต้อนรับสู่เว็บไซต์เก็บผลงานของผม!</div>
     </section>
 
-    <!-- ส่วนที่ 2 -->
     <section class="certificates">
         <h3 class="animate-text">Certificate</h3>
         <div class="slider-wrapper animate-on-scroll">
             <button class="slider-btn left" onclick="slideLeft()">&#10094;</button>
 
             <div class="slider-container" id="slider">
-                <div class="slide"><img src=" 1.pdf.png" alt="certificate 1">
-                    <p class="caption">ผมได้เข้าร่วมงานKU ENGINEERING OPENHOUSE
-                        ได้รับความรู้ในการศึกษาต่อเข้ามหาวิทยาลัยและความสนุกที่ได้เข้าร่วมกิจกรรมที่จัดขึ้นในงาน OPEN
-                        HOUSE </p>
+                <div class="slide">
+                    <img src=" 1.pdf.png" alt="certificate 1">
+                    <a>ผมได้เข้าร่วมงานKU ENGINEERING OPENHOUSE
+                        ได้รับความรู้ในการศึกษาต่อเข้ามหาวิทยาลัยและความสนุกที่ได้เข้าร่วมกิจกรรมที่จัดขึ้นในงาน OPEN
+                        HOUSE </a>
                 </div>
                 <div class="slide"><img src=" 2.pdf.png" alt="certificate 2">
-                    <p class="caption">ผมได้เข้าร่วมอบรมของTHE
-                        SANDBOXได้รับความรู้ในการสร้างเกมโดยผ่านการใช้โปรแกรมGAME MAKERและเข้าใจหลักการทำงานของระบบเกมมากขึ้น</p>
+                    <a>ผมได้เข้าร่วมอบรมของTHE
+                        SANDBOXได้รับความรู้ในการสร้างเกมโดยผ่านการใช้โปรแกรมGAME
+                        MAKERและเข้าใจหลักการทำงานของระบบเกมมากขึ้น</a>
                 </div>
                 <div class="slide"><img src=" 3.png" alt="certificate 3"></div>
                 <div class="slide"><img src=" 4.png" alt="certificate 4"></div>
@@ -320,7 +339,6 @@
     </section>
 
 
-    <!-- ส่วนที่ 3 -->
     <section class="footer animate-on-scroll">
         <span class="top-center">ช่องทางการติดต่อ</span>
         <p class="p1">
