@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 40px 0;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+}
+
+/* พื้นที่เปียโน */
+.piano {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1680px;
+    position: relative;
+    gap: 0;
+}
+
+/* ปุ่มขาว */
+.key.white {
+    flex: 0 0 calc(100% / 21);
+    width: 50px;
+    height: 150px;
+    background: white;
+    border: 1px solid black;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    border-radius: 0 0 8px 8px;
+    text-align: center;
+    line-height: 190px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    
+}
+
+.key.white:active {
+    background: #ddd;
+}
+
+.piano .key.highlight-white {
+    background-color: #a3c4f3 !important;
+    transform: scale(0.95);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.piano .key.white:not(.highlight-white):active {
+    background: #ddd;
+    transform: scale(0.99);
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+/* ปุ่มขาวตั้งแต่ G6 ให้ไปแถวล่าง */
+.key.white.g6-down {
+    order: 100;
+}
+
+/* ปุ่มดำ */
+.key.black {
+    width: 27px;
+    height: 100px;
+    background: black;
+    position: absolute;
+    top: 0;
+    border-radius: 0 0 6px 6px;
+    z-index: 2;
+    border: 1px solid #333;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    line-height: 90px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+   
+}
+
+.key.black:active {
+    background: #555;
+}
+
+/* คีย์ดำแถวล่าง */
+.key.black.g6-down {
+    top: 210px; /* ต่ำกว่าปุ่มขาวแถวบน */
+}
+
+/* ===== ตำแหน่งคีย์ดำแบบ absolute เทียบกับปุ่มขาว ===== */
+
+/* octave 4 */
+.key.black.cSharp4 { left: calc(100% / 21 * 0.7); }
+.key.black.dSharp4 { left: calc(100% / 21 * 1.7); }
+.key.black.fSharp4 { left: calc(100% / 21 * 3.7); }
+.key.black.gSharp4 { left: calc(100% / 21 * 4.7); }
+.key.black.aSharp4 { left: calc(100% / 21 * 5.7); }
+
+/* octave 5 */
+.key.black.cSharp5 { left: calc(100% / 21 * 7.7); }
+.key.black.dSharp5 { left: calc(100% / 21 * 8.7); }
+.key.black.fSharp5 { left: calc(100% / 21 * 10.7); }
+.key.black.gSharp5 { left: calc(100% / 21 * 11.7); }
+.key.black.aSharp5 { left: calc(100% / 21 * 12.7); }
+
+/* octave 6 */
+.key.black.cSharp6 { left: calc(100% / 21 * 14.7); }
+.key.black.dSharp6 { left: calc(100% / 21 * 15.7); }
+.key.black.fSharp6 { left: calc(100% / 21 * 17.7); }
+.key.black.gSharp6 { 
+    left: calc(100% / 21 * 18.7);
+    top: 0px; /* แถวล่าง */
+}
+.key.black.aSharp6 {
+    left: calc(100% / 21 * 19.7);
+    top:0px; /* แถวล่าง */
+}
+
+/* ===== Highlight (optional) ===== */
+.key.white.highlight-white {
+    background-color: #a3c4f3 !important;
+}
+
+.key.black.highlight-black {
+    background-color: #3b7ddd !important;
+
+}
