@@ -6,7 +6,223 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>piano999</title>
   <style>
-    body {
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 40px 0;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+}
+
+/* พื้นที่เปียโน */
+.piano {
+    display: grid;
+    grid-template-columns: repeat(21, 1fr);
+    /* 21 ปุ่มขาว */
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100vw;
+    aspect-ratio: 21 / 3;
+    position: relative;
+    gap: 10px;
+}
+
+/* ปุ่มขาว */
+.key.white {
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    /* ล่างแนวตั้ง */
+    justify-content: center;
+    /* กลางแนวนอน */
+    padding-bottom: 10px;
+    /* ระยะห่างจากล่างนิดหน่อย */
+    flex: 0 0 calc(100% / 22);
+    width: 150%;
+    height: 150%;
+    background: white;
+    border: 1px solid black;
+    box-sizing: border-box;
+    position: relative;
+    margin-top: 10px;
+    z-index: 1;
+    border-radius: 0 0 4px 4px;
+    text-align: center;
+    line-height: 70px;
+    transition: background-color 0.2s;
+
+}
+
+.key.white:active {
+    background: #ddd;
+}
+
+.piano .key.highlight-white {
+    background-color: #a3c4f3 !important;
+    transform: scale(0.95);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.piano .key.white:not(.highlight-white):active {
+    background: #ddd;
+    transform: scale(0.99);
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+/* ปุ่มขาวตั้งแต่ G6 ให้ไปแถวล่าง */
+.key.white.g6-down {
+    order: 100;
+}
+
+/* ปุ่มดำ */
+.key.black {
+    cursor: pointer;
+    font-size: 13px;
+    width: calc(70% / 18 * 0.6);
+    /* ปรับให้เล็กกว่าปุ่มขาวเล็กน้อย */
+    height: 70%;
+    background: black;
+    position: absolute;
+    top: 0;
+    border-radius: 0 0 6px 6px;
+    z-index: 2;
+    border: 1px solid #333;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    /* กลางแนวตั้ง */
+    justify-content: center;
+    padding: 2px 5px;
+    transition: background-color 0.2s;
+}
+
+.key.black:hover {
+    background: rgb(27, 27, 27);
+}
+
+/* คีย์ดำแถวล่าง */
+.key.black.g6-down {
+    top: 210px;
+    /* ต่ำกว่าปุ่มขาวแถวบน */
+}
+
+/* ===== ตำแหน่งคีย์ดำแบบ absolute เทียบกับปุ่มขาว ===== */
+/* octave 4 */
+.key.black.cSharp4 {
+    left: calc(100% / 21 * (0 + 0.65));
+}
+
+.key.black.dSharp4 {
+    left: calc(100% / 21 * (1 + 0.65));
+}
+
+.key.black.fSharp4 {
+    left: calc(100% / 21 * (3 + 0.65));
+}
+
+.key.black.gSharp4 {
+    left: calc(100% / 21 * (4 + 0.65));
+}
+
+.key.black.aSharp4 {
+    left: calc(100% / 21 * (5 + 0.65));
+}
+
+/* octave 5 */
+.key.black.cSharp5 {
+    left: calc(100% / 21 * (7 + 0.65));
+}
+
+.key.black.dSharp5 {
+    left: calc(100% / 21 * (8 + 0.65));
+}
+
+.key.black.fSharp5 {
+    left: calc(100% / 21 * (10 + 0.65));
+}
+
+.key.black.gSharp5 {
+    left: calc(100% / 21 * (11 + 0.65));
+}
+
+.key.black.aSharp5 {
+    left: calc(100% / 21 * (12 + 0.65));
+}
+
+/* octave 6 */
+.key.black.cSharp6 {
+    left: calc(100% / 21 * (14 + 0.65));
+}
+
+.key.black.dSharp6 {
+    left: calc(100% / 21 * (15 + 0.65));
+}
+
+.key.black.fSharp6 {
+    left: calc(100% / 21 * (17 + 0.65));
+}
+
+.key.black.gSharp6 {
+    left: calc(100% / 21 * (18 + 0.65));
+}
+
+.key.black.aSharp6 {
+    left: calc(100% / 21 * (19 + 0.65));
+}
+
+
+
+@media (max-width: 550px) {
+  .piano {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .key.white {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    background: white;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 10px;
+    padding-bottom: 3px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    border-radius: 0 0 6px 6px;
+    overflow: hidden; /* กันปุ่มดำล้น */
+  }
+
+  .key.black {
+    position: absolute;
+    top: 0;
+    right: 4px; /* ติดขอบขวาของปุ่มขาว */
+    width: 2%;
+    height: 20%;
+    background: black;
+    color: white;
+    font-size: 10px;
+    border: 1px solid #333;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    text-align: center;
+    padding: 2px 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+}
+
+ body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 40px 0;
@@ -28,9 +244,10 @@
 
     /* ปุ่มขาว */
     .key.white {
+    font-size: 13px;
       flex: 0 0 calc(100% / 21);
       width: 50px;
-      height: 150px;
+      height: 110px;
       background: white;
       border: 1px solid black;
       box-sizing: border-box;
@@ -38,8 +255,7 @@
       z-index: 1;
       border-radius: 0 0 8px 8px;
       text-align: center;
-      line-height: 190px;
-      font-weight: bold;
+      line-height: 70px;
       transition: background-color 0.2s;
 
     }
@@ -67,8 +283,9 @@
 
     /* ปุ่มดำ */
     .key.black {
-      width: 27px;
-      height: 100px;
+      width: 10px;
+      height: 40px;
+      font-size: 11px;
       background: black;
       position: absolute;
       top: 0;
@@ -79,7 +296,6 @@
       color: white;
       text-align: center;
       line-height: 90px;
-      font-weight: bold;
       transition: background-color 0.2s;
 
     }
@@ -231,225 +447,261 @@
 
   <script>
 
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    const noteFreqMap = {
-      'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13, 'E4': 329.63,
-      'F4': 349.23, 'F#4': 369.99, 'G4': 392.00, 'G#4': 415.30, 'A4': 440.00,
-      'A#4': 466.16, 'B4': 493.88,
+const noteFreqMap = {
+  'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13, 'E4': 329.63,
+  'F4': 349.23, 'F#4': 369.99, 'G4': 392.00, 'G#4': 415.30, 'A4': 440.00,
+  'A#4': 466.16, 'B4': 493.88,
 
-      'C5': 523.25, 'C#5': 554.37, 'D5': 587.33, 'D#5': 622.25, 'E5': 659.25,
-      'F5': 698.46, 'F#5': 739.99, 'G5': 783.99, 'G#5': 830.61, 'A5': 880.00,
-      'A#5': 932.33, 'B5': 987.77,
+  'C5': 523.25, 'C#5': 554.37, 'D5': 587.33, 'D#5': 622.25, 'E5': 659.25,
+  'F5': 698.46, 'F#5': 739.99, 'G5': 783.99, 'G#5': 830.61, 'A5': 880.00,
+  'A#5': 932.33, 'B5': 987.77,
 
-      'C6': 1046.50, 'C#6': 1108.73, 'D6': 1174.66, 'D#6': 1244.51, 'E6': 1318.51,
-      'F6': 1396.91, 'F#6': 1479.98, 'G6': 1567.98, 'G#6': 1661.22, 'A6': 1760.00,
-      'A#6': 1864.66, 'B6': 1975.53
-    };
+  'C6': 1046.50, 'C#6': 1108.73, 'D6': 1174.66, 'D#6': 1244.51, 'E6': 1318.51,
+  'F6': 1396.91, 'F#6': 1479.98, 'G6': 1567.98, 'G#6': 1661.22, 'A6': 1760.00,
+  'A#6': 1864.66, 'B6': 1975.53
+};
 
-    function playFreq(freq) {
-      const osc = audioCtx.createOscillator();
-      const gainNode = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      osc.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-      gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-      osc.start();
-      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
-      osc.stop(audioCtx.currentTime + 0.8);
+function playFreq(freq) {
+  const osc = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  osc.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+  gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+  osc.start();
+  gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
+  osc.stop(audioCtx.currentTime + 0.8);
+}
+
+function playNote(note) {
+  const freq = noteFreqMap[note];
+  if (freq) playFreq(freq);
+}
+
+const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+function buildChord(root, type) {
+  let rootIdx = chromaticScale.indexOf(root);
+  if (rootIdx === -1) return [];
+
+  function noteAt(idx, baseOctave) {
+    const noteName = chromaticScale[idx % 12];
+    const octave = baseOctave + Math.floor(idx / 12);
+    return noteName + octave;
+  }
+
+  let octave = 4;
+  let notes = [];
+
+  switch (type) {
+    case 'major':
+      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave)];
+      break;
+    case 'minor':
+      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 7, octave)];
+      break;
+    case '7th':
+      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 10, octave)];
+      break;
+    case 'maj7':
+      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 11, octave)];
+      break;
+    case 'dim':
+      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 6, octave)];
+      break;
+    case 'aug':
+      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 8, octave)];
+      break;
+    case 'sus2':
+      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 2, octave), noteAt(rootIdx + 7, octave)];
+      break;
+    case 'sus4':
+      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 5, octave), noteAt(rootIdx + 7, octave)];
+      break;
+    default:
+      notes = [noteAt(rootIdx, octave)];
+  }
+
+  return notes;
+}
+
+function playChord(notes) {
+  notes.forEach(note => playNote(note));
+}
+
+// 🎹 คีย์เปียโนหลัก
+const piano = document.getElementById('piano');
+const pianoKeys = {};
+const activeNotes = new Set();
+
+// สร้าง Map ของปุ่ม
+piano.querySelectorAll('.key').forEach(key => {
+  const note = key.dataset.note;
+  pianoKeys[note] = key;
+
+  // รองรับ pointer
+  key.addEventListener('pointerdown', (e) => {
+    if (!activeNotes.has(note)) {
+      playNote(note);
+      highlightNoteOnPiano(note);
+      activeNotes.add(note);
     }
+    key.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
 
-    function playNote(note) {
-      const freq = noteFreqMap[note];
-      if (freq) playFreq(freq);
-    }
+  key.addEventListener('pointerup', () => {
+    activeNotes.delete(note);
+  });
 
-    const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  key.addEventListener('pointerleave', () => {
+    activeNotes.delete(note);
+  });
+});
 
-    function buildChord(root, type) {
-      let rootIdx = chromaticScale.indexOf(root);
-      if (rootIdx === -1) return [];
-
-      function noteAt(idx, baseOctave) {
-        const noteName = chromaticScale[idx % 12];
-        const octave = baseOctave + Math.floor(idx / 12);
-        return noteName + octave;
+// 🧠 ตรวจจับการลากผ่านหลายปุ่ม (touchmove)
+piano.addEventListener('touchmove', (e) => {
+  const touches = e.touches;
+  for (let i = 0; i < touches.length; i++) {
+    const touch = touches[i];
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (el && el.classList.contains('key')) {
+      const note = el.dataset.note;
+      if (note && !activeNotes.has(note)) {
+        playNote(note);
+        highlightNoteOnPiano(note);
+        activeNotes.add(note);
       }
+    }
+  }
+  e.preventDefault();
+});
 
-      let octave = 4;
-      let notes = [];
+function highlightNoteOnPiano(note) {
+  Object.values(pianoKeys).forEach(k => {
+    k.classList.remove('highlight-white', 'highlight-black');
+  });
+  const key = pianoKeys[note];
+  if (!key) return;
+  if (key.classList.contains('white')) {
+    key.classList.add('highlight-white');
+  } else {
+    key.classList.add('highlight-black');
+  }
+}
 
-      switch (type) {
-        case 'major':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave)];
-          break;
-        case 'minor':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 7, octave)];
-          break;
-        case '7th':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 10, octave)];
-          break;
-        case 'maj7':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 11, octave)];
-          break;
-        case 'dim':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 6, octave)];
-          break;
-        case 'aug':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 8, octave)];
-          break;
-        case 'sus2':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 2, octave), noteAt(rootIdx + 7, octave)];
-          break;
-        case 'sus4':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 5, octave), noteAt(rootIdx + 7, octave)];
-          break;
-        default:
-          notes = [noteAt(rootIdx, octave)];
+// 🎵 Mini Piano สำหรับคอร์ด
+function createMiniPiano(notes) {
+  const piano = document.createElement('div');
+  piano.className = 'mini-piano';
+
+  const whiteOrder = ['C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6'];
+  whiteOrder.forEach(note => {
+    const k = document.createElement('div');
+    k.className = 'key white';
+    k.textContent = note[0];
+    k.dataset.note = note;
+    piano.appendChild(k);
+  });
+
+  const blackNotes = [
+    { note: 'C#5', cls: 'cSharp' },
+    { note: 'D#5', cls: 'dSharp' },
+    { note: 'F#5', cls: 'fSharp' },
+    { note: 'G#5', cls: 'gSharp' },
+    { note: 'A#5', cls: 'aSharp' },
+    { note: 'C#6', cls: 'cSharp6' },
+    { note: 'D#6', cls: 'dSharp6' }
+  ];
+  blackNotes.forEach(({ note, cls }) => {
+    const k = document.createElement('div');
+    k.className = 'key black ' + cls;
+    k.textContent = note[0] + '#';
+    k.dataset.note = note;
+    piano.appendChild(k);
+  });
+
+  piano.querySelectorAll('.key').forEach(key => {
+    if (notes.includes(key.dataset.note)) {
+      key.classList.add('pressed');
+    }
+  });
+
+  return piano;
+}
+
+function highlightChordOnPiano(notes) {
+  Object.values(pianoKeys).forEach(k => {
+    k.classList.remove('highlight-white', 'highlight-black');
+  });
+
+  notes.forEach(note => {
+    const noteOctave4 = note.slice(0, -1) + '4';
+    if (pianoKeys[noteOctave4]) {
+      const key = pianoKeys[noteOctave4];
+      if (key.classList.contains('white')) {
+        key.classList.add('highlight-white');
+      } else {
+        key.classList.add('highlight-black');
       }
-
-      return notes;
-    }
-
-    function playChord(notes) {
-      notes.forEach(note => playNote(note));
-    }
-
-    // คีย์เปียโนหลัก
-    const piano = document.getElementById('piano');
-    const pianoKeys = {};
-    piano.querySelectorAll('.key').forEach(key => {
-      pianoKeys[key.dataset.note] = key;
-      key.addEventListener('click', () => {
-        playNote(key.dataset.note);
-        highlightNoteOnPiano(key.dataset.note);
-      });
-    });
-
-    function highlightNoteOnPiano(note) {
-      Object.values(pianoKeys).forEach(k => {
-        k.classList.remove('highlight-white', 'highlight-black');
-      });
+    } else if (pianoKeys[note]) {
       const key = pianoKeys[note];
-      if (!key) return;
       if (key.classList.contains('white')) {
         key.classList.add('highlight-white');
       } else {
         key.classList.add('highlight-black');
       }
     }
+  });
+}
 
-    function createMiniPiano(notes) {
-      const piano = document.createElement('div');
-      piano.className = 'mini-piano';
+const chords = [];
+['C', 'D', 'E', 'F', 'G', 'A', 'B'].forEach(root => {
+  ['major', 'minor', '7th', 'maj7', 'dim', 'aug', 'sus2', 'sus4'].forEach(type => {
+    chords.push({ root, type });
+  });
+});
 
-      const whiteOrder = ['C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6'];
-      whiteOrder.forEach(note => {
-        const k = document.createElement('div');
-        k.className = 'key white';
-        k.textContent = note[0];
-        k.dataset.note = note;
-        piano.appendChild(k);
-      });
+const chordListDiv = document.getElementById('chord-list');
+let selectedChordIndex = -1;
 
-      const blackNotes = [
-        { note: 'C#5', cls: 'cSharp' },
-        { note: 'D#5', cls: 'dSharp' },
-        { note: 'F#5', cls: 'fSharp' },
-        { note: 'G#5', cls: 'gSharp' },
-        { note: 'A#5', cls: 'aSharp' },
-        { note: 'C#6', cls: 'cSharp6' },
-        { note: 'D#6', cls: 'dSharp6' }
-      ];
-      blackNotes.forEach(({ note, cls }) => {
-        const k = document.createElement('div');
-        k.className = 'key black ' + cls;
-        k.textContent = note[0] + '#';
-        k.dataset.note = note;
-        piano.appendChild(k);
-      });
+function renderChordList() {
+  chordListDiv.innerHTML = '';
+  chords.forEach((chord, idx) => {
+    const chordDiv = document.createElement('div');
+    chordDiv.className = 'chord';
+    chordDiv.textContent = `${chord.root} ${chord.type}`;
+    chordDiv.dataset.index = idx;
 
-      piano.querySelectorAll('.key').forEach(key => {
-        if (notes.includes(key.dataset.note)) {
-          key.classList.add('pressed');
-        }
-      });
+    const chordNotes = buildChord(chord.root, chord.type);
+    const miniPiano = createMiniPiano(chordNotes);
+    chordDiv.appendChild(miniPiano);
 
-      return piano;
-    }
-
-    function highlightChordOnPiano(notes) {
-      Object.values(pianoKeys).forEach(k => {
-        k.classList.remove('highlight-white', 'highlight-black');
-      });
-
-      notes.forEach(note => {
-        const noteOctave4 = note.slice(0, -1) + '4';
-        if (pianoKeys[noteOctave4]) {
-          const key = pianoKeys[noteOctave4];
-          if (key.classList.contains('white')) {
-            key.classList.add('highlight-white');
-          } else {
-            key.classList.add('highlight-black');
-          }
-        } else if (pianoKeys[note]) {
-          const key = pianoKeys[note];
-          if (key.classList.contains('white')) {
-            key.classList.add('highlight-white');
-          } else {
-            key.classList.add('highlight-black');
-          }
-        }
-      });
-    }
-
-    const chords = [];
-    ['C', 'D', 'E', 'F', 'G', 'A', 'B'].forEach(root => {
-      ['major', 'minor', '7th', 'maj7', 'dim', 'aug', 'sus2', 'sus4'].forEach(type => {
-        chords.push({ root, type });
-      });
+    chordDiv.addEventListener('click', () => {
+      selectChord(idx);
     });
 
-    const chordListDiv = document.getElementById('chord-list');
-    let selectedChordIndex = -1;
+    chordListDiv.appendChild(chordDiv);
+  });
+}
 
-    function renderChordList() {
-      chordListDiv.innerHTML = '';
-      chords.forEach((chord, idx) => {
-        const chordDiv = document.createElement('div');
-        chordDiv.className = 'chord';
-        chordDiv.textContent = `${chord.root} ${chord.type}`;
-        chordDiv.dataset.index = idx;
+function selectChord(idx) {
+  if (selectedChordIndex === idx) return;
 
-        const chordNotes = buildChord(chord.root, chord.type);
-        const miniPiano = createMiniPiano(chordNotes);
-        chordDiv.appendChild(miniPiano);
+  selectedChordIndex = idx;
 
-        chordDiv.addEventListener('click', () => {
-          selectChord(idx);
-        });
+  chordListDiv.querySelectorAll('.chord').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
 
-        chordListDiv.appendChild(chordDiv);
-      });
-    }
-
-    function selectChord(idx) {
-      if (selectedChordIndex === idx) return;
-
-      selectedChordIndex = idx;
-
-      chordListDiv.querySelectorAll('.chord').forEach((el, i) => {
-        el.classList.toggle('selected', i === idx);
-      });
-
-      const chord = chords[idx];
-      const notes = buildChord(chord.root, chord.type);
-      playChord(notes);
-      highlightChordOnPiano(notes);
-    }
-
-
+  const chord = chords[idx];
+  const notes = buildChord(chord.root, chord.type);
+  playChord(notes);
+  highlightChordOnPiano(notes);
+}
 
 
   </script>
