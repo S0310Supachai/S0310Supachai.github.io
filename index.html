@@ -1,501 +1,439 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>piano999</title>
-  <style>
- body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 40px 0;
-    background: #000;
-    display: flex;
-    justify-content: center;
-    user-select: none;
-}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&family=Montserrat:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #ffffff;
+            --text-sub: #aaaaaa;
+            --accent: #ffffff;
+        }
 
-.piano {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    max-width: 1680px;
-    position: relative;
-    gap: 0;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
 
-/* ปุ่มขาว */
-.key.white {
-    flex: 0 0 calc(100% / 21);
-    width: 50px;
-    height: 200px;
-    background: white;
-    border: 1px solid black;
-    box-sizing: border-box;
-    position: relative;
-    z-index: 1;
-    border-radius: 0 0 8px 8px;
-    text-align: center;
-    line-height: 280px;
-    transition: background-color 0.2s;
-    font-size: 13px;
-}
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
 
-.key.white:active,
-.piano .key.white:not(.highlight-white):active {
-    background: #ddd;
-    transform: scale(0.99);
-}
+        section {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
 
-.piano .key.highlight-white {
-    background-color: #a3c4f3 !important;
-    transform: scale(0.95);
-}
+        /* ส่วนที่ 1 */
+        .hero {
+            background-color: var(--bg-dark);
+            text-align: center;
+        }
 
-/* ปุ่มดำ */
-.key.black {
-    width: 30px;
-    height: 120px;
-    font-weight: bold;
-    background: black;
-    position: absolute;
-    top: 0;
-    z-index: 2;
-    border-radius: 0 0 6px 6px;
-    border: 1px solid #333;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    color: white;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s;
-}
+        .hero.animate-on-scroll {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s ease;
+        }
 
-.key.black:active {
-    background: #555;
-}
+        .hero.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-.key.black.g6-down {
-    top: 210px;
-}
+        .hero .logo {
+            font-size: 64px;
+            font-weight: 300;
+            color: var(--accent);
+        }
 
-/* ===== ตำแหน่งคีย์ดำ ===== */
-.key.black.cSharp4  { left: calc(100% / 21 * 0.7); }
-.key.black.dSharp4  { left: calc(100% / 21 * 1.7); }
-.key.black.fSharp4  { left: calc(100% / 21 * 3.7); }
-.key.black.gSharp4  { left: calc(100% / 21 * 4.7); }
-.key.black.aSharp4  { left: calc(100% / 21 * 5.7); }
+        .hero .intro {
+            font-size: 24px;
+            font-weight: 200;
+            color: var(--text-sub);
+            margin-top: 20px;
+        }
 
-.key.black.cSharp5  { left: calc(100% / 21 * 7.7); }
-.key.black.dSharp5  { left: calc(100% / 21 * 8.7); }
-.key.black.fSharp5  { left: calc(100% / 21 * 10.7); }
-.key.black.gSharp5  { left: calc(100% / 21 * 11.7); }
-.key.black.aSharp5  { left: calc(100% / 21 * 12.7); }
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 28px;
+            margin-top: 10px;
+            color: var(--accent);
+            text-align: center;
+            /* จัดข้อความกลางสำหรับหัวข้อ */
+        }
 
-.key.black.cSharp6  { left: calc(100% / 21 * 14.7); }
-.key.black.dSharp6  { left: calc(100% / 21 * 15.7); }
-.key.black.fSharp6  { left: calc(100% / 21 * 17.7); }
-.key.black.gSharp6  { left: calc(100% / 21 * 18.7); }
-.key.black.aSharp6  { left: calc(100% / 21 * 19.7); }
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            margin: auto;
+        }
 
-/* Highlight */
-.key.black.highlight-black {
-    background-color: #3b7ddd !important;
-}
+        .slider-wrapper {
+            position: relative;
+            max-width: 1000px;
+            margin: 20px auto;
+            /* เพิ่ม margin ด้านบนและล่าง */
+            overflow: hidden;
+        }
 
-/* Responsive */
-@media (max-width: 550px) {
-  .piano {
-  position: relative;
-  display: flex;
-  justify-content: start;
-  align-items: flex-start;
-  width: 100%;
-  height: 155px;
-}
+        .slider-container {
+            display: flex;
+            transition: transform 0.4s ease-in-out;
+            scroll-behavior: smooth;
+            overflow-x: auto;
+            scrollbar-width: none;
+            /* Firefox */
+        }
 
-.key.white {
-  width: calc(100% / 21);
-  width: 20px;
-  height: 63%;
-  color: rgb(64, 62, 62);
-  background: white;
-  border: 1px solid black; 
-  box-sizing: border-box;
-  border-radius: 0 0 3.6px 3.6px;
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  line-height: 60px;
-  padding-right: 0.3px;
-}
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
 
-.key.black {
-  position: absolute;
-  width: calc(100% / 42); /* แคบกว่าขาวครึ่งนึง */
-  height: 50px;
-  width: 13px;
-  background: black;
-  z-index: 2;
-  border-radius: 0 0 4px 4px;
-  color: rgb(218, 213, 213);
-  text-align: center;
-  font-size: 12px;
-}
+        ::-webkit-scrollbar-track {
+            background: #1e2123;
+        }
 
-/* ตำแหน่งคีย์ดำในแต่ละ octave */
-.cSharp4  { left: calc(100% / 21 * 0.66); }
-.dSharp4  { left: calc(100% / 21 * 1.66); }
-.fSharp4  { left: calc(100% / 21 * 3.66); }
-.gSharp4  { left: calc(100% / 21 * 4.66); }
-.aSharp4  { left: calc(100% / 21 * 5.66); }
+        ::-webkit-scrollbar-thumb {
+            background: #5c5c5c;
+            border-radius: 5px;
+        }
 
-.cSharp5  { left: calc(100% / 21 * 7.66); }
-.dSharp5  { left: calc(100% / 21 * 8.66); }
-.fSharp5  { left: calc(100% / 21 * 10.66); }
-.gSharp5  { left: calc(100% / 21 * 11.66); }
-.aSharp5  { left: calc(100% / 21 * 12.66); }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #636d77;
+        }
 
-.cSharp6  { left: calc(100% / 21 * 14.66); }
-.dSharp6  { left: calc(100% / 21 * 15.66); }
-.fSharp6  { left: calc(100% / 21 * 17.66); }
-.gSharp6  { left: calc(100% / 21 * 18.66); }
-.aSharp6  { left: calc(100% / 21 * 19.66); }
+        .slider-container::-webkit-scrollbar {
+            display: none;
+            /* Chrome */
+        }
 
-}
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            /* จัดเรียงรูปภาพและข้อความแนวตั้ง */
+            align-items: center;
+            /* จัดกึ่งกลางแนวนอน */
+            text-align: center;
+            /* จัดข้อความกึ่งกลาง */
+        }
 
-  </style>
+        .slide img {
+            width: 100%;
+            /* ปรับให้รูปภาพกว้างเต็ม container */
+            max-width: 800px;
+            /* กำหนดขนาดความกว้างสูงสุด (ลองปรับค่าตามต้องการ) */
+            max-height: 400px;
+            /* ปรับความสูงสูงสุด */
+            object-fit: contain;
+            /* หรือ 'cover' ถ้าต้องการให้เต็มกรอบและอาจมีการ crop */
+            border-radius: 7px;
+            margin-bottom: 10px;
+            /* เพิ่มระยะห่างระหว่างรูปภาพและข้อความ */
+        }
+
+        .slide a {
+            color: var(--text-sub);
+            font-size: 16px;
+            /* ปรับขนาดตัวอักษรข้อความ */
+            line-height: 1.4;
+            text-decoration: none;
+            max-width: 90%;
+            /* ลองเพิ่ม max-width เพื่อจำกัดความกว้างของข้อความ */
+            word-break: break-word;
+            /* ป้องกันคำยาว ๆ ล้นขอบ */
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 32px;
+            color: white;
+            background: rgba(0, 0, 0, 0.4);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            z-index: 1;
+            transition: background 0.3s ease;
+        }
+
+        .slider-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .slider-btn.left {
+            left: 30px; /* ปรับระยะห่างจากขอบซ้าย */
+        }
+
+        .slider-btn.right {
+            right: 30px; /* ปรับระยะห่างจากขอบขวา */
+        }
+
+        @media (max-width: 768px) {
+            .hero .logo {
+                font-size: 36px;
+            }
+
+            .hero .intro {
+                font-size: 20px;
+            }
+
+            h3 {
+                font-size: 24px;
+            }
+
+            .slide {
+                padding: 15px;
+            }
+
+            .slide img {
+                max-height: 250px;
+                max-width: 90%;
+            }
+
+            .slide a {
+                font-size: 14px;
+            }
+
+            .slider-btn {
+                font-size: 30px;
+                padding: 2px 13px;
+            }
+
+            .slider-btn.left {
+                left: -5px; /* ปรับระยะห่างสำหรับหน้าจอเล็ก */
+            }
+
+            .slider-btn.right {
+                right: -5px; /* ปรับระยะห่างสำหรับหน้าจอเล็ก */
+            }
+        }
+
+        /* ส่วนที่ 3 */
+        .footer {
+            background-color: var(--bg-dark);
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 16px;
+            color: var(--text-sub);
+        }
+
+        .footer-note {
+            display: block;
+            margin-top: 30px;
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.1;
+        }
+
+        .footer.animate-on-scroll {
+            opacity: 0;
+            transform: translateZ(-100px);
+            transition: all 1s ease;
+        }
+
+        .footer.show {
+            opacity: 1;
+            transform: translateZ(0);
+        }
+
+        .animate-text {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 1s ease;
+        }
+
+        .animate-text.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* สำหรับการเลื่อนรูปภาพเข้ามาจากด้านหลัง */
+        .slider-wrapper {
+            opacity: 0;
+            transform: translateZ(10px);
+            /* เริ่มจากด้านข้าง */
+            transition: all 1s ease;
+            /* เอฟเฟกต์การเคลื่อนที่ */
+        }
+
+        .slider-wrapper.show {
+            opacity: 1;
+            transform: translateZ(0);
+            /* เคลื่อนเข้ามาในตำแหน่งที่แสดง */
+        }
+
+        .slide {
+            opacity: 0;
+            transform: translateY(50px);
+            /* เริ่มจากด้านข้าง */
+            transition: transform 1s ease, opacity 1s ease;
+        }
+
+        .slide.show {
+            opacity: 1;
+            transform: translateY(0);
+            /* เคลื่อนเข้ามาในตำแหน่งที่แสดง */
+        }
+    </style>
 </head>
-  
+
 <body>
- <div class="container">
-  <div class="piano" id="piano">
-    <!-- ปุ่มขาว C4-B5 -->
-    <div class="key white" data-note="C4">C</div>
-    <div class="key white" data-note="D4">D</div>
-    <div class="key white" data-note="E4">E</div>
-    <div class="key white" data-note="F4">F</div>
-    <div class="key white" data-note="G4">G</div>
-    <div class="key white" data-note="A4">A</div>
-    <div class="key white" data-note="B4">B</div>
 
-    <div class="key white" data-note="C5">C</div>
-    <div class="key white" data-note="D5">D</div>
-    <div class="key white" data-note="E5">E</div>
-    <div class="key white" data-note="F5">F</div>
-    <div class="key white" data-note="G5">G</div>
-    <div class="key white" data-note="A5">A</div>
-    <div class="key white" data-note="B5">B</div>
+    <section class="hero animate-on-scroll">
+        <div class="logo">Portfolio</div>
+        <div class="intro">ยินดีต้อนรับสู่เว็บไซต์เก็บผลงานของผม!</div>
+    </section>
 
-    <!-- ปุ่มดำ octave 4 -->
-    <div class="key black cSharp4" data-note="C#4">C<br>#<br>4</div>
-    <div class="key black dSharp4" data-note="D#4">D<br>#<br>4</div>
-    <div class="key black fSharp4" data-note="F#4">F<br>#<br>4</div>
-    <div class="key black gSharp4" data-note="G#4">G<br>#<br>4</div>
-    <div class="key black aSharp4" data-note="A#4">A<br>#<br>4</div>
+    <section class="certificates">
+        <h3 class="animate-text">Certificate</h3>
+        <div class="slider-wrapper animate-on-scroll">
+            <button class="slider-btn left" onclick="slideLeft()">&#10094;</button>
 
-    <!-- ปุ่มดำ octave 5 -->
-    <div class="key black cSharp5" data-note="C#5">C<br>#<br>5</div>
-    <div class="key black dSharp5" data-note="D#5">D<br>#<br>5</div>
-    <div class="key black fSharp5" data-note="F#5">F<br>#<br>5</div>
-    <div class="key black gSharp5" data-note="G#5">G<br>#<br>5</div>
-    <div class="key black aSharp5" data-note="A#5">A<br>#<br>5</div>
+            <div class="slider-container" id="slider">
+                <div class="slide">
+                    <img src="png/1.pdf.png" alt="certificate 1">
+                    <a>ผมได้เข้าร่วมงานKU ENGINEERING OPENHOUSE
+                        ได้รับความรู้ในการศึกษาต่อเข้ามหาวิทยาลัยและความสนุกที่ได้เข้าร่วมกิจกรรมที่จัดขึ้นในงาน OPEN
+                        HOUSE </a>
+                </div>
+                <div class="slide"><img src="png/2.pdf.png" alt="certificate 2">
+                    <a>ผมได้เข้าร่วมอบรมของTHE
+                        SANDBOXได้รับความรู้ในการสร้างเกมโดยผ่านการใช้โปรแกรมGAME
+                        MAKERและเข้าใจหลักการทำงานของระบบเกมมากขึ้น</a>
+                </div>
+                <div class="slide"><img src="png/3.png" alt="certificate 3"></div>
+                <div class="slide"><img src="png/4.png" alt="certificate 4"></div>
+                <div class="slide"><img src="png/5.png" alt="certificate 5"></div>
+                <div class="slide"><img src="png/6.png" alt="certificate 6"></div>
+                <div class="slide"><img src="png2/7.png" alt="certificate 7"></div>
+            </div>
 
-    <!-- ปุ่มขาว C6–B6 -->
-    <div class="key white" data-note="C6">C</div>
-    <div class="key white" data-note="D6">D</div>
-    <div class="key white" data-note="E6">E</div>
-    <div class="key white" data-note="F6">F</div>
-    <div class="key white" data-note="G6">G</div>
-    <div class="key white" data-note="A6">A</div>
-    <div class="key white" data-note="B6">B</div>
-
-    <!-- ปุ่มดำ octave 6 -->
-    <div class="key black cSharp6" data-note="C#6">C<br>#<br>6</div>
-    <div class="key black dSharp6" data-note="D#6">D<br>#<br>6</div>
-    <div class="key black fSharp6" data-note="F#6">F<br>#<br>6</div><br>#<br>6
-    <div class="key black gSharp6" data-note="G#6">G<br>#<br>6</div>
-    <div class="key black aSharp6" data-note="A#6">A<br>#<br>6</div>
-  </div>
-</div>
-
-  <div id="chord-list"></div>
-
-  <script>
-
-   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-const noteFreqMap = {
-  'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13, 'E4': 329.63,
-  'F4': 349.23, 'F#4': 369.99, 'G4': 392.00, 'G#4': 415.30, 'A4': 440.00,
-  'A#4': 466.16, 'B4': 493.88,
-
-  'C5': 523.25, 'C#5': 554.37, 'D5': 587.33, 'D#5': 622.25, 'E5': 659.25,
-  'F5': 698.46, 'F#5': 739.99, 'G5': 783.99, 'G#5': 830.61, 'A5': 880.00,
-  'A#5': 932.33, 'B5': 987.77,
-
-  'C6': 1046.50, 'C#6': 1108.73, 'D6': 1174.66, 'D#6': 1244.51, 'E6': 1318.51,
-  'F6': 1396.91, 'F#6': 1479.98, 'G6': 1567.98, 'G#6': 1661.22, 'A6': 1760.00,
-  'A#6': 1864.66, 'B6': 1975.53
-};
-
-function playFreq(freq) {
-  const osc = audioCtx.createOscillator();
-  const gainNode = audioCtx.createGain();
-  osc.type = 'sine';
-  osc.frequency.value = freq;
-  osc.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
-  gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-  osc.start();
-  gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
-  osc.stop(audioCtx.currentTime + 0.8);
-}
-
-function playNote(note) {
-  const freq = noteFreqMap[note];
-  if (freq) playFreq(freq);
-}
-
-const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-function buildChord(root, type) {
-  let rootIdx = chromaticScale.indexOf(root);
-  if (rootIdx === -1) return [];
-
-  function noteAt(idx, baseOctave) {
-    const noteName = chromaticScale[idx % 12];
-    const octave = baseOctave + Math.floor(idx / 12);
-    return noteName + octave;
-  }
-
-  let octave = 4;
-  let notes = [];
-
-  switch (type) {
-    case 'major':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave)];
-      break;
-    case 'minor':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 7, octave)];
-      break;
-    case '7th':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 10, octave)];
-      break;
-    case 'maj7':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 11, octave)];
-      break;
-    case 'dim':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 6, octave)];
-      break;
-    case 'aug':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 8, octave)];
-      break;
-    case 'sus2':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 2, octave), noteAt(rootIdx + 7, octave)];
-      break;
-    case 'sus4':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 5, octave), noteAt(rootIdx + 7, octave)];
-      break;
-    default:
-      notes = [noteAt(rootIdx, octave)];
-  }
-
-  return notes;
-}
-
-function playChord(notes) {
-  notes.forEach(note => playNote(note));
-}
-
-const piano = document.getElementById('piano');
-const pianoKeys = {};
-const activeNotes = new Set();
-
-piano.querySelectorAll('.key').forEach(key => {
-  const note = key.dataset.note;
-  pianoKeys[note] = key;
-
-  key.addEventListener('pointerdown', (e) => {
-    if (!activeNotes.has(note)) {
-      playNote(note);
-      highlightNoteOnPiano(note);
-      activeNotes.add(note);
-    }
-    key.setPointerCapture(e.pointerId);
-    e.preventDefault();
-  });
-
-  key.addEventListener('pointerenter', (e) => {
-    if (e.pressure > 0 && !activeNotes.has(note)) {
-      playNote(note);
-      highlightNoteOnPiano(note);
-      activeNotes.add(note);
-    }
-  });
-
-  key.addEventListener('pointerup', (e) => {
-    activeNotes.delete(note);
-    key.releasePointerCapture(e.pointerId);
-  });
-
-  key.addEventListener('pointerleave', () => {
-    activeNotes.delete(note);
-  });
-
-  key.addEventListener('pointercancel', () => {
-    activeNotes.delete(note);
-  });
-});
-
-piano.addEventListener('touchmove', (e) => {
-  const touches = e.touches;
-  for (let i = 0; i < touches.length; i++) {
-    const touch = touches[i];
-    const el = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (el && el.classList.contains('key')) {
-      const note = el.dataset.note;
-      if (note && !activeNotes.has(note)) {
-        playNote(note);
-        highlightNoteOnPiano(note);
-        activeNotes.add(note);
-      }
-    }
-  }
-  e.preventDefault();
-});
-
-function highlightNoteOnPiano(note) {
-  Object.values(pianoKeys).forEach(k => {
-    k.classList.remove('highlight-white', 'highlight-black');
-  });
-  const key = pianoKeys[note];
-  if (!key) return;
-  if (key.classList.contains('white')) {
-    key.classList.add('highlight-white');
-  } else {
-    key.classList.add('highlight-black');
-  }
-}
-
-function createMiniPiano(notes) {
-  const piano = document.createElement('div');
-  piano.className = 'mini-piano';
-
-  const whiteOrder = ['C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6'];
-  whiteOrder.forEach(note => {
-    const k = document.createElement('div');
-    k.className = 'key white';
-    k.textContent = note[0];
-    k.dataset.note = note;
-    piano.appendChild(k);
-  });
-
-  const blackNotes = [
-    { note: 'C#5', cls: 'cSharp' },
-    { note: 'D#5', cls: 'dSharp' },
-    { note: 'F#5', cls: 'fSharp' },
-    { note: 'G#5', cls: 'gSharp' },
-    { note: 'A#5', cls: 'aSharp' },
-    { note: 'C#6', cls: 'cSharp6' },
-    { note: 'D#6', cls: 'dSharp6' }
-  ];
-  blackNotes.forEach(({ note, cls }) => {
-    const k = document.createElement('div');
-    k.className = 'key black ' + cls;
-    k.textContent = note[0] + '#';
-    k.dataset.note = note;
-    piano.appendChild(k);
-  });
-
-  piano.querySelectorAll('.key').forEach(key => {
-    if (notes.includes(key.dataset.note)) {
-      key.classList.add('pressed');
-    }
-  });
-
-  return piano;
-}
-
-function highlightChordOnPiano(notes) {
-  Object.values(pianoKeys).forEach(k => {
-    k.classList.remove('highlight-white', 'highlight-black');
-  });
-
-  notes.forEach(note => {
-    const noteOctave4 = note.slice(0, -1) + '4';
-    if (pianoKeys[noteOctave4]) {
-      const key = pianoKeys[noteOctave4];
-      if (key.classList.contains('white')) {
-        key.classList.add('highlight-white');
-      } else {
-        key.classList.add('highlight-black');
-      }
-    } else if (pianoKeys[note]) {
-      const key = pianoKeys[note];
-      if (key.classList.contains('white')) {
-        key.classList.add('highlight-white');
-      } else {
-        key.classList.add('highlight-black');
-      }
-    }
-  });
-}
-
-const chords = [];
-['C', 'D', 'E', 'F', 'G', 'A', 'B'].forEach(root => {
-  ['major', 'minor', '7th', 'maj7', 'dim', 'aug', 'sus2', 'sus4'].forEach(type => {
-    chords.push({ root, type });
-  });
-});
-
-const chordListDiv = document.getElementById('chord-list');
-let selectedChordIndex = -1;
-
-function renderChordList() {
-  chordListDiv.innerHTML = '';
-  chords.forEach((chord, idx) => {
-    const chordDiv = document.createElement('div');
-    chordDiv.className = 'chord';
-    chordDiv.textContent = `${chord.root} ${chord.type}`;
-    chordDiv.dataset.index = idx;
-
-    const chordNotes = buildChord(chord.root, chord.type);
-    const miniPiano = createMiniPiano(chordNotes);
-    chordDiv.appendChild(miniPiano);
-
-    chordDiv.addEventListener('click', () => {
-      selectChord(idx);
-    });
-
-    chordListDiv.appendChild(chordDiv);
-  });
-}
-
-function selectChord(idx) {
-  if (selectedChordIndex === idx) return;
-
-  selectedChordIndex = idx;
-
-  chordListDiv.querySelectorAll('.chord').forEach((el, i) => {
-    el.classList.toggle('selected', i === idx);
-  });
-
-  const chord = chords[idx];
-  const notes = buildChord(chord.root, chord.type);
-  playChord(notes);
-  highlightChordOnPiano(notes);
-}
+            <button class="slider-btn right" onclick="slideRight()">&#10095;</button>
+        </div>
+    </section>
 
 
+    <section class="footer animate-on-scroll">
+        <span class="top-center">ช่องทางการติดต่อ</span>
+        <p class="p1">
+            <i class="fa-solid fa-envelope"></i>
+            tr31544@thanyarat.ac.th
+        </p>
+        <a class="footer-note">
+            เว็บไซต์นี้จัดทำเพื่อให้คณะกรรมการและครูอาจารย์ได้เห็นถึงความสามารถพิเศษของผมในการพิจารณาเพื่อเข้ามหาวิทยาลัย
+        </a>
+    </section>
 
+    <script>
+        const slider = document.getElementById('slider');
 
-  </script>
+        function slideLeft() {
+            slider.scrollBy({ left: -slider.clientWidth, behavior: 'smooth' });
+        }
 
+        function slideRight() {
+            slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' });
+        }
+
+        const text = document.querySelector('.animate-text');
+        const imageContainer = document.querySelector('.slider-wrapper');
+
+        const observerText = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    text.classList.add('show');
+                } else {
+                    text.classList.remove('show');
+                }
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        const section2 = document.querySelector('.certificates');
+        const slides = document.querySelectorAll('.slide');
+        const sliderWrapper = document.querySelector('.slider-wrapper');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    section2.classList.add('show'); // ส่วนของ Certificates จะแสดง
+                    sliderWrapper.classList.add('show'); // สไลด์ wrapper แสดง
+                    slides.forEach(slide => {
+                        slide.classList.add('show'); // ทุกๆ slide จะเคลื่อนไหวเข้ามา
+                    });
+                } else {
+                    section2.classList.remove('show');
+                    sliderWrapper.classList.remove('show');
+                    slides.forEach(slide => {
+                        slide.classList.remove('show');
+                    });
+                }
+            });
+        }, {
+            threshold: 0.3 // เมื่อสไลด์เกือบถึงจุดที่มองเห็น
+        });
+
+        const heroSection = document.querySelector('.hero');
+
+        const heroObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    heroSection.classList.add('show');
+                } else {
+                    heroSection.classList.remove('show');
+                }
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        const footerSection = document.querySelector('.footer');
+
+        const footerObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    footerSection.classList.add('show');
+                } else {
+                    footerSection.classList.remove('show');
+                }
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        observerText.observe(text);
+        observer.observe(section2);
+        heroObserver.observe(heroSection);
+        footerObserver.observe(footerSection);
+
+    </script>
 </body>
 
 </html>
