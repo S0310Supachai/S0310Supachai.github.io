@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>piano999</title>
   <style>
-  body {
+ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 40px 0;
@@ -16,432 +16,212 @@
     user-select: none;
 }
 
-/* พื้นที่เปียโน */
 .piano {
-    display: grid;
-    grid-template-columns: repeat(21, 1fr);
-    /* 21 ปุ่มขาว */
+    display: flex;
     flex-wrap: wrap;
     width: 100%;
-    max-width: 100vw;
-    aspect-ratio: 21 / 3;
+    max-width: 1680px;
     position: relative;
-    gap: 10px;
+    gap: 0;
 }
 
 /* ปุ่มขาว */
 .key.white {
-    cursor: pointer;
-    display: flex;
-    align-items: flex-end;
-    /* ล่างแนวตั้ง */
-    justify-content: center;
-    /* กลางแนวนอน */
-    padding-bottom: 10px;
-    /* ระยะห่างจากล่างนิดหน่อย */
-    flex: 0 0 calc(100% / 22);
-    width: 150%;
-    height: 150%;
+    flex: 0 0 calc(100% / 21);
+    width: 50px;
+    height: 200px;
     background: white;
     border: 1px solid black;
     box-sizing: border-box;
     position: relative;
-    margin-top: 10px;
     z-index: 1;
-    border-radius: 0 0 4px 4px;
+    border-radius: 0 0 8px 8px;
     text-align: center;
-    line-height: 70px;
+    line-height: 280px;
     transition: background-color 0.2s;
-
+    font-size: 13px;
 }
 
-.key.white:active {
+.key.white:active,
+.piano .key.white:not(.highlight-white):active {
     background: #ddd;
+    transform: scale(0.99);
 }
 
 .piano .key.highlight-white {
     background-color: #a3c4f3 !important;
     transform: scale(0.95);
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.piano .key.white:not(.highlight-white):active {
-    background: #ddd;
-    transform: scale(0.99);
-    transition: background-color 0.3s, transform 0.1s;
-}
-
-/* ปุ่มขาวตั้งแต่ G6 ให้ไปแถวล่าง */
-.key.white.g6-down {
-    order: 100;
 }
 
 /* ปุ่มดำ */
 .key.black {
-    cursor: pointer;
-    font-size: 13px;
-    width: calc(70% / 18 * 0.6);
-    /* ปรับให้เล็กกว่าปุ่มขาวเล็กน้อย */
-    height: 70%;
+    width: 30px;
+    height: 120px;
+    font-weight: bold;
     background: black;
     position: absolute;
     top: 0;
-    border-radius: 0 0 6px 6px;
     z-index: 2;
+    border-radius: 0 0 6px 6px;
     border: 1px solid #333;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
     color: white;
+    font-size: 13px;
     display: flex;
     align-items: center;
-    /* กลางแนวตั้ง */
     justify-content: center;
-    padding: 2px 5px;
     transition: background-color 0.2s;
 }
 
-.key.black:hover {
-    background: rgb(27, 27, 27);
+.key.black:active {
+    background: #555;
 }
 
-/* คีย์ดำแถวล่าง */
 .key.black.g6-down {
     top: 210px;
-    /* ต่ำกว่าปุ่มขาวแถวบน */
 }
 
-/* ===== ตำแหน่งคีย์ดำแบบ absolute เทียบกับปุ่มขาว ===== */
-/* octave 4 */
-.key.black.cSharp4 {
-    left: calc(100% / 21 * (0 + 0.65));
+/* ===== ตำแหน่งคีย์ดำ ===== */
+.key.black.cSharp4  { left: calc(100% / 21 * 0.7); }
+.key.black.dSharp4  { left: calc(100% / 21 * 1.7); }
+.key.black.fSharp4  { left: calc(100% / 21 * 3.7); }
+.key.black.gSharp4  { left: calc(100% / 21 * 4.7); }
+.key.black.aSharp4  { left: calc(100% / 21 * 5.7); }
+
+.key.black.cSharp5  { left: calc(100% / 21 * 7.7); }
+.key.black.dSharp5  { left: calc(100% / 21 * 8.7); }
+.key.black.fSharp5  { left: calc(100% / 21 * 10.7); }
+.key.black.gSharp5  { left: calc(100% / 21 * 11.7); }
+.key.black.aSharp5  { left: calc(100% / 21 * 12.7); }
+
+.key.black.cSharp6  { left: calc(100% / 21 * 14.7); }
+.key.black.dSharp6  { left: calc(100% / 21 * 15.7); }
+.key.black.fSharp6  { left: calc(100% / 21 * 17.7); }
+.key.black.gSharp6  { left: calc(100% / 21 * 18.7); }
+.key.black.aSharp6  { left: calc(100% / 21 * 19.7); }
+
+/* Highlight */
+.key.black.highlight-black {
+    background-color: #3b7ddd !important;
 }
 
-.key.black.dSharp4 {
-    left: calc(100% / 21 * (1 + 0.65));
-}
-
-.key.black.fSharp4 {
-    left: calc(100% / 21 * (3 + 0.65));
-}
-
-.key.black.gSharp4 {
-    left: calc(100% / 21 * (4 + 0.65));
-}
-
-.key.black.aSharp4 {
-    left: calc(100% / 21 * (5 + 0.65));
-}
-
-/* octave 5 */
-.key.black.cSharp5 {
-    left: calc(100% / 21 * (7 + 0.65));
-}
-
-.key.black.dSharp5 {
-    left: calc(100% / 21 * (8 + 0.65));
-}
-
-.key.black.fSharp5 {
-    left: calc(100% / 21 * (10 + 0.65));
-}
-
-.key.black.gSharp5 {
-    left: calc(100% / 21 * (11 + 0.65));
-}
-
-.key.black.aSharp5 {
-    left: calc(100% / 21 * (12 + 0.65));
-}
-
-/* octave 6 */
-.key.black.cSharp6 {
-    left: calc(100% / 21 * (14 + 0.65));
-}
-
-.key.black.dSharp6 {
-    left: calc(100% / 21 * (15 + 0.65));
-}
-
-.key.black.fSharp6 {
-    left: calc(100% / 21 * (17 + 0.65));
-}
-
-.key.black.gSharp6 {
-    left: calc(100% / 21 * (18 + 0.65));
-}
-
-.key.black.aSharp6 {
-    left: calc(100% / 21 * (19 + 0.65));
-}
-
-
-
+/* Responsive */
 @media (max-width: 550px) {
   .piano {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
-    justify-content: center;
-    gap: 2px;
-  }
-
-  .key.white {
-    position: relative;
-    width: 100%;
-    height: 80px;
-    background: white;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    font-size: 10px;
-    padding-bottom: 3px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    border-radius: 0 0 6px 6px;
-    overflow: hidden; /* กันปุ่มดำล้น */
-  }
-
-  .key.black {
-    position: absolute;
-    top: 0;
-    right: 4px; /* ติดขอบขวาของปุ่มขาว */
-    width: 2%;
-    height: 20%;
-    background: black;
-    color: white;
-    font-size: 10px;
-    border: 1px solid #333;
-    border-radius: 0 0 6px 6px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    text-align: center;
-    padding: 2px 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
+  position: relative;
+  display: flex;
+  justify-content: start;
+  align-items: flex-start;
+  width: 100%;
+  height: 155px;
 }
 
- body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 40px 0;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      user-select: none;
-    }
+.key.white {
+  width: calc(100% / 21);
+  width: 20px;
+  height: 63%;
+  color: rgb(64, 62, 62);
+  background: white;
+  border: 1px solid black; 
+  box-sizing: border-box;
+  border-radius: 0 0 3.6px 3.6px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  line-height: 60px;
+  padding-right: 0.3px;
+}
 
-    /* พื้นที่เปียโน */
-    .piano {
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-      max-width: 1680px;
-      position: relative;
-      gap: 0;
-    }
+.key.black {
+  position: absolute;
+  width: calc(100% / 42); /* แคบกว่าขาวครึ่งนึง */
+  height: 50px;
+  width: 13px;
+  background: black;
+  z-index: 2;
+  border-radius: 0 0 4px 4px;
+  color: rgb(218, 213, 213);
+  text-align: center;
+  font-size: 12px;
+}
 
-    /* ปุ่มขาว */
-    .key.white {
-    font-size: 13px;
-      flex: 0 0 calc(100% / 21);
-      width: 50px;
-      height: 110px;
-      background: white;
-      border: 1px solid black;
-      box-sizing: border-box;
-      position: relative;
-      z-index: 1;
-      border-radius: 0 0 8px 8px;
-      text-align: center;
-      line-height: 70px;
-      transition: background-color 0.2s;
+/* ตำแหน่งคีย์ดำในแต่ละ octave */
+.cSharp4  { left: calc(100% / 21 * 0.66); }
+.dSharp4  { left: calc(100% / 21 * 1.66); }
+.fSharp4  { left: calc(100% / 21 * 3.66); }
+.gSharp4  { left: calc(100% / 21 * 4.66); }
+.aSharp4  { left: calc(100% / 21 * 5.66); }
 
-    }
+.cSharp5  { left: calc(100% / 21 * 7.66); }
+.dSharp5  { left: calc(100% / 21 * 8.66); }
+.fSharp5  { left: calc(100% / 21 * 10.66); }
+.gSharp5  { left: calc(100% / 21 * 11.66); }
+.aSharp5  { left: calc(100% / 21 * 12.66); }
 
-    .key.white:active {
-      background: #ddd;
-    }
+.cSharp6  { left: calc(100% / 21 * 14.66); }
+.dSharp6  { left: calc(100% / 21 * 15.66); }
+.fSharp6  { left: calc(100% / 21 * 17.66); }
+.gSharp6  { left: calc(100% / 21 * 18.66); }
+.aSharp6  { left: calc(100% / 21 * 19.66); }
 
-    .piano .key.highlight-white {
-      background-color: #a3c4f3 !important;
-      transform: scale(0.95);
-      transition: background-color 0.3s, transform 0.3s;
-    }
+}
 
-    .piano .key.white:not(.highlight-white):active {
-      background: #ddd;
-      transform: scale(0.99);
-      transition: background-color 0.3s, transform 0.1s;
-    }
-
-    /* ปุ่มขาวตั้งแต่ G6 ให้ไปแถวล่าง */
-    .key.white.g6-down {
-      order: 100;
-    }
-
-    /* ปุ่มดำ */
-    .key.black {
-      width: 10px;
-      height: 40px;
-      font-size: 11px;
-      background: black;
-      position: absolute;
-      top: 0;
-      border-radius: 0 0 6px 6px;
-      z-index: 2;
-      border: 1px solid #333;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-      color: white;
-      text-align: center;
-      line-height: 90px;
-      transition: background-color 0.2s;
-
-    }
-
-    .key.black:active {
-      background: #555;
-    }
-
-    /* คีย์ดำแถวล่าง */
-    .key.black.g6-down {
-      top: 210px;
-      /* ต่ำกว่าปุ่มขาวแถวบน */
-    }
-
-    /* ===== ตำแหน่งคีย์ดำแบบ absolute เทียบกับปุ่มขาว ===== */
-
-    /* octave 4 */
-    .key.black.cSharp4 {
-      left: calc(100% / 21 * 0.7);
-    }
-
-    .key.black.dSharp4 {
-      left: calc(100% / 21 * 1.7);
-    }
-
-    .key.black.fSharp4 {
-      left: calc(100% / 21 * 3.7);
-    }
-
-    .key.black.gSharp4 {
-      left: calc(100% / 21 * 4.7);
-    }
-
-    .key.black.aSharp4 {
-      left: calc(100% / 21 * 5.7);
-    }
-
-    /* octave 5 */
-    .key.black.cSharp5 {
-      left: calc(100% / 21 * 7.7);
-    }
-
-    .key.black.dSharp5 {
-      left: calc(100% / 21 * 8.7);
-    }
-
-    .key.black.fSharp5 {
-      left: calc(100% / 21 * 10.7);
-    }
-
-    .key.black.gSharp5 {
-      left: calc(100% / 21 * 11.7);
-    }
-
-    .key.black.aSharp5 {
-      left: calc(100% / 21 * 12.7);
-    }
-
-    /* octave 6 */
-    .key.black.cSharp6 {
-      left: calc(100% / 21 * 14.7);
-    }
-
-    .key.black.dSharp6 {
-      left: calc(100% / 21 * 15.7);
-    }
-
-    .key.black.fSharp6 {
-      left: calc(100% / 21 * 17.7);
-    }
-
-    .key.black.gSharp6 {
-      left: calc(100% / 21 * 18.7);
-      top: 0px;
-      /* แถวล่าง */
-    }
-
-    .key.black.aSharp6 {
-      left: calc(100% / 21 * 19.7);
-      top: 0px;
-      /* แถวล่าง */
-    }
-
-    /* ===== Highlight (optional) ===== */
-    .key.white.highlight-white {
-      background-color: #a3c4f3 !important;
-    }
-
-    .key.black.highlight-black {
-      background-color: #3b7ddd !important;
-
-    }
   </style>
 </head>
-
+  
 <body>
-  <div class="container">
-    <div class="piano" id="piano">
-      <!-- ปุ่มขาว C4-B5 -->
-      <div class="key white" data-note="C4">C</div>
-      <div class="key white" data-note="D4">D</div>
-      <div class="key white" data-note="E4">E</div>
-      <div class="key white" data-note="F4">F</div>
-      <div class="key white" data-note="G4">G</div>
-      <div class="key white" data-note="A4">A</div>
-      <div class="key white" data-note="B4">B</div>
+ <div class="container">
+  <div class="piano" id="piano">
+    <!-- ปุ่มขาว C4-B5 -->
+    <div class="key white" data-note="C4">C</div>
+    <div class="key white" data-note="D4">D</div>
+    <div class="key white" data-note="E4">E</div>
+    <div class="key white" data-note="F4">F</div>
+    <div class="key white" data-note="G4">G</div>
+    <div class="key white" data-note="A4">A</div>
+    <div class="key white" data-note="B4">B</div>
 
-      <div class="key white" data-note="C5">C</div>
-      <div class="key white" data-note="D5">D</div>
-      <div class="key white" data-note="E5">E</div>
-      <div class="key white" data-note="F5">F</div>
-      <div class="key white" data-note="G5">G</div>
-      <div class="key white" data-note="A5">A</div>
-      <div class="key white" data-note="B5">B</div>
+    <div class="key white" data-note="C5">C</div>
+    <div class="key white" data-note="D5">D</div>
+    <div class="key white" data-note="E5">E</div>
+    <div class="key white" data-note="F5">F</div>
+    <div class="key white" data-note="G5">G</div>
+    <div class="key white" data-note="A5">A</div>
+    <div class="key white" data-note="B5">B</div>
 
-      <!-- ปุ่มดำ octave 4 -->
-      <div class="key black cSharp4" data-note="C#4">C#</div>
-      <div class="key black dSharp4" data-note="D#4">D#</div>
-      <div class="key black fSharp4" data-note="F#4">F#</div>
-      <div class="key black gSharp4" data-note="G#4">G#</div>
-      <div class="key black aSharp4" data-note="A#4">A#</div>
+    <!-- ปุ่มดำ octave 4 -->
+    <div class="key black cSharp4" data-note="C#4">C<br>#<br>4</div>
+    <div class="key black dSharp4" data-note="D#4">D<br>#<br>4</div>
+    <div class="key black fSharp4" data-note="F#4">F<br>#<br>4</div>
+    <div class="key black gSharp4" data-note="G#4">G<br>#<br>4</div>
+    <div class="key black aSharp4" data-note="A#4">A<br>#<br>4</div>
 
-      <!-- ปุ่มดำ octave 5 -->
-      <div class="key black cSharp5" data-note="C#5">C#</div>
-      <div class="key black dSharp5" data-note="D#5">D#</div>
-      <div class="key black fSharp5" data-note="F#5">F#</div>
-      <div class="key black gSharp5" data-note="G#5">G#</div>
-      <div class="key black aSharp5" data-note="A#5">A#</div>
+    <!-- ปุ่มดำ octave 5 -->
+    <div class="key black cSharp5" data-note="C#5">C<br>#<br>5</div>
+    <div class="key black dSharp5" data-note="D#5">D<br>#<br>5</div>
+    <div class="key black fSharp5" data-note="F#5">F<br>#<br>5</div>
+    <div class="key black gSharp5" data-note="G#5">G<br>#<br>5</div>
+    <div class="key black aSharp5" data-note="A#5">A<br>#<br>5</div>
 
-      <!-- ปุ่มขาว C6–B6 -->
-      <div class="key white" data-note="C6">C6</div>
-      <div class="key white" data-note="D6">D6</div>
-      <div class="key white" data-note="E6">E6</div>
-      <div class="key white" data-note="F6">F6</div>
-      <div class="key white" data-note="G6">G6</div>
-      <div class="key white" data-note="A6">A6</div>
-      <div class="key white" data-note="B6">B6</div>
+    <!-- ปุ่มขาว C6–B6 -->
+    <div class="key white" data-note="C6">C</div>
+    <div class="key white" data-note="D6">D</div>
+    <div class="key white" data-note="E6">E</div>
+    <div class="key white" data-note="F6">F</div>
+    <div class="key white" data-note="G6">G</div>
+    <div class="key white" data-note="A6">A</div>
+    <div class="key white" data-note="B6">B</div>
 
-      <!-- ปุ่มดำ octave 6 -->
-      <div class="key black cSharp6" data-note="C#6">C#6</div>
-      <div class="key black dSharp6" data-note="D#6">D#6</div>
-      <div class="key black fSharp6" data-note="F#6">F#6</div>
-      <div class="key black gSharp6" data-note="G#6">G#6</div>
-      <div class="key black aSharp6" data-note="A#6">A#6</div>
-    </div>
+    <!-- ปุ่มดำ octave 6 -->
+    <div class="key black cSharp6" data-note="C#6">C<br>#<br>6</div>
+    <div class="key black dSharp6" data-note="D#6">D<br>#<br>6</div>
+    <div class="key black fSharp6" data-note="F#6">F<br>#<br>6</div><br>#<br>6
+    <div class="key black gSharp6" data-note="G#6">G<br>#<br>6</div>
+    <div class="key black aSharp6" data-note="A#6">A<br>#<br>6</div>
   </div>
+</div>
 
   <div id="chord-list"></div>
 
