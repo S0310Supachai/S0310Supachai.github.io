@@ -312,17 +312,14 @@ function playChord(notes) {
   notes.forEach(note => playNote(note));
 }
 
-// 🎹 คีย์เปียโนหลัก
 const piano = document.getElementById('piano');
 const pianoKeys = {};
 const activeNotes = new Set();
 
-// สร้าง Map ของปุ่ม
 piano.querySelectorAll('.key').forEach(key => {
   const note = key.dataset.note;
   pianoKeys[note] = key;
 
-  // รองรับ pointer
   key.addEventListener('pointerdown', (e) => {
     if (!activeNotes.has(note)) {
       playNote(note);
@@ -333,16 +330,28 @@ piano.querySelectorAll('.key').forEach(key => {
     e.preventDefault();
   });
 
-  key.addEventListener('pointerup', () => {
+  key.addEventListener('pointerenter', (e) => {
+    if (e.pressure > 0 && !activeNotes.has(note)) {
+      playNote(note);
+      highlightNoteOnPiano(note);
+      activeNotes.add(note);
+    }
+  });
+
+  key.addEventListener('pointerup', (e) => {
     activeNotes.delete(note);
+    key.releasePointerCapture(e.pointerId);
   });
 
   key.addEventListener('pointerleave', () => {
     activeNotes.delete(note);
   });
+
+  key.addEventListener('pointercancel', () => {
+    activeNotes.delete(note);
+  });
 });
 
-// 🧠 ตรวจจับการลากผ่านหลายปุ่ม (touchmove)
 piano.addEventListener('touchmove', (e) => {
   const touches = e.touches;
   for (let i = 0; i < touches.length; i++) {
@@ -373,7 +382,6 @@ function highlightNoteOnPiano(note) {
   }
 }
 
-// 🎵 Mini Piano สำหรับคอร์ด
 function createMiniPiano(notes) {
   const piano = document.createElement('div');
   piano.className = 'mini-piano';
@@ -482,6 +490,8 @@ function selectChord(idx) {
   playChord(notes);
   highlightChordOnPiano(notes);
 }
+
+
 
 
   </script>
