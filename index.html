@@ -1,501 +1,662 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>piano999</title>
-  <style>
- body {
-    font-family: Arial, sans-serif;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minigame</title>
+
+<style>
+  body {
     margin: 0;
-    padding: 40px 0;
-    background: #000;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Kanit', sans-serif;
     display: flex;
     justify-content: center;
-    user-select: none;
-}
-
-.piano {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    max-width: 1680px;
+    /* จัดกึ่งกลางแนวนอน */
+    align-items: center;
+    /* จัดกึ่งกลางแนวตั้ง */
+    background-color: rgb(117, 160, 128);
     position: relative;
-    gap: 0;
+    /* เพื่อให้ .dice ที่ absolute อยู่บน body */
 }
 
-/* ปุ่มขาว */
-.key.white {
-    flex: 0 0 calc(100% / 21);
-    width: 50px;
-    height: 200px;
-    background: white;
-    border: 1px solid black;
-    box-sizing: border-box;
-    position: relative;
-    z-index: 1;
-    border-radius: 0 0 8px 8px;
-    text-align: center;
-    line-height: 280px;
-    transition: background-color 0.2s;
-    font-size: 13px;
-}
-
-.key.white:active,
-.piano .key.white:not(.highlight-white):active {
-    background: #ddd;
-    transform: scale(0.99);
-}
-
-.piano .key.highlight-white {
-    background-color: #a3c4f3 !important;
-    transform: scale(0.95);
-}
-
-/* ปุ่มดำ */
-.key.black {
-    width: 30px;
-    height: 120px;
-    font-weight: bold;
-    background: black;
-    position: absolute;
-    top: 0;
-    z-index: 2;
-    border-radius: 0 0 6px 6px;
-    border: 1px solid #333;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    color: white;
-    font-size: 13px;
+.image {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.2s;
+    /* ลบ margin ซ้าย-ขวา ถ้ามี */
+    margin: 0;
 }
 
-.key.black:active {
-    background: #555;
+.image img {
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    /* ลบ margin ซ้าย-ขวา */
+    margin: 0 auto 20px auto;
+    /* กึ่งกลางแนวนอน + margin bottom */
+    display: block;
+    /* ช่วยให้ margin auto ทำงาน */
 }
 
-.key.black.g6-down {
-    top: 210px;
+.buttonrandom {
+    cursor: pointer;
+    color: #ffff;
 }
 
-/* ===== ตำแหน่งคีย์ดำ ===== */
-.key.black.cSharp4  { left: calc(100% / 21 * 0.7); }
-.key.black.dSharp4  { left: calc(100% / 21 * 1.7); }
-.key.black.fSharp4  { left: calc(100% / 21 * 3.7); }
-.key.black.gSharp4  { left: calc(100% / 21 * 4.7); }
-.key.black.aSharp4  { left: calc(100% / 21 * 5.7); }
-
-.key.black.cSharp5  { left: calc(100% / 21 * 7.7); }
-.key.black.dSharp5  { left: calc(100% / 21 * 8.7); }
-.key.black.fSharp5  { left: calc(100% / 21 * 10.7); }
-.key.black.gSharp5  { left: calc(100% / 21 * 11.7); }
-.key.black.aSharp5  { left: calc(100% / 21 * 12.7); }
-
-.key.black.cSharp6  { left: calc(100% / 21 * 14.7); }
-.key.black.dSharp6  { left: calc(100% / 21 * 15.7); }
-.key.black.fSharp6  { left: calc(100% / 21 * 17.7); }
-.key.black.gSharp6  { left: calc(100% / 21 * 18.7); }
-.key.black.aSharp6  { left: calc(100% / 21 * 19.7); }
-
-/* Highlight */
-.key.black.highlight-black {
-    background-color: #3b7ddd !important;
+.buttonrandom:hover {
+    color: #ffffff8e;
 }
 
-/* Responsive */
-@media (max-width: 550px) {
-  .piano {
-  position: relative;
-  display: flex;
-  justify-content: start;
-  align-items: flex-start;
-  width: 100%;
-  height: 155px;
+
+.background {
+    position: absolute;
+    /* เพิ่ม */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.681);
+    width: 35vh;
+    height: 45vh;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    /* ให้อยู่บน */
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
-.key.white {
-  width: calc(100% / 21);
-  width: 20px;
-  height: 63%;
-  color: rgb(64, 62, 62);
-  background: white;
-  border: 1px solid black; 
-  box-sizing: border-box;
-  border-radius: 0 0 3.6px 3.6px;
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  line-height: 60px;
-  padding-right: 0.3px;
+
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-.key.black {
-  position: absolute;
-  width: calc(100% / 42); /* แคบกว่าขาวครึ่งนึง */
-  height: 50px;
-  width: 13px;
-  background: black;
-  z-index: 2;
-  border-radius: 0 0 4px 4px;
-  color: rgb(218, 213, 213);
-  text-align: center;
-  font-size: 12px;
+.visible {
+    opacity: 1;
+    visibility: visible;
 }
 
-/* ตำแหน่งคีย์ดำในแต่ละ octave */
-.cSharp4  { left: calc(100% / 21 * 0.66); }
-.dSharp4  { left: calc(100% / 21 * 1.66); }
-.fSharp4  { left: calc(100% / 21 * 3.66); }
-.gSharp4  { left: calc(100% / 21 * 4.66); }
-.aSharp4  { left: calc(100% / 21 * 5.66); }
-
-.cSharp5  { left: calc(100% / 21 * 7.66); }
-.dSharp5  { left: calc(100% / 21 * 8.66); }
-.fSharp5  { left: calc(100% / 21 * 10.66); }
-.gSharp5  { left: calc(100% / 21 * 11.66); }
-.aSharp5  { left: calc(100% / 21 * 12.66); }
-
-.cSharp6  { left: calc(100% / 21 * 14.66); }
-.dSharp6  { left: calc(100% / 21 * 15.66); }
-.fSharp6  { left: calc(100% / 21 * 17.66); }
-.gSharp6  { left: calc(100% / 21 * 18.66); }
-.aSharp6  { left: calc(100% / 21 * 19.66); }
-
+/* ปรับ .dice ให้อยู่ด้านซ้ายของจอ */
+.dice {
+    position: fixed;
+    /* ลอยออกจาก layout ปกติ */
+    left: 100px;
+    /* ห่างจากขอบซ้าย 30px */
+    top: 39%;
+    /* อยู่กลางจอในแนวตั้ง */
+    transform: translateY(-50%);
+    /* ดึงขึ้นครึ่งความสูงตัวเองเพื่อกึ่งกลางแนวตั้ง */
+    cursor: pointer;
+     border: 2px solid #333;
+    background-color: rgba(165, 42, 42, 0.838);
+    display: flex;
+    justify-content: flex-start;
+    padding: 25px 25px;
+    border-radius: 5px;
+    color: rgb(0, 0, 0);
 }
 
-  </style>
-</head>
+.dice p {
+    font-size: 12px;
+    margin: 0;
+}
+
+.dice:hover {
+    color: rgb(0, 0, 0);
+    background-color: rgba(165, 42, 42, 0.768);
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    /* 7 คอลัมน์ */
+    gap: 10px;
+    padding: 20px;
+    max-width: 600px;
+    margin: 40px auto;
+    font-family: 'Kanit', sans-serif;
+}
+
+.cell {
+    background-color: #ffffffaa;
+    border: 2px solid #282525;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.control {
+    position: fixed;
+    bottom: 50px;
+    /* ห่างจากขอบล่าง 20px */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    border: 2px solid #333;
+    background-color: rgba(255, 255, 255, 0.9);
+    /* พื้นหลังให้เด่น */
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+
+
+.control input {
+    padding: 5px 10px;
+    font-size: 16px;
+    width: 200px;
+    border: 2px solid #333;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.control button {
+    padding: 5px 15px;
+    font-size: 16px;
+    border: 2px solid #333;
+    background-color: #28a745;
+    color: rgb(0, 0, 0);
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+ .control button:hover {
+        color: #000000d6;
+        background-color: #28a746f5;
+        transform: scale(0.9);
+    }
+
+.player {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    margin: 5px auto 0 auto;
+}
+
+.math-question {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    background-color: #fff;
+    border: 2px solid #333;
+    padding: 15px;
+    border-radius: 10px;
+    font-family: 'Kanit', sans-serif;
+    color: #000;
+    z-index: 10;
+}
+
+.math-question input {
+    width: 50%;
+    padding: 8px;
+    margin-top: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #999;
+}
+
+.math-question button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.math-question button:hover{
+    color: white;
+    background-color:#007bffc4;
+    transform: scale(0.9);
+}
+
+#answerResultText {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#winMessageContainer {
+    position: absolute;
+    top: 20%;
+    left: 201px;
+    width: 60vh;
+    height: 48vh;
+    background-color: rgba(255, 255, 255, 0.575);
+    /* เพิ่มพื้นหลังจาง ๆ */
+    display: none;
+    /* ซ่อนไว้ก่อน */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@media (max-width: 600px) {
+    .board {
+        grid-template-columns: repeat(4, 1fr);
+        /* บอร์ดเล็กลง */
+        gap: 5px;
+        padding: 10px;
+    }
+
+    .cell {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .control {
+        position: fixed;
+        border: 2px solid #333;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        height: 10%;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 8px 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    .control input {
+        font-size: 14px;
+        padding: 5px 10px;
+        width: 100px;
+        margin-right: 8px;
+        border: 2px solid #333;
+    }
+
+    .control button {
+        font-size: 14px;
+        padding: 5px 10px;
+        border: 2px solid #333;
+        color: #000;
+    }
+
+    .control button:hover {
+        color: #000000c0;
+        background-color: #28a7469f;
+        transform: scale(0.9);
+    }
+
+    .dice {
+        position: fixed;
+        top: 17.5%;
+        /* อยู่ใต้ .control ที่สูง ~50px + padding */
+        left: 20px;
+        padding: 10px;
+        border: 2px solid #333;
+        background-color: rgba(165, 42, 42, 0.838);
+        display: flex;
+        justify-content: flex-start;
+        border-radius: 5px;
+        color: rgb(0, 0, 0);
+        z-index: 999;
+        /* ให้อยู่ด้านบน */
+    }
+
+    .dice p {
+        font-size: 10px;
+        margin: 0;
+    }
+
+    #winMessageContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #333;
+    width: 30vh;
+    height: 30vh;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    font-size: 16px;
+    display: none; /* เริ่มต้นซ่อนไว้ */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+
+#winMessageContainer p:hover{
+    color: #000000c8;
+    transform: scale(0.9);
+}
+
+
+    .math-question {
+        position: absolute;
+        bottom: 10px;
+        /* อยู่ชิดล่าง */
+        left: 5%;
+        right: 5%;
+        top: 80%;
+        width: 84%;
+        height: 30%;
+        /* กำหนดความกว้างที่ responsive */
+        padding: 10px;
+        font-size: 14px;
+        background-color: #fff;
+        border: 2px solid #333;
+        border-radius: 10px;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .math-question input {
+        width: 100%;
+        font-size: 14px;
+        padding: 6px;
+        margin-top: 10px;
+        box-sizing: border-box;
+    }
+
+    .math-question button {
+        width: 100%;
+        font-size: 14px;
+        padding: 6px;
+        margin-top: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .background {
+        position: fixed;
+    }
+}
+</style>
   
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+
+</head>
+
 <body>
- <div class="container">
-  <div class="piano" id="piano">
-    <!-- ปุ่มขาว C4-B5 -->
-    <div class="key white" data-note="C4">C</div>
-    <div class="key white" data-note="D4">D</div>
-    <div class="key white" data-note="E4">E</div>
-    <div class="key white" data-note="F4">F</div>
-    <div class="key white" data-note="G4">G</div>
-    <div class="key white" data-note="A4">A</div>
-    <div class="key white" data-note="B4">B</div>
+    <div class="background hidden" id="background">
+        <div class="image" id="imageContainer"></div>
 
-    <div class="key white" data-note="C5">C</div>
-    <div class="key white" data-note="D5">D</div>
-    <div class="key white" data-note="E5">E</div>
-    <div class="key white" data-note="F5">F</div>
-    <div class="key white" data-note="G5">G</div>
-    <div class="key white" data-note="A5">A</div>
-    <div class="key white" data-note="B5">B</div>
+        <div class="buttonrandom" id="randomBtn">
+            <p>กดเพื่อสุ่ม</p>
+        </div>
 
-    <!-- ปุ่มดำ octave 4 -->
-    <div class="key black cSharp4" data-note="C#4">C<br>#<br>4</div>
-    <div class="key black dSharp4" data-note="D#4">D<br>#<br>4</div>
-    <div class="key black fSharp4" data-note="F#4">F<br>#<br>4</div>
-    <div class="key black gSharp4" data-note="G#4">G<br>#<br>4</div>
-    <div class="key black aSharp4" data-note="A#4">A<br>#<br>4</div>
+        <!-- ซ่อนไว้ไม่ให้เห็น แต่ใช้ดึงลิงก์ -->
+        <div id="imageLinks" style="display: none;">
+            <a href="img/1.png"></a>
+            <a href="img/2.png"></a>
+            <a href="img/3.png"></a>
+            <a href="img/4.png"></a>
+            <a href="img/5.png"></a>
+            <a href="img/6.png"></a>
+        </div>
+    </div>
 
-    <!-- ปุ่มดำ octave 5 -->
-    <div class="key black cSharp5" data-note="C#5">C<br>#<br>5</div>
-    <div class="key black dSharp5" data-note="D#5">D<br>#<br>5</div>
-    <div class="key black fSharp5" data-note="F#5">F<br>#<br>5</div>
-    <div class="key black gSharp5" data-note="G#5">G<br>#<br>5</div>
-    <div class="key black aSharp5" data-note="A#5">A<br>#<br>5</div>
+    <div class="dice">
+        <p>ลูกเต๋า</p>
+    </div>
 
-    <!-- ปุ่มขาว C6–B6 -->
-    <div class="key white" data-note="C6">C</div>
-    <div class="key white" data-note="D6">D</div>
-    <div class="key white" data-note="E6">E</div>
-    <div class="key white" data-note="F6">F</div>
-    <div class="key white" data-note="G6">G</div>
-    <div class="key white" data-note="A6">A</div>
-    <div class="key white" data-note="B6">B</div>
+    <div class="board">
+        <div class="cell">จุดเริ่ม<div class="player"></div>
+        </div>
+        <!-- ช่องที่ 2–27 -->
+        <div class="cell">2</div>
+        <div class="cell">3</div>
+        <div class="cell">4</div>
+        <div class="cell">5</div>
+        <div class="cell">6</div>
+        <div class="cell">7</div>
+        <div class="cell">8</div>
+        <div class="cell">9</div>
+        <div class="cell">10</div>
+        <div class="cell">11</div>
+        <div class="cell">12</div>
+        <div class="cell">13</div>
+        <div class="cell">14</div>
+        <div class="cell">15</div>
+        <div class="cell">16</div>
+        <div class="cell">17</div>
+        <div class="cell">18</div>
+        <div class="cell">19</div>
+        <div class="cell">20</div>
+        <div class="cell">21</div>
+        <div class="cell">22</div>
+        <div class="cell">23</div>
+        <div class="cell">24</div>
+        <div class="cell">25</div>
+        <div class="cell">26</div>
+        <div class="cell">27</div>
+        <div class="cell">จุดสิ้นสุด</div>
+    </div>
 
-    <!-- ปุ่มดำ octave 6 -->
-    <div class="key black cSharp6" data-note="C#6">C<br>#<br>6</div>
-    <div class="key black dSharp6" data-note="D#6">D<br>#<br>6</div>
-    <div class="key black fSharp6" data-note="F#6">F<br>#<br>6</div><br>#<br>6
-    <div class="key black gSharp6" data-note="G#6">G<br>#<br>6</div>
-    <div class="key black aSharp6" data-note="A#6">A<br>#<br>6</div>
-  </div>
-</div>
+    <div class="control">
+        <input type="number" id="moveInput" min="1" max="6" placeholder="ป้อนเลข 1-6">
+        <button onclick="movePlayer()">กดเพื่อเดินหน้า</button>
+    </div>
 
-  <div id="chord-list"></div>
+    <div class="math-question" id="mathQuestionBox">
+        <h3>โจทย์คณิตศาสตร์</h3>
+        <p id="mathQuestionText">-</p>
+        <input type="text" id="answerInput" placeholder="พิมพ์คำตอบ..." />
+        <button id="submitAnswerBtn">ส่งคำตอบ</button>
+        <p id="answerResultText"></p>
+    </div>
 
-  <script>
+    <div id="winMessageContainer">
+        <h2>ยินดีด้วยคุณชนะเกมนี้แล้ว!</h2>
+        <p id="restartBtn">เริ่มใหม่</p>
+    </div>
 
-   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  <script>// โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
 
-const noteFreqMap = {
-  'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13, 'E4': 329.63,
-  'F4': 349.23, 'F#4': 369.99, 'G4': 392.00, 'G#4': 415.30, 'A4': 440.00,
-  'A#4': 466.16, 'B4': 493.88,
+const links = document.querySelectorAll('#imageLinks a');
+const imageContainer = document.getElementById('imageContainer');
+const randomBtn = document.getElementById('randomBtn');
 
-  'C5': 523.25, 'C#5': 554.37, 'D5': 587.33, 'D#5': 622.25, 'E5': 659.25,
-  'F5': 698.46, 'F#5': 739.99, 'G5': 783.99, 'G#5': 830.61, 'A5': 880.00,
-  'A#5': 932.33, 'B5': 987.77,
+let intervalId = null;
+let lastIndex = 0;
 
-  'C6': 1046.50, 'C#6': 1108.73, 'D6': 1174.66, 'D#6': 1244.51, 'E6': 1318.51,
-  'F6': 1396.91, 'F#6': 1479.98, 'G6': 1567.98, 'G#6': 1661.22, 'A6': 1760.00,
-  'A#6': 1864.66, 'B6': 1975.53
-};
+let numberDisplay = document.createElement('div');
+numberDisplay.style.fontSize = '1.5rem';
+numberDisplay.style.marginBottom = '40px';
+numberDisplay.style.fontWeight = 'bold';
+numberDisplay.style.color = '#ffff';
+numberDisplay.textContent = '';
+imageContainer.appendChild(numberDisplay);
 
-function playFreq(freq) {
-  const osc = audioCtx.createOscillator();
-  const gainNode = audioCtx.createGain();
-  osc.type = 'sine';
-  osc.frequency.value = freq;
-  osc.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
-  gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-  osc.start();
-  gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
-  osc.stop(audioCtx.currentTime + 0.8);
+function showRandomImage() {
+    const randomIndex = Math.floor(Math.random() * links.length);
+    lastIndex = randomIndex;
+    const randomImgSrc = links[randomIndex].getAttribute('href');
+
+    imageContainer.innerHTML = '';
+    imageContainer.appendChild(numberDisplay);
+
+    const img = document.createElement('img');
+    img.src = randomImgSrc;
+    imageContainer.appendChild(img);
 }
 
-function playNote(note) {
-  const freq = noteFreqMap[note];
-  if (freq) playFreq(freq);
-}
+randomBtn.addEventListener('click', () => {
+    if (intervalId !== null) return;
 
-const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    numberDisplay.textContent = '';
+    intervalId = setInterval(showRandomImage, 200);
 
-function buildChord(root, type) {
-  let rootIdx = chromaticScale.indexOf(root);
-  if (rootIdx === -1) return [];
+    setTimeout(() => {
+        clearInterval(intervalId);
+        intervalId = null;
 
-  function noteAt(idx, baseOctave) {
-    const noteName = chromaticScale[idx % 12];
-    const octave = baseOctave + Math.floor(idx / 12);
-    return noteName + octave;
-  }
+        numberDisplay.textContent = `ลูกเต๋า : ${lastIndex + 1}`;
+        imageContainer.innerHTML = '';
+        imageContainer.appendChild(numberDisplay);
 
-  let octave = 4;
-  let notes = [];
-
-  switch (type) {
-    case 'major':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave)];
-      break;
-    case 'minor':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 7, octave)];
-      break;
-    case '7th':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 10, octave)];
-      break;
-    case 'maj7':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 11, octave)];
-      break;
-    case 'dim':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 6, octave)];
-      break;
-    case 'aug':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 8, octave)];
-      break;
-    case 'sus2':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 2, octave), noteAt(rootIdx + 7, octave)];
-      break;
-    case 'sus4':
-      notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 5, octave), noteAt(rootIdx + 7, octave)];
-      break;
-    default:
-      notes = [noteAt(rootIdx, octave)];
-  }
-
-  return notes;
-}
-
-function playChord(notes) {
-  notes.forEach(note => playNote(note));
-}
-
-const piano = document.getElementById('piano');
-const pianoKeys = {};
-const activeNotes = new Set();
-
-piano.querySelectorAll('.key').forEach(key => {
-  const note = key.dataset.note;
-  pianoKeys[note] = key;
-
-  key.addEventListener('pointerdown', (e) => {
-    if (!activeNotes.has(note)) {
-      playNote(note);
-      highlightNoteOnPiano(note);
-      activeNotes.add(note);
-    }
-    key.setPointerCapture(e.pointerId);
-    e.preventDefault();
-  });
-
-  key.addEventListener('pointerenter', (e) => {
-    if (e.pressure > 0 && !activeNotes.has(note)) {
-      playNote(note);
-      highlightNoteOnPiano(note);
-      activeNotes.add(note);
-    }
-  });
-
-  key.addEventListener('pointerup', (e) => {
-    activeNotes.delete(note);
-    key.releasePointerCapture(e.pointerId);
-  });
-
-  key.addEventListener('pointerleave', () => {
-    activeNotes.delete(note);
-  });
-
-  key.addEventListener('pointercancel', () => {
-    activeNotes.delete(note);
-  });
+        const img = document.createElement('img');
+        img.src = links[lastIndex].getAttribute('href');
+        imageContainer.appendChild(img);
+    }, 6000);
 });
 
-piano.addEventListener('touchmove', (e) => {
-  const touches = e.touches;
-  for (let i = 0; i < touches.length; i++) {
-    const touch = touches[i];
-    const el = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (el && el.classList.contains('key')) {
-      const note = el.dataset.note;
-      if (note && !activeNotes.has(note)) {
-        playNote(note);
-        highlightNoteOnPiano(note);
-        activeNotes.add(note);
-      }
-    }
-  }
-  e.preventDefault();
+const dice = document.querySelector('.dice');
+const background = document.getElementById('background');
+
+dice.addEventListener('click', () => {
+    background.classList.toggle('hidden');
 });
 
-function highlightNoteOnPiano(note) {
-  Object.values(pianoKeys).forEach(k => {
-    k.classList.remove('highlight-white', 'highlight-black');
-  });
-  const key = pianoKeys[note];
-  if (!key) return;
-  if (key.classList.contains('white')) {
-    key.classList.add('highlight-white');
-  } else {
-    key.classList.add('highlight-black');
-  }
-}
+let currentPosition = 0;
 
-function createMiniPiano(notes) {
-  const piano = document.createElement('div');
-  piano.className = 'mini-piano';
+function movePlayer() {
+    const input = document.getElementById('moveInput');
+    let moveSteps = parseInt(input.value);
 
-  const whiteOrder = ['C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6'];
-  whiteOrder.forEach(note => {
-    const k = document.createElement('div');
-    k.className = 'key white';
-    k.textContent = note[0];
-    k.dataset.note = note;
-    piano.appendChild(k);
-  });
-
-  const blackNotes = [
-    { note: 'C#5', cls: 'cSharp' },
-    { note: 'D#5', cls: 'dSharp' },
-    { note: 'F#5', cls: 'fSharp' },
-    { note: 'G#5', cls: 'gSharp' },
-    { note: 'A#5', cls: 'aSharp' },
-    { note: 'C#6', cls: 'cSharp6' },
-    { note: 'D#6', cls: 'dSharp6' }
-  ];
-  blackNotes.forEach(({ note, cls }) => {
-    const k = document.createElement('div');
-    k.className = 'key black ' + cls;
-    k.textContent = note[0] + '#';
-    k.dataset.note = note;
-    piano.appendChild(k);
-  });
-
-  piano.querySelectorAll('.key').forEach(key => {
-    if (notes.includes(key.dataset.note)) {
-      key.classList.add('pressed');
+    if (isNaN(moveSteps) || moveSteps < 1 || moveSteps > 6) {
+        alert('กรุณากรอกเลขระหว่าง 1 ถึง 6');
+        return;
     }
-  });
 
-  return piano;
-}
+    const cells = document.querySelectorAll('.cell');
+    document.querySelectorAll('.player').forEach(p => p.remove());
 
-function highlightChordOnPiano(notes) {
-  Object.values(pianoKeys).forEach(k => {
-    k.classList.remove('highlight-white', 'highlight-black');
-  });
+    let newPosition = currentPosition + moveSteps;
 
-  notes.forEach(note => {
-    const noteOctave4 = note.slice(0, -1) + '4';
-    if (pianoKeys[noteOctave4]) {
-      const key = pianoKeys[noteOctave4];
-      if (key.classList.contains('white')) {
-        key.classList.add('highlight-white');
-      } else {
-        key.classList.add('highlight-black');
-      }
-    } else if (pianoKeys[note]) {
-      const key = pianoKeys[note];
-      if (key.classList.contains('white')) {
-        key.classList.add('highlight-white');
-      } else {
-        key.classList.add('highlight-black');
-      }
+    if (newPosition > 27) {
+        const exceed = newPosition - 27;
+        newPosition = 27 - exceed;
+        alert(`จำนวนลูกเต๋าที่คุณถอยได้เกิน 28 ช่อง ถอยหลังมา ${exceed} ช่อง`);
     }
-  });
+
+    currentPosition = newPosition;
+
+    const newPlayer = document.createElement('div');
+    newPlayer.classList.add('player');
+    cells[currentPosition].appendChild(newPlayer);
+
+    if (currentPosition >= 1 && currentPosition <= 26) {
+        showRandomMathQuestion();
+    } else {
+        clearMathQuestion();
+    }
+
+    if (currentPosition === 27) {
+        document.getElementById('winMessageContainer').style.display = 'flex';
+        clearMathQuestion();
+    }
+
+    input.value = '';
 }
 
-const chords = [];
-['C', 'D', 'E', 'F', 'G', 'A', 'B'].forEach(root => {
-  ['major', 'minor', '7th', 'maj7', 'dim', 'aug', 'sus2', 'sus4'].forEach(type => {
-    chords.push({ root, type });
-  });
+document.getElementById('moveInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        movePlayer();
+    }
 });
 
-const chordListDiv = document.getElementById('chord-list');
-let selectedChordIndex = -1;
+let currentQuestion = null;
 
-function renderChordList() {
-  chordListDiv.innerHTML = '';
-  chords.forEach((chord, idx) => {
-    const chordDiv = document.createElement('div');
-    chordDiv.className = 'chord';
-    chordDiv.textContent = `${chord.root} ${chord.type}`;
-    chordDiv.dataset.index = idx;
+const questions = [
+    { question: 'แก้สมการ 2x + 3 = 7', answer: '2' },
+    { question: 'หาค่า x: x² = 25', answer: '5 หรือ -5' },
+    { question: 'พื้นที่สี่เหลี่ยมจัตุรัส ด้าน = 4', answer: '16' },
+    { question: 'เซตของจำนวนเฉพาะที่น้อยกว่า 10', answer: '2, 3, 5, 7' },
+    { question: 'พหุนาม: (x + 2)(x - 3) = ?', answer: 'x² - x - 6' },
+    { question: 'ความชันของเส้นตรง y = 3x + 1', answer: '3' },
+    { question: 'จงหาผลรวม: 1 + 2 + 3 + ... + 10', answer: '55' }
+];
 
-    const chordNotes = buildChord(chord.root, chord.type);
-    const miniPiano = createMiniPiano(chordNotes);
-    chordDiv.appendChild(miniPiano);
-
-    chordDiv.addEventListener('click', () => {
-      selectChord(idx);
-    });
-
-    chordListDiv.appendChild(chordDiv);
-  });
+function showRandomMathQuestion() {
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    currentQuestion = questions[randomIndex];
+    document.getElementById('mathQuestionText').textContent = currentQuestion.question;
+    document.getElementById('answerInput').value = '';
+    document.getElementById('answerResultText').textContent = '';
 }
 
-function selectChord(idx) {
-  if (selectedChordIndex === idx) return;
-
-  selectedChordIndex = idx;
-
-  chordListDiv.querySelectorAll('.chord').forEach((el, i) => {
-    el.classList.toggle('selected', i === idx);
-  });
-
-  const chord = chords[idx];
-  const notes = buildChord(chord.root, chord.type);
-  playChord(notes);
-  highlightChordOnPiano(notes);
+function clearMathQuestion() {
+    currentQuestion = null;
+    document.getElementById('mathQuestionText').textContent = '-';
+    document.getElementById('answerInput').value = '';
+    document.getElementById('answerResultText').textContent = '';
 }
 
+function checkAnswer() {
+    const userAnswer = document.getElementById('answerInput').value.trim();
+    const resultText = document.getElementById('answerResultText');
+    const cells = document.querySelectorAll('.cell');
 
+    if (!currentQuestion) {
+        resultText.textContent = 'ไม่มีโจทย์ให้ตรวจ';
+        return;
+    }
 
+    if (userAnswer === '') {
+        resultText.textContent = 'กรุณากรอกคำตอบ';
+        return;
+    }
 
-  </script>
+    if (userAnswer === currentQuestion.answer) {
+        resultText.textContent = '✅ คำตอบถูกต้อง!';
+        resultText.style.color = 'green';
+    } else {
+        resultText.textContent = '❌ คำตอบผิด ถอยหลัง 1 ช่อง';
+        resultText.style.color = 'red';
 
+        if (currentPosition > 0) {
+            currentPosition -= 1;
+
+            document.querySelectorAll('.player').forEach(p => p.remove());
+
+            const newPlayer = document.createElement('div');
+            newPlayer.classList.add('player');
+            cells[currentPosition].appendChild(newPlayer);
+
+            alert('คุณตอบผิดถอยหลังมา 1 ช่อง');
+        }
+
+        clearMathQuestion();
+    }
+}
+
+document.getElementById('submitAnswerBtn').addEventListener('click', checkAnswer);
+document.getElementById('answerInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') checkAnswer();
+});
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+    const cells = document.querySelectorAll('.cell');
+    document.querySelectorAll('.player').forEach(p => p.remove());
+
+    currentPosition = 0;
+
+    const newPlayer = document.createElement('div');
+    newPlayer.classList.add('player');
+    cells[currentPosition].appendChild(newPlayer);
+
+    document.getElementById('winMessageContainer').style.display = 'none';
+    clearMathQuestion();
+});
+</script>
+  
+    <script src="GameRandom.js"></script>
 </body>
 
 </html>
