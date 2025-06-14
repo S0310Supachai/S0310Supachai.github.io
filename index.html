@@ -484,6 +484,7 @@
         🚫 สิทธิการป้องกันการถอยหลัง: <span id="protectionCount">1</span> ครั้ง
     </div>
 
+     <audio id="diceSound" src="dice-roll.mp3" preload="auto"></audio>
     
   <script>// โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
 // โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
@@ -492,6 +493,10 @@ const links = document.querySelectorAll('#imageLinks a');
 const imageContainer = document.getElementById('imageContainer');
 const randomBtn = document.getElementById('randomBtn');
 
+// โหลดเสียงทอยลูกเต๋า
+const diceSound = new Audio('sounds/dice-roll.mp3');
+diceSound.preload = 'auto';
+
 let intervalId = null;
 let lastIndex = 0;
 
@@ -499,7 +504,7 @@ let numberDisplay = document.createElement('div');
 numberDisplay.style.fontSize = '1.5rem';
 numberDisplay.style.marginBottom = '40px';
 numberDisplay.style.fontWeight = 'bold';
-numberDisplay.style.color = '#ffff';
+numberDisplay.style.color = '#fff';
 numberDisplay.textContent = '';
 imageContainer.appendChild(numberDisplay);
 
@@ -520,11 +525,21 @@ randomBtn.addEventListener('click', () => {
     if (intervalId !== null) return;
 
     numberDisplay.textContent = '';
-    intervalId = setInterval(showRandomImage, 200);
+
+    // เล่นเสียง
+    diceSound.currentTime = 0;
+    diceSound.loop = true;
+    diceSound.play();
+
+    intervalId = setInterval(showRandomImage, 100);
 
     setTimeout(() => {
         clearInterval(intervalId);
         intervalId = null;
+
+        // หยุดเสียง
+        diceSound.pause();
+        diceSound.currentTime = 0;
 
         numberDisplay.textContent = `ลูกเต๋า : ${lastIndex + 1}`;
         imageContainer.innerHTML = '';
@@ -533,7 +548,7 @@ randomBtn.addEventListener('click', () => {
         const img = document.createElement('img');
         img.src = links[lastIndex].getAttribute('href');
         imageContainer.appendChild(img);
-    }, 6000);
+    }, 4790);
 });
 
 const dice = document.querySelector('.dice');
@@ -618,12 +633,10 @@ function clearMathQuestion() {
     document.getElementById('answerResultText').textContent = '';
 }
 
-// ===========================
-// เพิ่มระบบสิทธิ์ป้องกันการถอยหลัง
-// ===========================
-let protectionCount = 1; // เริ่มต้นให้มีสิทธิ์ 3 ครั้ง
+// ============== ระบบป้องกันการถอยหลัง =============
+let protectionCount = 3;
 
-// สร้างกล่องข้อความแสดงสิทธิ์
+// สร้างกล่องแจ้งเตือน
 const protectionNotice = document.createElement('div');
 protectionNotice.id = 'protectionNotice';
 protectionNotice.style.position = 'fixed';
@@ -709,9 +722,10 @@ document.getElementById('restartBtn').addEventListener('click', () => {
     document.getElementById('winMessageContainer').style.display = 'none';
     clearMathQuestion();
 
-    protectionCount = 1;
+    protectionCount = 3;
     showProtectionMessage(`เริ่มใหม่! สิทธิ์ป้องกันรีเซ็ตเป็น ${protectionCount}`);
 });
+
 </script>
   
     <script src="GameRandom.js"></script>
