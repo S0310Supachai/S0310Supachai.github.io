@@ -398,6 +398,7 @@
 
     .background {
         position: fixed;
+        z-index: 2000;
     }
 }
 </style>
@@ -488,13 +489,12 @@
     
   <script>// โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
 // โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
-
 const links = document.querySelectorAll('#imageLinks a');
 const imageContainer = document.getElementById('imageContainer');
 const randomBtn = document.getElementById('randomBtn');
 
 // โหลดเสียงทอยลูกเต๋า
-const diceSound = new Audio('dice-roll.mp3');
+const diceSound = new Audio('sounds/dice-roll.mp3');
 diceSound.preload = 'auto';
 
 let intervalId = null;
@@ -615,8 +615,12 @@ const questions = [
     { question: 'เซตของจำนวนเฉพาะที่น้อยกว่า 10', answer: '2,3,5,7' },
     { question: 'พหุนาม: (x + 2)(x - 3) = ?', answer: 'x^2-x-6' },
     { question: 'ความชันของเส้นตรง y = 3x + 1', answer: '3' },
-    { question: 'จงหาผลรวม: 1 + 2 + 3 + ... + 10', answer: '55' }
+    { question: 'จงหาผลรวม: 1 + 2 + 3 + ... + 10', answer: '55' },
+    { question: 'ผลลัพธ์ของ 3^3 คือ?', answer: '27' },
+    { question: 'จงหาค่า x: 4x = 20', answer: '5' },
+    { question: 'สมการ y = mx + c, m คืออะไร?', answer: 'ความชัน' }
 ];
+
 
 function showRandomMathQuestion() {
     const randomIndex = Math.floor(Math.random() * questions.length);
@@ -634,7 +638,7 @@ function clearMathQuestion() {
 }
 
 // ============== ระบบป้องกันการถอยหลัง =============
-let protectionCount = 3;
+let protectionCount = 1;
 
 // สร้างกล่องแจ้งเตือน
 const protectionNotice = document.createElement('div');
@@ -681,27 +685,33 @@ function checkAnswer() {
     if (userAnswer === currentQuestion.answer) {
         resultText.textContent = '✅ คำตอบถูกต้อง!กรุณาทอยลูกเต๋าเพื่อไปต่อ';
         resultText.style.color = 'green';
-    } else {
-        resultText.textContent = '❌ คำตอบผิด ถอยหลัง 1 ช่อง';
-        resultText.style.color = 'red';
 
-        if (protectionCount > 0) {
-            showProtectionMessage(`ใช้สิทธิ์ป้องกันการถอยหลัง เหลืออีก ${--protectionCount} ครั้ง`);
-        } else {
-            if (currentPosition > 0) {
-                currentPosition -= 1;
-                document.querySelectorAll('.player').forEach(p => p.remove());
-
-                const newPlayer = document.createElement('div');
-                newPlayer.classList.add('player');
-                cells[currentPosition].appendChild(newPlayer);
-
-                alert('คุณตอบผิดและไม่มีสิทธิ์ป้องกัน ถอยหลัง 1 ช่อง');
-            }
+        // มีโอกาส 9% ได้รับสิทธิ์เพิ่ม
+        if (Math.random() < 0.09) {
+            protectionCount += 1;
+            showProtectionMessage(`🎉 ยินดีด้วย! คุณได้รับสิทธิ์ป้องกันเพิ่มอีก 1 ครั้ง (รวมเป็น ${protectionCount})`);
         }
+    }else {
+    resultText.textContent = '❌ คำตอบผิด ถอยหลัง 1 ช่อง';
+    resultText.style.color = 'red';
 
-        clearMathQuestion();
+    if (protectionCount > 0) {
+        showProtectionMessage(`ใช้สิทธิ์ป้องกันการถอยหลัง เหลืออีก ${--protectionCount} ครั้ง`);
+    } else {
+        if (currentPosition > 0) {
+            currentPosition -= 1;
+            document.querySelectorAll('.player').forEach(p => p.remove());
+
+            const newPlayer = document.createElement('div');
+            newPlayer.classList.add('player');
+            cells[currentPosition].appendChild(newPlayer);
+
+            alert('คุณตอบผิดและไม่มีสิทธิ์ป้องกัน ถอยหลัง 1 ช่อง');
+        }
     }
+
+    clearMathQuestion();
+}
 }
 
 document.getElementById('submitAnswerBtn').addEventListener('click', checkAnswer);
@@ -722,7 +732,28 @@ document.getElementById('restartBtn').addEventListener('click', () => {
     document.getElementById('winMessageContainer').style.display = 'none';
     clearMathQuestion();
 
-    protectionCount = 3;
+    protectionCount = 1;
+    showProtectionMessage(`เริ่มใหม่! สิทธิ์ป้องกันรีเซ็ตเป็น ${protectionCount}`);
+});
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+    const cells = document.querySelectorAll('.cell');
+    document.querySelectorAll('.player').forEach(p => p.remove());
+
+    currentPosition = 0;
+
+    const newPlayer = document.createElement('div');
+    newPlayer.classList.add('player');
+    cells[currentPosition].appendChild(newPlayer);
+
+    document.getElementById('winMessageContainer').style.display = 'none';
+    clearMathQuestion();
+
+    // รีเซ็ตคำถามใหม่
+    currentQuestion = null;
+
+    // รีเซ็ตสิทธิ์ป้องกัน
+    protectionCount = 1;
     showProtectionMessage(`เริ่มใหม่! สิทธิ์ป้องกันรีเซ็ตเป็น ${protectionCount}`);
 });
 
