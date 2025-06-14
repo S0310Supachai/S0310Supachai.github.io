@@ -466,7 +466,13 @@
         <p id="restartBtn">เริ่มใหม่</p>
     </div>
 
+      <div class="protect" id="protectionNotice" style="display: none;">
+        🚫 สิทธิการป้องกันการถอยหลัง: <span id="protectionCount">1</span> ครั้ง
+    </div>
+
+    
   <script>// โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
+// โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
 
 const links = document.querySelectorAll('#imageLinks a');
 const imageContainer = document.getElementById('imageContainer');
@@ -575,10 +581,10 @@ let currentQuestion = null;
 
 const questions = [
     { question: 'แก้สมการ 2x + 3 = 7', answer: '2' },
-    { question: 'หาค่า x: x² = 25', answer: '5 หรือ -5' },
+    { question: 'หาค่า x: x² = 25', answer: '5หรือ-5' },
     { question: 'พื้นที่สี่เหลี่ยมจัตุรัส ด้าน = 4', answer: '16' },
-    { question: 'เซตของจำนวนเฉพาะที่น้อยกว่า 10', answer: '2, 3, 5, 7' },
-    { question: 'พหุนาม: (x + 2)(x - 3) = ?', answer: 'x² - x - 6' },
+    { question: 'เซตของจำนวนเฉพาะที่น้อยกว่า 10', answer: '2,3,5,7' },
+    { question: 'พหุนาม: (x + 2)(x - 3) = ?', answer: 'x^2-x-6' },
     { question: 'ความชันของเส้นตรง y = 3x + 1', answer: '3' },
     { question: 'จงหาผลรวม: 1 + 2 + 3 + ... + 10', answer: '55' }
 ];
@@ -598,6 +604,38 @@ function clearMathQuestion() {
     document.getElementById('answerResultText').textContent = '';
 }
 
+// ===========================
+// เพิ่มระบบสิทธิ์ป้องกันการถอยหลัง
+// ===========================
+let protectionCount = 3; // เริ่มต้นให้มีสิทธิ์ 3 ครั้ง
+
+// สร้างกล่องข้อความแสดงสิทธิ์
+const protectionNotice = document.createElement('div');
+protectionNotice.id = 'protectionNotice';
+protectionNotice.style.position = 'fixed';
+protectionNotice.style.top = '20px';
+protectionNotice.style.left = '50%';
+protectionNotice.style.transform = 'translateX(-50%)';
+protectionNotice.style.backgroundColor = '#ffc107';
+protectionNotice.style.color = '#000';
+protectionNotice.style.padding = '10px 20px';
+protectionNotice.style.borderRadius = '8px';
+protectionNotice.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)';
+protectionNotice.style.fontFamily = 'Kanit, sans-serif';
+protectionNotice.style.fontSize = '16px';
+protectionNotice.style.display = 'none';
+protectionNotice.style.zIndex = '9999';
+
+document.body.appendChild(protectionNotice);
+
+function showProtectionMessage(msg) {
+    protectionNotice.textContent = msg;
+    protectionNotice.style.display = 'block';
+    setTimeout(() => {
+        protectionNotice.style.display = 'none';
+    }, 3000);
+}
+
 function checkAnswer() {
     const userAnswer = document.getElementById('answerInput').value.trim();
     const resultText = document.getElementById('answerResultText');
@@ -614,22 +652,25 @@ function checkAnswer() {
     }
 
     if (userAnswer === currentQuestion.answer) {
-        resultText.textContent = '✅ คำตอบถูกต้อง!';
+        resultText.textContent = '✅ คำตอบถูกต้อง!กรุณาทอยลูกเต๋าเพื่อไปต่อ';
         resultText.style.color = 'green';
     } else {
         resultText.textContent = '❌ คำตอบผิด ถอยหลัง 1 ช่อง';
         resultText.style.color = 'red';
 
-        if (currentPosition > 0) {
-            currentPosition -= 1;
+        if (protectionCount > 0) {
+            showProtectionMessage(`ใช้สิทธิ์ป้องกันการถอยหลัง เหลืออีก ${--protectionCount} ครั้ง`);
+        } else {
+            if (currentPosition > 0) {
+                currentPosition -= 1;
+                document.querySelectorAll('.player').forEach(p => p.remove());
 
-            document.querySelectorAll('.player').forEach(p => p.remove());
+                const newPlayer = document.createElement('div');
+                newPlayer.classList.add('player');
+                cells[currentPosition].appendChild(newPlayer);
 
-            const newPlayer = document.createElement('div');
-            newPlayer.classList.add('player');
-            cells[currentPosition].appendChild(newPlayer);
-
-            alert('คุณตอบผิดถอยหลังมา 1 ช่อง');
+                alert('คุณตอบผิดและไม่มีสิทธิ์ป้องกัน ถอยหลัง 1 ช่อง');
+            }
         }
 
         clearMathQuestion();
@@ -653,7 +694,20 @@ document.getElementById('restartBtn').addEventListener('click', () => {
 
     document.getElementById('winMessageContainer').style.display = 'none';
     clearMathQuestion();
+
+    protectionCount = 3;
+    showProtectionMessage(`เริ่มใหม่! สิทธิ์ป้องกันรีเซ็ตเป็น ${protectionCount}`);
 });
+
+
+
+
+
+
+    
+
+        
+
 </script>
   
     <script src="GameRandom.js"></script>
