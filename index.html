@@ -7,7 +7,7 @@
     <title>Minigame</title>
 
 <style>
-  body {
+body {
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -94,7 +94,7 @@
     transform: translateY(-50%);
     /* ดึงขึ้นครึ่งความสูงตัวเองเพื่อกึ่งกลางแนวตั้ง */
     cursor: pointer;
-     border: 2px solid #333;
+    border: 2px solid #333;
     background-color: rgba(165, 42, 42, 0.838);
     display: flex;
     justify-content: flex-start;
@@ -171,11 +171,11 @@
     cursor: pointer;
 }
 
- .control button:hover {
-        color: #000000d6;
-        background-color: #28a746f5;
-        transform: scale(0.9);
-    }
+.control button:hover {
+    color: #000000d6;
+    background-color: #28a746f5;
+    transform: scale(0.9);
+}
 
 .player {
     width: 20px;
@@ -219,9 +219,9 @@
     cursor: pointer;
 }
 
-.math-question button:hover{
+.math-question button:hover {
     color: white;
-    background-color:#007bffc4;
+    background-color: #007bffc4;
     transform: scale(0.9);
 }
 
@@ -231,32 +231,32 @@
 }
 
 #winMessageContainer {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border: 2px solid #333;
-        width: 30vh;
-        height: 30vh;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        font-size: 16px;
-        display: none;
-        /* เริ่มต้นซ่อนไว้ */
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        flex-direction: column;
-        cursor: pointer;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        z-index: 999;
-    }
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #333;
+    width: 30vh;
+    height: 30vh;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    font-size: 16px;
+    display: none;
+    /* เริ่มต้นซ่อนไว้ */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+}
 
-    #winMessageContainer p:hover {
-        color: #000000c8;
-        transform: scale(0.9);
-    }
+#winMessageContainer p:hover {
+    color: #000000c8;
+    transform: scale(0.9);
+}
 
 
 @media (max-width: 600px) {
@@ -270,6 +270,7 @@
     .cell {
         padding: 10px;
         font-size: 14px;
+         border-radius: 5;
     }
 
     .control {
@@ -330,31 +331,32 @@
     }
 
     #winMessageContainer {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 2px solid #333;
-    width: 30vh;
-    height: 30vh;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    font-size: 16px;
-    display: none; /* เริ่มต้นซ่อนไว้ */
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    flex-direction: column;
-    cursor: pointer;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-}
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid #333;
+        width: 30vh;
+        height: 30vh;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        font-size: 16px;
+        display: none;
+        /* เริ่มต้นซ่อนไว้ */
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-direction: column;
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+    }
 
-#winMessageContainer p:hover{
-    color: #000000c8;
-    transform: scale(0.9);
-}
+    #winMessageContainer p:hover {
+        color: #000000c8;
+        transform: scale(0.9);
+    }
 
 
     .math-question {
@@ -408,7 +410,7 @@
 </head>
 
 <body>
-    <div class="background hidden" id="background">
+      <div class="background hidden" id="background">
         <div class="image" id="imageContainer"></div>
 
         <div class="buttonrandom" id="randomBtn">
@@ -417,12 +419,12 @@
 
         <!-- ซ่อนไว้ไม่ให้เห็น แต่ใช้ดึงลิงก์ -->
         <div id="imageLinks" style="display: none;">
-            <a href="1.png"></a>
-            <a href="2.png"></a>
-            <a href="3.png"></a>
-            <a href="4.png"></a>
-            <a href="5.png"></a>
-            <a href="6.png"></a>
+            <a href="img/1.png"></a>
+            <a href="img/2.png"></a>
+            <a href="img/3.png"></a>
+            <a href="img/4.png"></a>
+            <a href="img/5.png"></a>
+            <a href="img/6.png"></a>
         </div>
     </div>
 
@@ -467,6 +469,9 @@
         <input type="number" id="moveInput" min="1" max="6" placeholder="ป้อนเลข 1-6">
         <button onclick="movePlayer()">กดเพื่อเดินหน้า</button>
     </div>
+    <div class = "text">
+        <div id="moveStepsDisplay"></div>
+    </div>
 
     <div class="math-question" id="mathQuestionBox">
         <h3>โจทย์คณิตศาสตร์</h3>
@@ -481,19 +486,19 @@
         <p id="restartBtn">เริ่มใหม่</p>
     </div>
 
-      <div class="protect" id="protectionNotice" style="display: none;">
+    <div class="protect" id="protectionNotice" style="display: none;">
         🚫 สิทธิการป้องกันการถอยหลัง: <span id="protectionCount">1</span> ครั้ง
     </div>
 
-     <audio id="diceSound" src="dice-roll.mp3" preload="auto"></audio>
+    <audio id="diceSound" src="dice-roll.mp3" preload="auto"></audio>
+
+    <script src="GameRandom.js"></script>
     
   <script>// โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
-// โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
 const links = document.querySelectorAll('#imageLinks a');
 const imageContainer = document.getElementById('imageContainer');
 const randomBtn = document.getElementById('randomBtn');
 
-// โหลดเสียงทอยลูกเต๋า
 const diceSound = new Audio('dice-roll.mp3');
 diceSound.preload = 'auto';
 
@@ -508,6 +513,10 @@ numberDisplay.style.color = '#fff';
 numberDisplay.textContent = '';
 imageContainer.appendChild(numberDisplay);
 
+const rows = 4;
+const cols = 7;
+const totalCells = rows * cols;
+
 function showRandomImage() {
     const randomIndex = Math.floor(Math.random() * links.length);
     lastIndex = randomIndex;
@@ -521,12 +530,31 @@ function showRandomImage() {
     imageContainer.appendChild(img);
 }
 
+function placePlayerAt(position) {
+    const cells = document.querySelectorAll('.cell');
+    document.querySelectorAll('.player').forEach(p => p.remove());
+
+    if (position >= 0 && position < totalCells) {
+        const newPlayer = document.createElement('div');
+        newPlayer.classList.add('player');
+        cells[position].appendChild(newPlayer);
+    }
+
+    updatePlayerPositionText(position);
+}
+
+function updatePlayerPositionText(position) {
+    const posDisplay = document.getElementById('playerPositionDisplay');
+    if (posDisplay) {
+        posDisplay.textContent = `ตำแหน่งปัจจุบันของผู้เล่น: ${position + 1} / ${totalCells}`;
+    }
+}
+
 randomBtn.addEventListener('click', () => {
     if (intervalId !== null) return;
 
     numberDisplay.textContent = '';
 
-    // เล่นเสียง
     diceSound.currentTime = 0;
     diceSound.loop = true;
     diceSound.play();
@@ -537,7 +565,6 @@ randomBtn.addEventListener('click', () => {
         clearInterval(intervalId);
         intervalId = null;
 
-        // หยุดเสียง
         diceSound.pause();
         diceSound.currentTime = 0;
 
@@ -548,6 +575,9 @@ randomBtn.addEventListener('click', () => {
         const img = document.createElement('img');
         img.src = links[lastIndex].getAttribute('href');
         imageContainer.appendChild(img);
+
+        document.getElementById('moveInput').value = lastIndex + 1;
+        movePlayer();
     }, 4790);
 });
 
@@ -566,25 +596,25 @@ function movePlayer() {
 
     if (isNaN(moveSteps) || moveSteps < 1 || moveSteps > 6) {
         alert('กรุณากรอกเลขระหว่าง 1 ถึง 6');
+        input.value = '';
         return;
     }
 
-    const cells = document.querySelectorAll('.cell');
-    document.querySelectorAll('.player').forEach(p => p.remove());
-
     let newPosition = currentPosition + moveSteps;
 
-    if (newPosition > 27) {
-        const exceed = newPosition - 27;
-        newPosition = 27 - exceed;
-        alert(`จำนวนลูกเต๋าที่คุณถอยได้เกิน 28 ช่อง ถอยหลังมา ${exceed} ช่อง`);
+    if (newPosition > totalCells - 1) {
+        const exceed = newPosition - (totalCells - 1);
+        newPosition = (totalCells - 1) - exceed;
+
+        protectionNotice.style.display = 'none';
+
+        showProtectionMessage(`จำนวนลูกเต๋าที่คุณทอยได้เกิน 28 ช่อง ถอยหลังมา ${exceed} ช่อง`);
+    } else {
+        showMoveNotice(`เดินหน้าไป ${moveSteps} ช่อง`);
     }
 
     currentPosition = newPosition;
-
-    const newPlayer = document.createElement('div');
-    newPlayer.classList.add('player');
-    cells[currentPosition].appendChild(newPlayer);
+    placePlayerAt(currentPosition);
 
     if (currentPosition >= 1 && currentPosition <= 26) {
         showRandomMathQuestion();
@@ -592,12 +622,43 @@ function movePlayer() {
         clearMathQuestion();
     }
 
-    if (currentPosition === 27) {
+    if (currentPosition === totalCells - 1) {
         document.getElementById('winMessageContainer').style.display = 'flex';
-        clearMathQuestion();
+    } else {
+        document.getElementById('winMessageContainer').style.display = 'none';
     }
 
     input.value = '';
+}
+
+function showMoveNotice(msg) {
+    let moveNotice = document.getElementById('moveNotice');
+
+    if (!moveNotice) {
+        moveNotice = document.createElement('div');
+        moveNotice.id = 'moveNotice';
+        moveNotice.style.position = 'fixed';
+        moveNotice.style.top = '70px';
+        moveNotice.style.left = '50%';
+        moveNotice.style.transform = 'translateX(-50%)';
+        moveNotice.style.backgroundColor = '#28a745';
+        moveNotice.style.color = '#fff';
+        moveNotice.style.padding = '10px 20px';
+        moveNotice.style.borderRadius = '8px';
+        moveNotice.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)';
+        moveNotice.style.fontFamily = 'Kanit, sans-serif';
+        moveNotice.style.fontSize = '16px';
+        moveNotice.style.zIndex = '8000';
+        moveNotice.style.display = 'none';
+        document.body.appendChild(moveNotice);
+    }
+
+    moveNotice.textContent = msg;
+    moveNotice.style.display = 'block';
+
+    setTimeout(() => {
+        moveNotice.style.display = 'none';
+    }, 3000);
 }
 
 document.getElementById('moveInput').addEventListener('keydown', function (e) {
@@ -618,13 +679,26 @@ const questions = [
     { question: 'จงหาผลรวม: 1 + 2 + 3 + ... + 10', answer: '55' },
     { question: 'ผลลัพธ์ของ 3^3 คือ?', answer: '27' },
     { question: 'จงหาค่า x: 4x = 20', answer: '5' },
-    { question: 'สมการ y = mx + c, m คืออะไร?', answer: 'ความชัน' }
+    { question: 'สมการ y = mx + c, m คืออะไร?', answer: 'ความชัน' },
+    { question: 'มุมภายในของสามเหลี่ยมรวมกันได้กี่องศา?', answer: '180' },
+    { question: '√49 มีค่าเท่าไร?', answer: '7' },
+    { question: 'จำนวนเฉพาะแรกสุด 3 จำนวนคือ?', answer: '2,3,5' },
+    { question: '10! (แฟกทอเรียลของ 10) คือ?', answer: '3628800' },
+    { question: 'ผลลัพธ์ของ 2^5 คือ?', answer: '32' }
 ];
 
+let remainingQuestions = [...questions];
+
+function getRandomNonRepeatingQuestion() {
+    if (remainingQuestions.length === 0) {
+        remainingQuestions = [...questions];
+    }
+    const index = Math.floor(Math.random() * remainingQuestions.length);
+    return remainingQuestions.splice(index, 1)[0];
+}
 
 function showRandomMathQuestion() {
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    currentQuestion = questions[randomIndex];
+    currentQuestion = getRandomNonRepeatingQuestion();
     document.getElementById('mathQuestionText').textContent = currentQuestion.question;
     document.getElementById('answerInput').value = '';
     document.getElementById('answerResultText').textContent = '';
@@ -637,10 +711,8 @@ function clearMathQuestion() {
     document.getElementById('answerResultText').textContent = '';
 }
 
-// ============== ระบบป้องกันการถอยหลัง =============
 let protectionCount = 1;
 
-// สร้างกล่องแจ้งเตือน
 const protectionNotice = document.createElement('div');
 protectionNotice.id = 'protectionNotice';
 protectionNotice.style.position = 'fixed';
@@ -670,48 +742,44 @@ function showProtectionMessage(msg) {
 function checkAnswer() {
     const userAnswer = document.getElementById('answerInput').value.trim();
     const resultText = document.getElementById('answerResultText');
-    const cells = document.querySelectorAll('.cell');
 
     if (!currentQuestion) {
         resultText.textContent = 'ไม่มีโจทย์ให้ตรวจ';
+        resultText.style.color = 'black';
         return;
     }
 
     if (userAnswer === '') {
         resultText.textContent = 'กรุณากรอกคำตอบ';
+        resultText.style.color = 'black';
         return;
     }
 
     if (userAnswer === currentQuestion.answer) {
-        resultText.textContent = '✅ คำตอบถูกต้อง!กรุณาทอยลูกเต๋าเพื่อไปต่อ';
+        resultText.textContent = '✅ คำตอบถูกต้อง! กรุณาทอยลูกเต๋าเพื่อไปต่อ';
         resultText.style.color = 'green';
 
-        // มีโอกาส 9% ได้รับสิทธิ์เพิ่ม
-        if (Math.random() < 0.09) {
-            protectionCount += 1;
+        if (Math.random() < 0.07) {
+            protectionCount++;
             showProtectionMessage(`🎉 ยินดีด้วย! คุณได้รับสิทธิ์ป้องกันเพิ่มอีก 1 ครั้ง (รวมเป็น ${protectionCount})`);
         }
-    }else {
-    resultText.textContent = '❌ คำตอบผิด ถอยหลัง 1 ช่อง';
-    resultText.style.color = 'red';
-
-    if (protectionCount > 0) {
-        showProtectionMessage(`ใช้สิทธิ์ป้องกันการถอยหลัง เหลืออีก ${--protectionCount} ครั้ง`);
     } else {
-        if (currentPosition > 0) {
-            currentPosition -= 1;
-            document.querySelectorAll('.player').forEach(p => p.remove());
+        resultText.textContent = '❌ คำตอบผิด ถอยหลัง 1 ช่อง';
+        resultText.style.color = 'red';
 
-            const newPlayer = document.createElement('div');
-            newPlayer.classList.add('player');
-            cells[currentPosition].appendChild(newPlayer);
-
-            alert('คุณตอบผิดและไม่มีสิทธิ์ป้องกัน ถอยหลัง 1 ช่อง');
+        if (protectionCount > 0) {
+            protectionCount--;
+            showProtectionMessage(`ใช้สิทธิ์ป้องกันการถอยหลัง เหลืออีก ${protectionCount} ครั้ง`);
+        } else {
+            if (currentPosition > 0) {
+                currentPosition--;
+                placePlayerAt(currentPosition);
+                alert('คุณตอบผิดและไม่มีสิทธิ์ป้องกัน ถอยหลัง 1 ช่อง');
+            }
         }
-    }
 
-    clearMathQuestion();
-}
+        clearMathQuestion();
+    }
 }
 
 document.getElementById('submitAnswerBtn').addEventListener('click', checkAnswer);
@@ -720,46 +788,23 @@ document.getElementById('answerInput').addEventListener('keydown', function (e) 
 });
 
 document.getElementById('restartBtn').addEventListener('click', () => {
-    const cells = document.querySelectorAll('.cell');
-    document.querySelectorAll('.player').forEach(p => p.remove());
-
     currentPosition = 0;
-
-    const newPlayer = document.createElement('div');
-    newPlayer.classList.add('player');
-    cells[currentPosition].appendChild(newPlayer);
+    placePlayerAt(currentPosition);
 
     document.getElementById('winMessageContainer').style.display = 'none';
     clearMathQuestion();
 
     protectionCount = 1;
     showProtectionMessage(`เริ่มใหม่! สิทธิ์ป้องกันรีเซ็ตเป็น ${protectionCount}`);
+
+    updatePlayerPositionText(currentPosition);
 });
 
-document.getElementById('restartBtn').addEventListener('click', () => {
-    const cells = document.querySelectorAll('.cell');
-    document.querySelectorAll('.player').forEach(p => p.remove());
-
-    currentPosition = 0;
-
-    const newPlayer = document.createElement('div');
-    newPlayer.classList.add('player');
-    cells[currentPosition].appendChild(newPlayer);
-
-    document.getElementById('winMessageContainer').style.display = 'none';
-    clearMathQuestion();
-
-    // รีเซ็ตคำถามใหม่
-    currentQuestion = null;
-
-    // รีเซ็ตสิทธิ์ป้องกัน
-    protectionCount = 1;
-    showProtectionMessage(`เริ่มใหม่! สิทธิ์ป้องกันรีเซ็ตเป็น ${protectionCount}`);
-});
+placePlayerAt(currentPosition);
+updatePlayerPositionText(currentPosition);
 
 </script>
   
-    <script src="GameRandom.js"></script>
+<script src="GameRandom.js"></script>
 </body>
-
 </html>
