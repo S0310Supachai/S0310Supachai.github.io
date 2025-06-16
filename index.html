@@ -83,47 +83,48 @@
             visibility: visible;
         }
 
-        /* ปรับ .dice ให้อยู่ด้านซ้ายของจอ */
-        .dice {
-            position: fixed;
-            /* ลอยออกจาก layout ปกติ */
-            left: 100px;
-            /* ห่างจากขอบซ้าย 30px */
-            top: 39%;
-            /* อยู่กลางจอในแนวตั้ง */
-            transform: translateY(-50%);
-            /* ดึงขึ้นครึ่งความสูงตัวเองเพื่อกึ่งกลางแนวตั้ง */
-            cursor: pointer;
-            border: 2px solid #333;
-            background-color: rgba(165, 42, 42, 0.838);
-            display: flex;
-            justify-content: flex-start;
-            padding: 25px 25px;
-            border-radius: 5px;
-            color: rgb(0, 0, 0);
-        }
+ .dice {
+        position: fixed;
+        left: 15%;
+        /* ตำแหน่งตามที่คุณต้องการ */
+        transform: translateX(-50%);
+        top: 40px;
+        width: 45px;
+        height: 40px;
+        padding: 0;
+        /* ลบ padding ออกเพื่อให้ flexbox จัดการเต็มพื้นที่ */
+        border: 2px solid #333;
+        background-color: #b47850;
+        border-radius: 15px;
+        color: #000;
+        z-index: 999;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+        transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+        cursor: pointer;
+        /* --- เพิ่มเติมสำหรับการจัดกึ่งกลางตัวอักษร --- */
+        display: flex;
+        /* เปิดใช้งาน Flexbox */
+        justify-content: center;
+        /* จัดเนื้อหาในแนวนอนให้อยู่กึ่งกลาง */
+        align-items: center;
+        /* จัดเนื้อหาในแนวตั้งให้อยู่กึ่งกลาง */
+    }
 
-        .dice p {
-            font-size: 12px;
-            margin: 0;
-        }
+    /* เพิ่ม CSS สำหรับตอนที่กดทอยลูกเต๋า (active state) */
+    .dice:active {
+        transform: translateX(-50%) translateY(2px);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
 
-        .dice:hover {
-            color: rgb(0, 0, 0);
-            background-color: rgba(165, 42, 42, 0.768);
-        }
-
-        .board {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            /* 7 คอลัมน์ */
-            gap: 10px;
-            padding: 20px;
-            max-width: 600px;
-            margin: 40px auto;
-            font-family: 'Kanit', sans-serif;
-        }
-
+    .dice p {
+        font-size: 15px;
+        font-weight: bold;
+        /* --- เพิ่มเติมสำหรับการจัดกึ่งกลางตัวอักษร --- */
+        margin: 0;
+        /* ลบ margin เริ่มต้นของ <p> ออก เพื่อให้ flexbox ควบคุมได้เต็มที่ */
+        line-height: 1;
+        /* กำหนด line-height เป็น 1 เพื่อไม่ให้มีพื้นที่ว่างบน/ล่างตัวอักษรเกินจำเป็น */
+    }
         .cell {
             background-color: #ffffffaa;
             border: 2px solid #282525;
