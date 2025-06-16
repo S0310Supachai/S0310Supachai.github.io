@@ -239,155 +239,155 @@
         }
 
 
-        @media (max-width: 600px) {
-            .board {
-                grid-template-columns: repeat(4, 1fr);
-                /* บอร์ดเล็กลง */
-                gap: 5px;
-                padding: 10px;
-            }
+      @media (max-width: 600px) {
+    .Description {
+        display: none;
+    }
 
-            .cell {
-                padding: 10px;
-                font-size: 14px;
-                border-radius: 5;
-            }
+    .board {
+        grid-template-columns: repeat(4, 1fr);
+        /* บอร์ดเล็กลง */
+        gap: 5px;
+        padding: 10px;
+    }
 
-            .control {
-                position: fixed;
-                border: 2px solid #333;
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 90%;
-                height: 10%;
-                text-align: center;
-                background-color: rgba(255, 255, 255, 0.9);
-                padding: 8px 20px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-                z-index: 1000;
-            }
+    .cell {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 5;
+    }
 
-            .control input {
-                font-size: 14px;
-                padding: 5px 10px;
-                width: 100px;
-                margin-right: 8px;
-                border: 2px solid #333;
-            }
+    .control {
+        position: fixed;
+        border: 2px solid #333;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        height: 10%;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 8px 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
 
-            .control button {
-                font-size: 14px;
-                padding: 5px 10px;
-                border: 2px solid #333;
-                color: #000;
-            }
+    .control input {
+        font-size: 14px;
+        padding: 5px 10px;
+        width: 100px;
+        margin-right: 8px;
+        border: 2px solid #333;
+    }
 
-            .control button:hover {
-                color: #000000c0;
-                background-color: #28a7469f;
-                transform: scale(0.9);
-            }
+    .control button {
+        font-size: 14px;
+        padding: 5px 10px;
+        border: 2px solid #333;
+        color: #000;
+    }
 
-            .dice {
-                position: fixed;
-                top: 13%;
-                /* อยู่ใต้ .control ที่สูง ~50px + padding */
-                left: 20px;
-                padding: 10px;
-                border: 2px solid #333;
-                background-color: rgba(165, 42, 42, 0.838);
-                display: flex;
-                justify-content: flex-start;
-                border-radius: 5px;
-                color: rgb(0, 0, 0);
-                z-index: 999;
-                /* ให้อยู่ด้านบน */
-            }
+    .control button:hover {
+        color: #000000c0;
+        background-color: #28a7469f;
+        transform: scale(0.9);
+    }
 
-            .dice p {
-                font-size: 10px;
-                margin: 0;
-            }
+    .dice {
+        position: fixed;
+        top: 13%;
+        /* อยู่ใต้ .control ที่สูง ~50px + padding */
+        left: 20px;
+        padding: 10px;
+        border: 2px solid #333;
+        background-color: rgba(165, 42, 42, 0.838);
+        display: flex;
+        justify-content: flex-start;
+        border-radius: 5px;
+        color: rgb(0, 0, 0);
+        z-index: 999;
+        /* ให้อยู่ด้านบน */
+    }
 
-            #winMessageContainer {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                border: 2px solid #333;
-                width: 30vh;
-                height: 30vh;
-                background-color: rgba(255, 255, 255, 0.9);
-                padding: 20px;
-                font-size: 16px;
-                display: none;
-                /* เริ่มต้นซ่อนไว้ */
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-                flex-direction: column;
-                cursor: pointer;
-                border-radius: 10px;
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-                z-index: 9999;
-            }
+    .dice p {
+        font-size: 10px;
+        margin: 0;
+    }
 
-            #winMessageContainer p:hover {
-                color: #000000c8;
-                transform: scale(0.9);
-            }
+    #winMessageContainer {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid #333;
+        width: 30vh;
+        height: 30vh;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        font-size: 16px;
+        display: none;
+        /* เริ่มต้นซ่อนไว้ */
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-direction: column;
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+    }
+
+    #winMessageContainer p:hover {
+        color: #000000c8;
+        transform: scale(0.9);
+    }
 
 
-            .math-question {
-                position: absolute;
-                bottom: 10px;
-                /* อยู่ชิดล่าง */
-                left: 5%;
-                right: 5%;
-                top: 80%;
-                width: 84%;
-                height: 38%;
-                /* กำหนดความกว้างที่ responsive */
-                padding: 10px;
-                font-size: 14px;
-                background-color: #fff;
-                border: 2px solid #333;
-                border-radius: 10px;
-                z-index: 1000;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            }
+    .math-question {
+        position: absolute;
+        bottom: 10px;
+        /* อยู่ชิดล่าง */
+        left: 5%;
+        right: 5%;
+        top: 80%;
+        width: 84%;
+        height: 38%;
+        /* กำหนดความกว้างที่ responsive */
+        padding: 10px;
+        font-size: 14px;
+        background-color: #fff;
+        border: 2px solid #333;
+        border-radius: 10px;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
 
-            .math-question input {
-                width: 100%;
-                font-size: 14px;
-                padding: 6px;
-                margin-top: 10px;
-                box-sizing: border-box;
-            }
+    .math-question input {
+        width: 100%;
+        font-size: 14px;
+        padding: 6px;
+        margin-top: 10px;
+        box-sizing: border-box;
+    }
 
-            .math-question button {
-                width: 100%;
-                font-size: 14px;
-                padding: 6px;
-                margin-top: 10px;
-                background-color: #007bff;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
+    .math-question button {
+        width: 100%;
+        font-size: 14px;
+        padding: 6px;
+        margin-top: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
-            .background {
-                width: 80%;
-                position: fixed;
-                z-index: 2000;
-            }
-        }
-
-        .Description{
-            display: none;
-        }
+    .background {
+        width: 80%;
+        position: fixed;
+        z-index: 2000;
+    }
+}
     </style>
 
     <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
