@@ -6,411 +6,391 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minigame</title>
 
-<style>
-body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    font-family: 'Kanit', sans-serif;
-    display: flex;
-    justify-content: center;
-    /* จัดกึ่งกลางแนวนอน */
-    align-items: center;
-    /* จัดกึ่งกลางแนวตั้ง */
-    background-color: rgb(117, 160, 128);
-    position: relative;
-    /* เพื่อให้ .dice ที่ absolute อยู่บน body */
-}
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Kanit', sans-serif;
+            display: flex;
+            justify-content: center;
+            /* จัดกึ่งกลางแนวนอน */
+            align-items: center;
+            /* จัดกึ่งกลางแนวตั้ง */
+            background-color: rgb(117, 160, 128);
+            position: relative;
+            /* เพื่อให้ .dice ที่ absolute อยู่บน body */
+        }
 
-.image {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /* ลบ margin ซ้าย-ขวา ถ้ามี */
-    margin: 0;
-}
+        .image {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* ลบ margin ซ้าย-ขวา ถ้ามี */
+            margin: 0;
+        }
 
-.image img {
-    border-radius: 5px;
-    width: 30px;
-    height: 30px;
-    /* ลบ margin ซ้าย-ขวา */
-    margin: 0 auto 20px auto;
-    /* กึ่งกลางแนวนอน + margin bottom */
-    display: block;
-    /* ช่วยให้ margin auto ทำงาน */
-}
+        .image img {
+            border-radius: 5px;
+            width: 30px;
+            height: 30px;
+            /* ลบ margin ซ้าย-ขวา */
+            margin: 0 auto 20px auto;
+            /* กึ่งกลางแนวนอน + margin bottom */
+            display: block;
+            /* ช่วยให้ margin auto ทำงาน */
+        }
 
-.buttonrandom {
-    cursor: pointer;
-    color: #ffff;
-}
+        .buttonrandom {
+            cursor: pointer;
+            color: #ffff;
+        }
 
-.buttonrandom:hover {
-    color: #ffffff8e;
-}
-
-
-.background {
-    position: absolute;
-    /* เพิ่ม */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.681);
-    width: 35vh;
-    height: 45vh;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-    /* ให้อยู่บน */
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-}
+        .buttonrandom:hover {
+            color: #ffffff8e;
+        }
 
 
-.hidden {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-.visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* ปรับ .dice ให้อยู่ด้านซ้ายของจอ */
-.dice {
-    position: fixed;
-    /* ลอยออกจาก layout ปกติ */
-    left: 100px;
-    /* ห่างจากขอบซ้าย 30px */
-    top: 39%;
-    /* อยู่กลางจอในแนวตั้ง */
-    transform: translateY(-50%);
-    /* ดึงขึ้นครึ่งความสูงตัวเองเพื่อกึ่งกลางแนวตั้ง */
-    cursor: pointer;
-    border: 2px solid #333;
-    background-color: rgba(165, 42, 42, 0.838);
-    display: flex;
-    justify-content: flex-start;
-    padding: 25px 25px;
-    border-radius: 5px;
-    color: rgb(0, 0, 0);
-}
-
-.dice p {
-    font-size: 12px;
-    margin: 0;
-}
-
-.dice:hover {
-    color: rgb(0, 0, 0);
-    background-color: rgba(165, 42, 42, 0.768);
-}
-
-.board {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    /* 7 คอลัมน์ */
-    gap: 10px;
-    padding: 20px;
-    max-width: 600px;
-    margin: 40px auto;
-    font-family: 'Kanit', sans-serif;
-}
-
-.cell {
-    background-color: #ffffffaa;
-    border: 2px solid #282525;
-    padding: 20px;
-    text-align: center;
-    border-radius: 8px;
-    font-weight: bold;
-    color: #333;
-}
-
-.control {
-    position: fixed;
-    bottom: 50px;
-    /* ห่างจากขอบล่าง 20px */
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    border: 2px solid #333;
-    background-color: rgba(255, 255, 255, 0.9);
-    /* พื้นหลังให้เด่น */
-    padding: 10px 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-}
+        .background {
+            position: absolute;
+            /* เพิ่ม */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.681);
+            width: 35vh;
+            height: 45vh;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            /* ให้อยู่บน */
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
 
 
-.control input {
-    padding: 5px 10px;
-    font-size: 16px;
-    width: 200px;
-    border: 2px solid #333;
-    margin-right: 10px;
-    border-radius: 5px;
-}
+        .hidden {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
 
-.control button {
-    padding: 5px 15px;
-    font-size: 16px;
-    border: 2px solid #333;
-    background-color: #28a745;
-    color: rgb(0, 0, 0);
-    margin-top: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        .visible {
+            opacity: 1;
+            visibility: visible;
+        }
 
-.control button:hover {
-    color: #000000d6;
-    background-color: #28a746f5;
-    transform: scale(0.9);
-}
+        /* ปรับ .dice ให้อยู่ด้านซ้ายของจอ */
+        .dice {
+            position: fixed;
+            /* ลอยออกจาก layout ปกติ */
+            left: 100px;
+            /* ห่างจากขอบซ้าย 30px */
+            top: 39%;
+            /* อยู่กลางจอในแนวตั้ง */
+            transform: translateY(-50%);
+            /* ดึงขึ้นครึ่งความสูงตัวเองเพื่อกึ่งกลางแนวตั้ง */
+            cursor: pointer;
+            border: 2px solid #333;
+            background-color: rgba(165, 42, 42, 0.838);
+            display: flex;
+            justify-content: flex-start;
+            padding: 25px 25px;
+            border-radius: 5px;
+            color: rgb(0, 0, 0);
+        }
 
-.player {
-    width: 20px;
-    height: 20px;
-    background-color: red;
-    border-radius: 50%;
-    margin: 5px auto 0 auto;
-}
+        .dice p {
+            font-size: 12px;
+            margin: 0;
+        }
 
-.math-question {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 300px;
-    background-color: #fff;
-    border: 2px solid #333;
-    padding: 15px;
-    border-radius: 10px;
-    font-family: 'Kanit', sans-serif;
-    color: #000;
-    z-index: 10;
-}
+        .dice:hover {
+            color: rgb(0, 0, 0);
+            background-color: rgba(165, 42, 42, 0.768);
+        }
 
-.math-question input {
-    width: 50%;
-    padding: 8px;
-    margin-top: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #999;
-}
+        .board {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            /* 7 คอลัมน์ */
+            gap: 10px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 40px auto;
+            font-family: 'Kanit', sans-serif;
+        }
 
-.math-question button {
-    margin-top: 10px;
-    padding: 8px 12px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        .cell {
+            background-color: #ffffffaa;
+            border: 2px solid #282525;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #333;
+        }
 
-.math-question button:hover {
-    color: white;
-    background-color: #007bffc4;
-    transform: scale(0.9);
-}
+        .control {
+            display: none;
+        }
 
-#answerResultText {
-    margin-top: 10px;
-    font-weight: bold;
-}
+        .player {
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+            margin: 5px auto 0 auto;
+        }
 
-#winMessageContainer {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 2px solid #333;
-    width: 30vh;
-    height: 30vh;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    font-size: 16px;
-    display: none;
-    /* เริ่มต้นซ่อนไว้ */
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    flex-direction: column;
-    cursor: pointer;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    z-index: 9999;
-}
+        .math-question {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            background-color: #fff;
+            border: 2px solid #333;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Kanit', sans-serif;
+            color: #000;
+            z-index: 10;
+        }
 
-#winMessageContainer p:hover {
-    color: #000000c8;
-    transform: scale(0.9);
-}
+        .math-question input {
+            width: 50%;
+            padding: 8px;
+            margin-top: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #999;
+        }
 
+        .math-question button {
+            margin-top: 10px;
+            padding: 8px 12px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-@media (max-width: 600px) {
-    .board {
-        grid-template-columns: repeat(4, 1fr);
-        /* บอร์ดเล็กลง */
-        gap: 5px;
-        padding: 10px;
-    }
+        .math-question button:hover {
+            color: white;
+            background-color: #007bffc4;
+            transform: scale(0.9);
+        }
 
-    .cell {
-        padding: 10px;
-        font-size: 14px;
-         border-radius: 5;
-    }
+        #answerResultText {
+            margin-top: 10px;
+            font-weight: bold;
+        }
 
-    .control {
-        position: fixed;
-        border: 2px solid #333;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        height: 10%;
-        text-align: center;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 8px 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-    }
+        #winMessageContainer {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid #333;
+            width: 30vh;
+            height: 30vh;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            font-size: 16px;
+            display: none;
+            /* เริ่มต้นซ่อนไว้ */
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+        }
 
-    .control input {
-        font-size: 14px;
-        padding: 5px 10px;
-        width: 100px;
-        margin-right: 8px;
-        border: 2px solid #333;
-    }
+        #winMessageContainer p:hover {
+            color: #000000c8;
+            transform: scale(0.9);
+        }
 
-    .control button {
-        font-size: 14px;
-        padding: 5px 10px;
-        border: 2px solid #333;
-        color: #000;
-    }
+        .Description {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            /* สีพื้นหลังโปร่งใส */
+            color: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 14px;
+            z-index: 9999;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
 
-    .control button:hover {
-        color: #000000c0;
-        background-color: #28a7469f;
-        transform: scale(0.9);
-    }
-
-    .dice {
-        position: fixed;
-        top: 17.5%;
-        /* อยู่ใต้ .control ที่สูง ~50px + padding */
-        left: 20px;
-        padding: 10px;
-        border: 2px solid #333;
-        background-color: rgba(165, 42, 42, 0.838);
-        display: flex;
-        justify-content: flex-start;
-        border-radius: 5px;
-        color: rgb(0, 0, 0);
-        z-index: 999;
-        /* ให้อยู่ด้านบน */
-    }
-
-    .dice p {
-        font-size: 10px;
-        margin: 0;
-    }
-
-    #winMessageContainer {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border: 2px solid #333;
-        width: 30vh;
-        height: 30vh;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        font-size: 16px;
-        display: none;
-        /* เริ่มต้นซ่อนไว้ */
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        flex-direction: column;
-        cursor: pointer;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        z-index: 9999;
-    }
-
-    #winMessageContainer p:hover {
-        color: #000000c8;
-        transform: scale(0.9);
-    }
+        .Description p {
+            margin: 4px 0;
+        }
 
 
-    .math-question {
-        position: absolute;
-        bottom: 10px;
-        /* อยู่ชิดล่าง */
-        left: 5%;
-        right: 5%;
-        top: 80%;
-        width: 84%;
-        height: 30%;
-        /* กำหนดความกว้างที่ responsive */
-        padding: 10px;
-        font-size: 14px;
-        background-color: #fff;
-        border: 2px solid #333;
-        border-radius: 10px;
-        z-index: 1000;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    }
+        @media (max-width: 600px) {
+            .board {
+                grid-template-columns: repeat(4, 1fr);
+                /* บอร์ดเล็กลง */
+                gap: 5px;
+                padding: 10px;
+            }
 
-    .math-question input {
-        width: 100%;
-        font-size: 14px;
-        padding: 6px;
-        margin-top: 10px;
-        box-sizing: border-box;
-    }
+            .cell {
+                padding: 10px;
+                font-size: 14px;
+                border-radius: 5;
+            }
 
-    .math-question button {
-        width: 100%;
-        font-size: 14px;
-        padding: 6px;
-        margin-top: 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+            .control {
+                position: fixed;
+                border: 2px solid #333;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 90%;
+                height: 10%;
+                text-align: center;
+                background-color: rgba(255, 255, 255, 0.9);
+                padding: 8px 20px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+            }
 
-    .background {
-        position: fixed;
-        z-index: 2000;
-    }
-}
-</style>
-  
+            .control input {
+                font-size: 14px;
+                padding: 5px 10px;
+                width: 100px;
+                margin-right: 8px;
+                border: 2px solid #333;
+            }
+
+            .control button {
+                font-size: 14px;
+                padding: 5px 10px;
+                border: 2px solid #333;
+                color: #000;
+            }
+
+            .control button:hover {
+                color: #000000c0;
+                background-color: #28a7469f;
+                transform: scale(0.9);
+            }
+
+            .dice {
+                position: fixed;
+                top: 12%;
+                /* อยู่ใต้ .control ที่สูง ~50px + padding */
+                left: 20px;
+                padding: 10px;
+                border: 2px solid #333;
+                background-color: rgba(165, 42, 42, 0.838);
+                display: flex;
+                justify-content: flex-start;
+                border-radius: 5px;
+                color: rgb(0, 0, 0);
+                z-index: 999;
+                /* ให้อยู่ด้านบน */
+            }
+
+            .dice p {
+                font-size: 10px;
+                margin: 0;
+            }
+
+            #winMessageContainer {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border: 2px solid #333;
+                width: 30vh;
+                height: 30vh;
+                background-color: rgba(255, 255, 255, 0.9);
+                padding: 20px;
+                font-size: 16px;
+                display: none;
+                /* เริ่มต้นซ่อนไว้ */
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                flex-direction: column;
+                cursor: pointer;
+                border-radius: 10px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+                z-index: 9999;
+            }
+
+            #winMessageContainer p:hover {
+                color: #000000c8;
+                transform: scale(0.9);
+            }
+
+
+            .math-question {
+                position: absolute;
+                bottom: 10px;
+                /* อยู่ชิดล่าง */
+                left: 5%;
+                right: 5%;
+                top: 80%;
+                width: 84%;
+                height: 30%;
+                /* กำหนดความกว้างที่ responsive */
+                padding: 10px;
+                font-size: 14px;
+                background-color: #fff;
+                border: 2px solid #333;
+                border-radius: 10px;
+                z-index: 1000;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            .math-question input {
+                width: 100%;
+                font-size: 14px;
+                padding: 6px;
+                margin-top: 10px;
+                box-sizing: border-box;
+            }
+
+            .math-question button {
+                width: 100%;
+                font-size: 14px;
+                padding: 6px;
+                margin-top: 10px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .background {
+                position: fixed;
+                z-index: 2000;
+            }
+        }
+    </style>
+
     <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
-      <div class="background hidden" id="background">
+    <div class="background hidden" id="background">
         <div class="image" id="imageContainer"></div>
 
         <div class="buttonrandom" id="randomBtn">
@@ -419,12 +399,12 @@ body {
 
         <!-- ซ่อนไว้ไม่ให้เห็น แต่ใช้ดึงลิงก์ -->
         <div id="imageLinks" style="display: none;">
-            <a href="1.png"></a>
-            <a href="2.png"></a>
-            <a href="3.png"></a>
-            <a href="4.png"></a>
-            <a href="5.png"></a>
-            <a href="6.png"></a>
+            <a href="img/1.png"></a>
+            <a href="img/2.png"></a>
+            <a href="img/3.png"></a>
+            <a href="img/4.png"></a>
+            <a href="img/5.png"></a>
+            <a href="img/6.png"></a>
         </div>
     </div>
 
@@ -469,7 +449,7 @@ body {
         <input type="number" id="moveInput" min="1" max="6" placeholder="ป้อนเลข 1-6">
         <button onclick="movePlayer()">กดเพื่อเดินหน้า</button>
     </div>
-    <div class = "text">
+    <div class="text">
         <div id="moveStepsDisplay"></div>
     </div>
 
@@ -490,321 +470,365 @@ body {
         🚫 สิทธิการป้องกันการถอยหลัง: <span id="protectionCount">1</span> ครั้ง
     </div>
 
+    <div class="Description">
+        <p>กด E เพื่อเปิดหน้าทอยลูกเต๋า</p>
+        <p>กด R เพื่อทอยลูกเต๋า</p>
+    </div>
+
     <audio id="diceSound" src="dice-roll.mp3" preload="auto"></audio>
 
     <script src="GameRandom.js"></script>
-    
-  <script>// โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
-const links = document.querySelectorAll('#imageLinks a');
-const imageContainer = document.getElementById('imageContainer');
-const randomBtn = document.getElementById('randomBtn');
 
-const diceSound = new Audio('dice-roll.mp3');
-diceSound.preload = 'auto';
+    <script>// โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
 
-let intervalId = null;
-let lastIndex = 0;
+        const links = document.querySelectorAll('#imageLinks a');
+        const imageContainer = document.getElementById('imageContainer');
+        const randomBtn = document.getElementById('randomBtn');
+        const diceSound = new Audio('dice-roll.mp3');
+        diceSound.preload = 'auto';
 
-let numberDisplay = document.createElement('div');
-numberDisplay.style.fontSize = '1.5rem';
-numberDisplay.style.marginBottom = '40px';
-numberDisplay.style.fontWeight = 'bold';
-numberDisplay.style.color = '#fff';
-numberDisplay.textContent = '';
-imageContainer.appendChild(numberDisplay);
+        let intervalId = null;
+        let lastIndex = 0;
+        let questionAnswered = true; // สถานะบ่งชี้ว่าตอบคำถามแล้วหรือไม่
 
-const rows = 4;
-const cols = 7;
-const totalCells = rows * cols;
-
-function showRandomImage() {
-    const randomIndex = Math.floor(Math.random() * links.length);
-    lastIndex = randomIndex;
-    const randomImgSrc = links[randomIndex].getAttribute('href');
-
-    imageContainer.innerHTML = '';
-    imageContainer.appendChild(numberDisplay);
-
-    const img = document.createElement('img');
-    img.src = randomImgSrc;
-    imageContainer.appendChild(img);
-}
-
-function placePlayerAt(position) {
-    const cells = document.querySelectorAll('.cell');
-    document.querySelectorAll('.player').forEach(p => p.remove());
-
-    if (position >= 0 && position < totalCells) {
-        const newPlayer = document.createElement('div');
-        newPlayer.classList.add('player');
-        cells[position].appendChild(newPlayer);
-    }
-
-    updatePlayerPositionText(position);
-}
-
-function updatePlayerPositionText(position) {
-    const posDisplay = document.getElementById('playerPositionDisplay');
-    if (posDisplay) {
-        posDisplay.textContent = `ตำแหน่งปัจจุบันของผู้เล่น: ${position + 1} / ${totalCells}`;
-    }
-}
-
-randomBtn.addEventListener('click', () => {
-    if (intervalId !== null) return;
-
-    numberDisplay.textContent = '';
-
-    diceSound.currentTime = 0;
-    diceSound.loop = true;
-    diceSound.play();
-
-    intervalId = setInterval(showRandomImage, 100);
-
-    setTimeout(() => {
-        clearInterval(intervalId);
-        intervalId = null;
-
-        diceSound.pause();
-        diceSound.currentTime = 0;
-
-        numberDisplay.textContent = `ลูกเต๋า : ${lastIndex + 1}`;
-        imageContainer.innerHTML = '';
+        let numberDisplay = document.createElement('div');
+        numberDisplay.style.fontSize = '1.5rem';
+        numberDisplay.style.marginBottom = '40px';
+        numberDisplay.style.fontWeight = 'bold';
+        numberDisplay.style.color = '#fff';
+        numberDisplay.textContent = '';
         imageContainer.appendChild(numberDisplay);
 
-        const img = document.createElement('img');
-        img.src = links[lastIndex].getAttribute('href');
-        imageContainer.appendChild(img);
+        const rows = 4;
+        const cols = 7;
+        const totalCells = rows * cols;
 
-        document.getElementById('moveInput').value = lastIndex + 1;
-        movePlayer();
-    }, 4790);
-});
+        function showRandomImage() {
+            const randomIndex = Math.floor(Math.random() * links.length);
+            lastIndex = randomIndex;
+            const randomImgSrc = links[randomIndex].getAttribute('href');
 
-const dice = document.querySelector('.dice');
-const background = document.getElementById('background');
+            imageContainer.innerHTML = '';
+            imageContainer.appendChild(numberDisplay);
 
-dice.addEventListener('click', () => {
-    background.classList.toggle('hidden');
-});
-
-let currentPosition = 0;
-
-function movePlayer() {
-    const input = document.getElementById('moveInput');
-    let moveSteps = parseInt(input.value);
-
-    if (isNaN(moveSteps) || moveSteps < 1 || moveSteps > 6) {
-        alert('กรุณากรอกเลขระหว่าง 1 ถึง 6');
-        input.value = '';
-        return;
-    }
-
-    let newPosition = currentPosition + moveSteps;
-
-    if (newPosition > totalCells - 1) {
-        const exceed = newPosition - (totalCells - 1);
-        newPosition = (totalCells - 1) - exceed;
-
-        protectionNotice.style.display = 'none';
-
-        showProtectionMessage(`จำนวนลูกเต๋าที่คุณทอยได้เกิน 28 ช่อง ถอยหลังมา ${exceed} ช่อง`);
-    } else {
-        showMoveNotice(`เดินหน้าไป ${moveSteps} ช่อง`);
-    }
-
-    currentPosition = newPosition;
-    placePlayerAt(currentPosition);
-
-    if (currentPosition >= 1 && currentPosition <= 26) {
-        showRandomMathQuestion();
-    } else {
-        clearMathQuestion();
-    }
-
-    if (currentPosition === totalCells - 1) {
-        document.getElementById('winMessageContainer').style.display = 'flex';
-    } else {
-        document.getElementById('winMessageContainer').style.display = 'none';
-    }
-
-    input.value = '';
-}
-
-function showMoveNotice(msg) {
-    let moveNotice = document.getElementById('moveNotice');
-
-    if (!moveNotice) {
-        moveNotice = document.createElement('div');
-        moveNotice.id = 'moveNotice';
-        moveNotice.style.position = 'fixed';
-        moveNotice.style.top = '70px';
-        moveNotice.style.left = '50%';
-        moveNotice.style.transform = 'translateX(-50%)';
-        moveNotice.style.backgroundColor = '#28a745';
-        moveNotice.style.color = '#fff';
-        moveNotice.style.padding = '10px 20px';
-        moveNotice.style.borderRadius = '8px';
-        moveNotice.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)';
-        moveNotice.style.fontFamily = 'Kanit, sans-serif';
-        moveNotice.style.fontSize = '16px';
-        moveNotice.style.zIndex = '8000';
-        moveNotice.style.display = 'none';
-        document.body.appendChild(moveNotice);
-    }
-
-    moveNotice.textContent = msg;
-    moveNotice.style.display = 'block';
-
-    setTimeout(() => {
-        moveNotice.style.display = 'none';
-    }, 3000);
-}
-
-document.getElementById('moveInput').addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') {
-        movePlayer();
-    }
-});
-
-let currentQuestion = null;
-
-const questions = [
-    { question: 'แก้สมการ 2x + 3 = 7', answer: '2' },
-    { question: 'หาค่า x: x² = 25', answer: '5หรือ-5' },
-    { question: 'พื้นที่สี่เหลี่ยมจัตุรัส ด้าน = 4', answer: '16' },
-    { question: 'เซตของจำนวนเฉพาะที่น้อยกว่า 10', answer: '2,3,5,7' },
-    { question: 'พหุนาม: (x + 2)(x - 3) = ?', answer: 'x^2-x-6' },
-    { question: 'ความชันของเส้นตรง y = 3x + 1', answer: '3' },
-    { question: 'จงหาผลรวม: 1 + 2 + 3 + ... + 10', answer: '55' },
-    { question: 'ผลลัพธ์ของ 3^3 คือ?', answer: '27' },
-    { question: 'จงหาค่า x: 4x = 20', answer: '5' },
-    { question: 'สมการ y = mx + c, m คืออะไร?', answer: 'ความชัน' },
-    { question: 'มุมภายในของสามเหลี่ยมรวมกันได้กี่องศา?', answer: '180' },
-    { question: '√49 มีค่าเท่าไร?', answer: '7' },
-    { question: 'จำนวนเฉพาะแรกสุด 3 จำนวนคือ?', answer: '2,3,5' },
-    { question: '10! (แฟกทอเรียลของ 10) คือ?', answer: '3628800' },
-    { question: 'ผลลัพธ์ของ 2^5 คือ?', answer: '32' }
-];
-
-let remainingQuestions = [...questions];
-
-function getRandomNonRepeatingQuestion() {
-    if (remainingQuestions.length === 0) {
-        remainingQuestions = [...questions];
-    }
-    const index = Math.floor(Math.random() * remainingQuestions.length);
-    return remainingQuestions.splice(index, 1)[0];
-}
-
-function showRandomMathQuestion() {
-    currentQuestion = getRandomNonRepeatingQuestion();
-    document.getElementById('mathQuestionText').textContent = currentQuestion.question;
-    document.getElementById('answerInput').value = '';
-    document.getElementById('answerResultText').textContent = '';
-}
-
-function clearMathQuestion() {
-    currentQuestion = null;
-    document.getElementById('mathQuestionText').textContent = '-';
-    document.getElementById('answerInput').value = '';
-    document.getElementById('answerResultText').textContent = '';
-}
-
-let protectionCount = 1;
-
-const protectionNotice = document.createElement('div');
-protectionNotice.id = 'protectionNotice';
-protectionNotice.style.position = 'fixed';
-protectionNotice.style.top = '20px';
-protectionNotice.style.left = '50%';
-protectionNotice.style.transform = 'translateX(-50%)';
-protectionNotice.style.backgroundColor = '#ffc107';
-protectionNotice.style.color = '#000';
-protectionNotice.style.padding = '10px 20px';
-protectionNotice.style.borderRadius = '8px';
-protectionNotice.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)';
-protectionNotice.style.fontFamily = 'Kanit, sans-serif';
-protectionNotice.style.fontSize = '16px';
-protectionNotice.style.display = 'none';
-protectionNotice.style.zIndex = '9999';
-
-document.body.appendChild(protectionNotice);
-
-function showProtectionMessage(msg) {
-    protectionNotice.textContent = msg;
-    protectionNotice.style.display = 'block';
-    setTimeout(() => {
-        protectionNotice.style.display = 'none';
-    }, 3000);
-}
-
-function checkAnswer() {
-    const userAnswer = document.getElementById('answerInput').value.trim();
-    const resultText = document.getElementById('answerResultText');
-
-    if (!currentQuestion) {
-        resultText.textContent = 'ไม่มีโจทย์ให้ตรวจ';
-        resultText.style.color = 'black';
-        return;
-    }
-
-    if (userAnswer === '') {
-        resultText.textContent = 'กรุณากรอกคำตอบ';
-        resultText.style.color = 'black';
-        return;
-    }
-
-    if (userAnswer === currentQuestion.answer) {
-        resultText.textContent = '✅ คำตอบถูกต้อง! กรุณาทอยลูกเต๋าเพื่อไปต่อ';
-        resultText.style.color = 'green';
-
-        if (Math.random() < 0.07) {
-            protectionCount++;
-            showProtectionMessage(`🎉 ยินดีด้วย! คุณได้รับสิทธิ์ป้องกันเพิ่มอีก 1 ครั้ง (รวมเป็น ${protectionCount})`);
+            const img = document.createElement('img');
+            img.src = randomImgSrc;
+            imageContainer.appendChild(img);
         }
-    } else {
-        resultText.textContent = '❌ คำตอบผิด ถอยหลัง 1 ช่อง';
-        resultText.style.color = 'red';
 
-        if (protectionCount > 0) {
-            protectionCount--;
-            showProtectionMessage(`ใช้สิทธิ์ป้องกันการถอยหลัง เหลืออีก ${protectionCount} ครั้ง`);
-        } else {
-            if (currentPosition > 0) {
-                currentPosition--;
-                placePlayerAt(currentPosition);
-                alert('คุณตอบผิดและไม่มีสิทธิ์ป้องกัน ถอยหลัง 1 ช่อง');
+        function placePlayerAt(position) {
+            const cells = document.querySelectorAll('.cell');
+            document.querySelectorAll('.player').forEach(p => p.remove()); // ลบผู้เล่นเก่าออก
+
+            if (position >= 0 && position < totalCells) {
+                const newPlayer = document.createElement('div');
+                newPlayer.classList.add('player');
+                cells[position].appendChild(newPlayer);
+            }
+
+            updatePlayerPositionText(position);
+        }
+
+        function updatePlayerPositionText(position) {
+            const posDisplay = document.getElementById('playerPositionDisplay');
+            if (posDisplay) {
+                posDisplay.textContent = `ตำแหน่งปัจจุบันของผู้เล่น: ${position + 1} / ${totalCells}`;
             }
         }
 
-        clearMathQuestion();
-    }
-}
+        randomBtn.addEventListener('click', () => {
+            if (!questionAnswered) {
+                alert('❗ กรุณาตอบคำถามก่อนทอยลูกเต๋า');
+                return;
+            }
+            if (intervalId !== null) return; // ป้องกันการกดซ้ำขณะทอยอยู่
 
-document.getElementById('submitAnswerBtn').addEventListener('click', checkAnswer);
-document.getElementById('answerInput').addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') checkAnswer();
-});
+            questionAnswered = false; // กำหนดสถานะว่ายังไม่ได้ตอบคำถาม
+            numberDisplay.textContent = '';
+            diceSound.currentTime = 0;
+            diceSound.loop = true;
+            diceSound.play();
 
-document.getElementById('restartBtn').addEventListener('click', () => {
-    currentPosition = 0;
-    placePlayerAt(currentPosition);
+            intervalId = setInterval(showRandomImage, 100); // เริ่มแอนิเมชันทอยลูกเต๋า
 
-    document.getElementById('winMessageContainer').style.display = 'none';
-    clearMathQuestion();
+            setTimeout(() => {
+                clearInterval(intervalId); // หยุดแอนิเมชัน
+                intervalId = null;
 
-    protectionCount = 1;
-    showProtectionMessage(`เริ่มใหม่! สิทธิ์ป้องกันรีเซ็ตเป็น ${protectionCount}`);
+                diceSound.pause();
+                diceSound.currentTime = 0;
 
-    updatePlayerPositionText(currentPosition);
-});
+                numberDisplay.textContent = `ลูกเต๋า : ${lastIndex + 1}`;
+                imageContainer.innerHTML = '';
+                imageContainer.appendChild(numberDisplay);
 
-placePlayerAt(currentPosition);
-updatePlayerPositionText(currentPosition);
+                const img = document.createElement('img');
+                img.src = links[lastIndex].getAttribute('href');
+                imageContainer.appendChild(img);
 
-</script>
-  
-<script src="GameRandom.js"></script>
+                document.getElementById('moveInput').value = lastIndex + 1; // ใส่ค่าลูกเต๋าลงในช่อง input
+                movePlayer(); // เรียกฟังก์ชันเดินผู้เล่น
+            }, 4790); // ระยะเวลาแอนิเมชัน
+        });
+
+        const dice = document.querySelector('.dice');
+        const background = document.getElementById('background');
+
+        dice.addEventListener('click', () => {
+            background.classList.toggle('hidden'); // ซ่อน/แสดงหน้าทอยลูกเต๋า
+        });
+
+        let currentPosition = 0; // ตำแหน่งปัจจุบันของผู้เล่น
+
+        function movePlayer() {
+            const input = document.getElementById('moveInput');
+            let moveSteps = parseInt(input.value);
+
+            if (isNaN(moveSteps) || moveSteps < 1 || moveSteps > 6) {
+                alert('กรุณากรอกเลขระหว่าง 1 ถึง 6');
+                input.value = '';
+                return;
+            }
+
+            let newPosition = currentPosition + moveSteps;
+
+            // ตรวจสอบหากเดินเกินช่องสุดท้าย
+            if (newPosition > totalCells - 1) {
+                const exceed = newPosition - (totalCells - 1);
+                newPosition = (totalCells - 1) - exceed; // ถอยหลังกลับมา
+                showProtectionMessage(`จำนวนลูกเต๋าที่คุณทอยได้เกิน 28 ช่อง ถอยหลังมา ${exceed} ช่อง`);
+            } else {
+                showMoveNotice(`เดินหน้าไป ${moveSteps} ช่อง`);
+            }
+
+            currentPosition = newPosition;
+            placePlayerAt(currentPosition); // อัปเดตตำแหน่งผู้เล่นบนกระดาน
+
+            // แสดงคำถามคณิตศาสตร์เมื่ออยู่บนช่องระหว่าง 1 ถึง 26
+            if (currentPosition >= 1 && currentPosition <= 26) {
+                showRandomMathQuestion();
+            } else {
+                clearMathQuestion(); // เคลียร์คำถามหากไม่อยู่ในช่องคำถาม
+            }
+
+            // ตรวจสอบเงื่อนไขการชนะ
+            if (currentPosition === totalCells - 1) {
+                document.getElementById('winMessageContainer').style.display = 'flex'; // แสดงข้อความชนะ
+            } else {
+                document.getElementById('winMessageContainer').style.display = 'none';
+            }
+
+            input.value = ''; // ล้างค่าในช่อง input
+        }
+
+        // ฟังก์ชันแสดงการแจ้งเตือนการเคลื่อนที่
+        function showMoveNotice(msg) {
+            let moveNotice = document.getElementById('moveNotice');
+            if (!moveNotice) {
+                moveNotice = document.createElement('div');
+                moveNotice.id = 'moveNotice';
+                moveNotice.style.position = 'fixed';
+                moveNotice.style.top = '70px'; // ปรับให้อยู่ด้านบนมากขึ้น
+                moveNotice.style.left = '50%'; // จัดกึ่งกลางแนวนอน
+                moveNotice.style.transform = 'translateX(-50%)'; // เลื่อนกลับ 50% ของความกว้าง
+                moveNotice.style.backgroundColor = '#28a745';
+                moveNotice.style.color = '#fff';
+                moveNotice.style.padding = '10px 20px'; // ปรับ padding ให้เล็กลง
+                moveNotice.style.borderRadius = '8px'; // ปรับความโค้งมน
+                moveNotice.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)'; // ปรับเงา
+                moveNotice.style.fontFamily = 'Kanit, sans-serif';
+                moveNotice.style.fontSize = '16px'; // ปรับขนาดฟอนต์ให้เล็กลง
+                moveNotice.style.zIndex = '8000';
+                moveNotice.style.display = 'none';
+                document.body.appendChild(moveNotice);
+            }
+
+            moveNotice.textContent = msg;
+            moveNotice.style.display = 'block';
+
+            setTimeout(() => {
+                moveNotice.style.display = 'none';
+            }, 3000);
+        }
+
+        // Event listener สำหรับการกด Enter ในช่อง input สำหรับเดิน
+        document.getElementById('moveInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') movePlayer();
+        });
+
+        // Event listener สำหรับการกดปุ่ม 'E' หรือ 'e' เพื่อเปิด/ปิดหน้าทอยลูกเต๋า
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'e' || e.key === 'E') {
+                dice.click();
+            }
+        });
+
+        // Event listener สำหรับการกดปุ่ม 'R' หรือ 'r' เพื่อทอยลูกเต๋า
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'r' || e.key === 'R') {
+                if (!questionAnswered) {
+                    alert('❗ กรุณาตอบคำถามก่อนทอยลูกเต๋า');
+                    return;
+                }
+                randomBtn.click();
+            }
+        });
+
+        let currentQuestion = null; // คำถามปัจจุบันที่กำลังแสดง
+        const questions = [
+            { question: 'แก้สมการ 2x + 3 = 7', answer: '2', explanation: 'ลบ 3 จากทั้งสองข้างจะได้ 2x = 4 แล้วหาร 2 จะได้ x = 2' },
+            { question: 'หาค่า x: x² = 25', answer: '5หรือ-5', explanation: 'x² = 25 ดังนั้น x = √25 ซึ่งคือ 5 หรือ -5' },
+            { question: 'พื้นที่สี่เหลี่ยมจัตุรัส ด้าน = 4', answer: '16', explanation: 'พื้นที่ = ด้าน × ด้าน = 4 × 4 = 16' },
+            { question: 'เซตของจำนวนเฉพาะที่น้อยกว่า 10', answer: '2,3,5,7', explanation: 'จำนวนเฉพาะน้อยกว่า 10 ได้แก่ 2, 3, 5, 7 (หารได้เฉพาะ 1 กับตัวเอง)' },
+            { question: 'พหุนาม: (x + 2)(x - 3) = ?', answer: 'x^2-x-6', explanation: 'ใช้สูตรการกระจาย: x(x - 3) + 2(x - 3) = x² - 3x + 2x - 6 = x² - x - 6' },
+            { question: 'ความชันของเส้นตรง y = 3x + 1', answer: '3', explanation: 'จากสมการ y = mx + c ค่า m คือความชัน ซึ่งในที่นี้คือ 3' },
+            { question: 'จงหาผลรวม: 1 + 2 + 3 + ... + 10', answer: '55', explanation: 'ใช้สูตร n(n+1)/2 → 10×11/2 = 55' },
+            { question: 'ผลลัพธ์ของ 3^3 คือ?', answer: '27', explanation: '3 × 3 × 3 = 9 × 3 = 27' },
+            { question: 'จงหาค่า x: 4x = 20', answer: '5', explanation: 'หารทั้งสองข้างด้วย 4 จะได้ x = 5' },
+            { question: 'สมการ y = mx + c, m คืออะไร?', answer: 'ความชัน', explanation: 'ในสมการเชิงเส้น y = mx + c, m คือความชัน (slope)' },
+            { question: 'มุมภายในของสามเหลี่ยมรวมกันได้กี่องศา?', answer: '180', explanation: 'มุมภายในของสามเหลี่ยมเมื่อรวมกันจะเป็น 180 องศา' },
+            { question: '√49 มีค่าเท่าไร?', answer: '7', explanation: 'เพราะ 7 × 7 = 49 ดังนั้น √49 = 7' },
+            { question: 'จำนวนเฉพาะแรกสุด 3 จำนวนคือ?', answer: '2,3,5', explanation: 'จำนวนเฉพาะ 3 ตัวแรกคือ 2, 3, และ 5 (หารได้แค่ 1 กับตัวมันเอง)' },
+            { question: '10! (แฟกทอเรียลของ 10) คือ?', answer: '3628800', explanation: '10! = 10×9×8×7×6×5×4×3×2×1 = 3628800' },
+            { question: 'ผลลัพธ์ของ 2^5 คือ?', answer: '32', explanation: '2 × 2 × 2 × 2 × 2 = 32' }
+        ];
+
+        let remainingQuestions = [...questions]; // คัดลอกคำถามทั้งหมดสำหรับแต่ละรอบ
+
+        function getRandomNonRepeatingQuestion() {
+            if (remainingQuestions.length === 0) {
+                remainingQuestions = [...questions]; // รีเซ็ตคำถามหากหมดแล้ว
+            }
+            const index = Math.floor(Math.random() * remainingQuestions.length);
+            return remainingQuestions.splice(index, 1)[0]; // สุ่มและนำคำถามออกจากอาร์เรย์
+        }
+
+        function showRandomMathQuestion() {
+            currentQuestion = getRandomNonRepeatingQuestion();
+            document.getElementById('mathQuestionText').textContent = currentQuestion.question;
+            document.getElementById('answerInput').value = '';
+            document.getElementById('answerInput').disabled = false;
+            document.getElementById('submitAnswerBtn').disabled = false;
+            document.getElementById('answerResultText').textContent = '';
+            questionAnswered = false; // กำหนดสถานะว่าต้องตอบคำถาม
+        }
+
+        function clearMathQuestion() {
+            currentQuestion = null;
+            document.getElementById('mathQuestionText').textContent = '-';
+            document.getElementById('answerInput').value = '';
+            document.getElementById('answerInput').disabled = false;
+            document.getElementById('submitAnswerBtn').disabled = false;
+            document.getElementById('answerResultText').textContent = '';
+            questionAnswered = true; // กำหนดสถานะว่าไม่มีคำถามให้ตอบ
+        }
+
+        let protectionCount = 1; // จำนวนสิทธิ์ป้องกันเริ่มต้น
+
+        // สร้าง element สำหรับข้อความป้องกัน (ถ้ายังไม่มี)
+        const protectionNotice = document.createElement('div');
+        protectionNotice.id = 'protectionNotice';
+        protectionNotice.style.position = 'fixed';
+        // *** แก้ไขตรงนี้ให้แสดงตรงกลางด้านบนของเว็บ (ขนาดไม่ใหญ่) ***
+        protectionNotice.style.top = '70px'; // ปรับให้อยู่ด้านบนมากขึ้น (อาจปรับเพิ่มลดได้ตามความเหมาะสม)
+        protectionNotice.style.left = '50%';
+        protectionNotice.style.transform = 'translateX(-50%)'; // จัดกึ่งกลางแนวนอน
+        // *** ปรับปรุงสไตล์ให้ขนาดไม่ใหญ่และดูโดดเด่นขึ้น ***
+        protectionNotice.style.backgroundColor = '#ffc107'; // สีเหลือง
+        protectionNotice.style.color = '#000'; // ข้อความสีดำ
+        protectionNotice.style.padding = '10px 20px'; // ปรับ padding ให้เล็กลง
+        protectionNotice.style.borderRadius = '8px'; // ปรับความโค้งมน
+        protectionNotice.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)'; // ปรับเงา
+        protectionNotice.style.fontFamily = 'Kanit, sans-serif';
+        protectionNotice.style.fontSize = '16px'; // ปรับขนาดฟอนต์ให้เล็กลง
+        protectionNotice.style.display = 'none';
+        protectionNotice.style.zIndex = '9999';
+
+        document.body.appendChild(protectionNotice);
+
+        // ฟังก์ชันสำหรับแสดงข้อความป้องกัน
+        function showProtectionMessage(msg) {
+            protectionNotice.textContent = msg;
+            protectionNotice.style.display = 'block';
+            setTimeout(() => {
+                protectionNotice.style.display = 'none';
+            }, 3000);
+        }
+
+        // ฟังก์ชันสำหรับตรวจสอบคำตอบ
+        function checkAnswer() {
+            if (questionAnswered) return;  // ล็อกไม่ให้ตอบซ้ำหากยังไม่ได้ทอยลูกเต๋า
+
+            const userAnswer = document.getElementById('answerInput').value.trim();
+            const resultText = document.getElementById('answerResultText');
+
+            if (!currentQuestion) {
+                resultText.textContent = 'ไม่มีโจทย์ให้ตรวจ';
+                resultText.style.color = 'black';
+                return;
+            }
+
+            if (userAnswer === '') {
+                resultText.textContent = 'กรุณากรอกคำตอบ';
+                resultText.style.color = 'black';
+                return;
+            }
+
+            if (userAnswer === currentQuestion.answer) {
+                resultText.innerHTML = `✅ คำตอบถูกต้อง! กรุณาทอยลูกเต๋าเพื่อไปต่อ<br>💡 คำอธิบาย: ${currentQuestion.explanation}`;
+                resultText.style.color = 'green';
+
+            } else {
+                // ข้อความเมื่อตอบผิด พร้อมคำอธิบาย
+                resultText.innerHTML = `❌ คุณตอบผิด ถอยหลัง 1 ช่อง<br>💡 คำอธิบาย: ${currentQuestion.explanation}`;
+                resultText.style.color = 'red';
+
+                if (Math.random() < 0.07) { // 7% โอกาสได้สิทธิ์ป้องกันเพิ่ม
+                    protectionCount++;
+                    showProtectionMessage(`🎉 ยินดีด้วย! คุณได้รับสิทธิ์ป้องกันเพิ่มอีก 1 ครั้ง (รวมเป็น ${protectionCount})`);
+                }
+
+                if (protectionCount > 0) {
+                    protectionCount--;
+                    showProtectionMessage(`ใช้สิทธิ์ป้องกันการถอยหลัง เหลืออีก ${protectionCount} ครั้ง`);
+                } else {
+                    if (currentPosition > 0) {
+                        currentPosition--; // ถอยหลัง 1 ช่อง
+                        placePlayerAt(currentPosition);
+                    }
+                }
+            }
+
+            // ล็อก input กับปุ่มหลังตอบ เพื่อให้ผู้เล่นทอยลูกเต๋าต่อไป
+            document.getElementById('answerInput').disabled = true;
+            document.getElementById('submitAnswerBtn').disabled = true;
+            questionAnswered = true; // ตั้งค่าเป็น true เพื่ออนุญาตให้ทอยลูกเต๋าครั้งต่อไปได้
+        }
+
+        // ผูก event listener ปุ่มส่งคำตอบและกด Enter
+        document.getElementById('submitAnswerBtn').addEventListener('click', checkAnswer);
+        document.getElementById('answerInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') checkAnswer();
+        });
+
+        // Event listener สำหรับปุ่ม 'เริ่มใหม่' บนหน้าจอชนะ
+        document.getElementById('restartBtn').addEventListener('click', () => {
+            currentPosition = 0; // รีเซ็ตตำแหน่งผู้เล่น
+            placePlayerAt(currentPosition);
+            document.getElementById('winMessageContainer').style.display = 'none'; // ซ่อนหน้าจอชนะ
+            clearMathQuestion(); // เคลียร์คำถาม
+            protectionCount = 1; // รีเซ็ตสิทธิ์ป้องกัน
+            questionAnswered = true; // อนุญาตให้ทอยลูกเต๋าได้
+            showProtectionMessage(`เริ่มใหม่! สิทธิ์ป้องกันรีเซ็ตเป็น ${protectionCount}`);
+            updatePlayerPositionText(currentPosition);
+        });
+
+        // กำหนดตำแหน่งเริ่มต้นของผู้เล่นและอัปเดตข้อความ
+        placePlayerAt(currentPosition);
+        updatePlayerPositionText(currentPosition);
+    </script>
+
+    <script src="GameRandom.js"></script>
 </body>
+
 </html>
