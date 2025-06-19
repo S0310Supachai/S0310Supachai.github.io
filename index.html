@@ -798,54 +798,64 @@
         }
 
         // ฟังก์ชันสำหรับตรวจสอบคำตอบ
-        function checkAnswer() {
-            if (questionAnswered) return;  // ล็อกไม่ให้ตอบซ้ำหากยังไม่ได้ทอยลูกเต๋า
+      // ฟังก์ชันสำหรับตรวจสอบคำตอบ
+function checkAnswer() {
+    if (questionAnswered) return;
 
-            const userAnswer = document.getElementById('answerInput').value.trim();
-            const resultText = document.getElementById('answerResultText');
+    const userAnswer = document.getElementById('answerInput').value.trim();
+    const resultText = document.getElementById('answerResultText');
 
-            if (!currentQuestion) {
-                resultText.textContent = 'ไม่มีโจทย์ให้ตรวจ';
-                resultText.style.color = 'black';
-                return;
-            }
+    if (!currentQuestion) {
+        resultText.textContent = 'ไม่มีโจทย์ให้ตรวจ';
+        resultText.style.color = 'black';
+        return;
+    }
 
-            if (userAnswer === '') {
-                resultText.textContent = 'กรุณากรอกคำตอบ';
-                resultText.style.color = 'black';
-                return;
-            }
+    if (userAnswer === '') {
+        resultText.textContent = 'กรุณากรอกคำตอบ';
+        resultText.style.color = 'black';
+        return;
+    }
 
-            if (userAnswer === currentQuestion.answer) {
-                resultText.innerHTML = `✅ คำตอบถูกต้อง! กรุณาทอยลูกเต๋าเพื่อไปต่อ<br>💡 คำอธิบาย: ${currentQuestion.explanation}`;
-                resultText.style.color = 'green';
+    let isCorrect = false;
+    // ตรวจสอบว่าคำตอบที่ถูกต้องเป็นอาร์เรย์หรือไม่
+    if (Array.isArray(currentQuestion.answer)) {
+        // ถ้าเป็นอาร์เรย์ ให้ตรวจสอบว่าคำตอบของผู้ใช้ตรงกับคำตอบใดคำตอบหนึ่งในอาร์เรย์
+        isCorrect = currentQuestion.answer.includes(userAnswer);
+    } else {
+        // ถ้าไม่ใช่ ให้ตรวจสอบคำตอบแบบปกติ
+        isCorrect = (userAnswer === currentQuestion.answer);
+    }
 
-            } else {
-                // ข้อความเมื่อตอบผิด พร้อมคำอธิบาย
-                resultText.innerHTML = `❌ คุณตอบผิด ถอยหลัง 1 ช่อง<br>💡 คำอธิบาย: ${currentQuestion.explanation}`;
-                resultText.style.color = 'red';
+    if (isCorrect) {
+        resultText.innerHTML = `✅ คำตอบถูกต้อง! กรุณาทอยลูกเต๋าเพื่อไปต่อ<br>💡 คำอธิบาย: ${currentQuestion.explanation}`;
+        resultText.style.color = 'green';
+    } else {
+        // ข้อความเมื่อตอบผิด พร้อมคำอธิบาย
+        resultText.innerHTML = `❌ คุณตอบผิด ถอยหลัง 1 ช่อง<br>💡 คำอธิบาย: ${currentQuestion.explanation}`;
+        resultText.style.color = 'red';
 
-                if (Math.random() < 0.07) { // 7% โอกาสได้สิทธิ์ป้องกันเพิ่ม
-                    protectionCount++;
-                    showProtectionMessage(`🎉 ยินดีด้วย! คุณได้รับสิทธิ์ป้องกันเพิ่มอีก 1 ครั้ง (รวมเป็น ${protectionCount})`);
-                }
-
-                if (protectionCount > 0) {
-                    protectionCount--;
-                    showProtectionMessage(`ใช้สิทธิ์ป้องกันการถอยหลัง เหลืออีก ${protectionCount} ครั้ง`);
-                } else {
-                    if (currentPosition > 0) {
-                        currentPosition--; // ถอยหลัง 1 ช่อง
-                        placePlayerAt(currentPosition);
-                    }
-                }
-            }
-
-            // ล็อก input กับปุ่มหลังตอบ เพื่อให้ผู้เล่นทอยลูกเต๋าต่อไป
-            document.getElementById('answerInput').disabled = true;
-            document.getElementById('submitAnswerBtn').disabled = true;
-            questionAnswered = true; // ตั้งค่าเป็น true เพื่ออนุญาตให้ทอยลูกเต๋าครั้งต่อไปได้
+        if (Math.random() < 0.08) { // 7% โอกาสได้สิทธิ์ป้องกันเพิ่ม
+            protectionCount++;
+            showProtectionMessage(`🎉 ยินดีด้วย! คุณได้รับสิทธิ์ป้องกันเพิ่มอีก 1 ครั้ง (รวมเป็น ${protectionCount})`);
         }
+
+        if (protectionCount > 0) {
+            protectionCount--;
+            showProtectionMessage(`ใช้สิทธิ์ป้องกันการถอยหลัง เหลืออีก ${protectionCount} ครั้ง`);
+        } else {
+            if (currentPosition > 0) {
+                currentPosition--; // ถอยหลัง 1 ช่อง
+                placePlayerAt(currentPosition);
+            }
+        }
+    }
+
+    // ล็อก input กับปุ่มหลังตอบ เพื่อให้ผู้เล่นทอยลูกเต๋าต่อไป
+    document.getElementById('answerInput').disabled = true;
+    document.getElementById('submitAnswerBtn').disabled = true;
+    questionAnswered = true; // ตั้งค่าเป็น true เพื่ออนุญาตให้ทอยลูกเต๋าครั้งต่อไปได้
+}
 
         // ผูก event listener ปุ่มส่งคำตอบและกด Enter
         document.getElementById('submitAnswerBtn').addEventListener('click', checkAnswer);
