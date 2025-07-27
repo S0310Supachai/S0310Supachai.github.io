@@ -1,886 +1,619 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minigame</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>piano999</title>
+  <link rel="stylesheet" href="main.css" />
 
-    <style>
-       body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    font-family: 'Kanit', sans-serif;
-    display: flex;
-    justify-content: center;
-    /* จัดกึ่งกลางแนวนอน */
-    align-items: center;
-    /* จัดกึ่งกลางแนวตั้ง */
-    background-color: rgb(117, 160, 128);
-    position: relative;
-    /* เพื่อให้ .dice ที่ absolute อยู่บน body */
-}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 40px 0;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      user-select: none;
+    }
 
-.image {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /* ลบ margin ซ้าย-ขวา ถ้ามี */
-    margin: 0;
-}
+    .piano {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 1680px;
+      position: relative;
+      gap: 0;
+    }
 
-.image img {
-    border-radius: 5px;
-    width: 30px;
-    height: 30px;
-    /* ลบ margin ซ้าย-ขวา */
-    margin: 0 auto 20px auto;
-    /* กึ่งกลางแนวนอน + margin bottom */
-    display: block;
-    /* ช่วยให้ margin auto ทำงาน */
-}
+    /* ปุ่มขาว */
+    .key.white {
+      flex: 0 0 calc(100% / 21);
+      width: 50px;
+      height: 200px;
+      background: white;
+      border: 1px solid black;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 1;
+      border-radius: 0 0 8px 8px;
+      text-align: center;
+      line-height: 280px;
+      transition: background-color 0.2s;
+      font-size: 13px;
+    }
 
-.buttonrandom {
-    cursor: pointer;
-    color: #ffff;
-}
+    .key.white:active,
+    .piano .key.white:not(.highlight-white):active {
+      background: #ddd;
+      transform: scale(0.99);
+    }
 
-.buttonrandom:hover {
-    color: #ffffff8e;
-}
+    .piano .key.highlight-white {
+      background-color: #a3c4f3 !important;
+      transform: scale(0.95);
+    }
 
+    /* ปุ่มดำ */
+    .key.black {
+      width: 30px;
+      height: 120px;
+      font-weight: bold;
+      background: black;
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      border-radius: 0 0 6px 6px;
+      border: 1px solid #333;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+    }
 
-.background {
-    position: absolute;
-    /* เพิ่ม */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.681);
-    width: 35vh;
-    height: 45vh;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-    /* ให้อยู่บน */
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-}
+    .key.black:active {
+      background: #555;
+    }
 
+    .key.black.g6-down {
+      top: 210px;
+    }
 
-.hidden {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
+    /* ===== ตำแหน่งคีย์ดำ ===== */
+    .key.black.cSharp4 {
+      left: calc(100% / 21 * 0.7);
+    }
 
-.visible {
-    opacity: 1;
-    visibility: visible;
-}
+    .key.black.dSharp4 {
+      left: calc(100% / 21 * 1.7);
+    }
 
-/* ปรับ .dice ให้อยู่ด้านซ้ายของจอ */
-.dice {
-        position: fixed;
-        left: 6%;
-        /* ตำแหน่งตามที่คุณต้องการ */
-        transform: translateX(-50%);
-        top: 20%;
-        width: 45px;
-        height: 40px;
-        padding: 0;
-        /* ลบ padding ออกเพื่อให้ flexbox จัดการเต็มพื้นที่ */
-        border: 2px solid #333;
-        background-color: #b47850;
-        border-radius: 15px;
-        color: #000;
-        z-index: 999;
-        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
-        transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
-        cursor: pointer;
-        /* --- เพิ่มเติมสำหรับการจัดกึ่งกลางตัวอักษร --- */
+    .key.black.fSharp4 {
+      left: calc(100% / 21 * 3.7);
+    }
+
+    .key.black.gSharp4 {
+      left: calc(100% / 21 * 4.7);
+    }
+
+    .key.black.aSharp4 {
+      left: calc(100% / 21 * 5.7);
+    }
+
+    .key.black.cSharp5 {
+      left: calc(100% / 21 * 7.7);
+    }
+
+    .key.black.dSharp5 {
+      left: calc(100% / 21 * 8.7);
+    }
+
+    .key.black.fSharp5 {
+      left: calc(100% / 21 * 10.7);
+    }
+
+    .key.black.gSharp5 {
+      left: calc(100% / 21 * 11.7);
+    }
+
+    .key.black.aSharp5 {
+      left: calc(100% / 21 * 12.7);
+    }
+
+    .key.black.cSharp6 {
+      left: calc(100% / 21 * 14.7);
+    }
+
+    .key.black.dSharp6 {
+      left: calc(100% / 21 * 15.7);
+    }
+
+    .key.black.fSharp6 {
+      left: calc(100% / 21 * 17.7);
+    }
+
+    .key.black.gSharp6 {
+      left: calc(100% / 21 * 18.7);
+    }
+
+    .key.black.aSharp6 {
+      left: calc(100% / 21 * 19.7);
+    }
+
+    /* Highlight */
+    .key.black.highlight-black {
+      background-color: #3b7ddd !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 550px) {
+      .piano {
+        position: relative;
         display: flex;
-        /* เปิดใช้งาน Flexbox */
-        justify-content: center;
-        /* จัดเนื้อหาในแนวนอนให้อยู่กึ่งกลาง */
-        align-items: center;
-        /* จัดเนื้อหาในแนวตั้งให้อยู่กึ่งกลาง */
-    }
-
-    /* เพิ่ม CSS สำหรับตอนที่กดทอยลูกเต๋า (active state) */
-    .dice:active {
-        transform: translateX(-50%) translateY(2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    }
-
-    .dice p {
-        font-size: 15px;
-        font-weight: bold;
-        /* --- เพิ่มเติมสำหรับการจัดกึ่งกลางตัวอักษร --- */
-        margin: 0;
-        /* ลบ margin เริ่มต้นของ <p> ออก เพื่อให้ flexbox ควบคุมได้เต็มที่ */
-        line-height: 1;
-        /* กำหนด line-height เป็น 1 เพื่อไม่ให้มีพื้นที่ว่างบน/ล่างตัวอักษรเกินจำเป็น */
-    }
-
-
-
-.board {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    /* 7 คอลัมน์ */
-    gap: 10px;
-    padding: 20px;
-    max-width: 600px;
-    margin: 40px auto;
-    font-family: 'Kanit', sans-serif;
-}
-
-.cell {
-    background-color: #ffffffaa;
-    border: 2px solid #282525;
-    padding: 20px;
-    text-align: center;
-    border-radius: 8px;
-    font-weight: bold;
-    color: #333;
-}
-
-.control {
-    display: none;
-}
-
-.player {
-    width: 20px;
-    height: 20px;
-    background-color: red;
-    border-radius: 50%;
-    margin: 5px auto 0 auto;
-}
-
-.math-question {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 300px;
-    background-color: #fff;
-    border: 2px solid #333;
-    padding: 15px;
-    border-radius: 10px;
-    font-family: 'Kanit', sans-serif;
-    color: #000;
-    z-index: 10;
-}
-
-.math-question input {
-    width: 50%;
-    padding: 8px;
-    margin-top: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #999;
-}
-
-.math-question button {
-    margin-top: 10px;
-    padding: 8px 12px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.math-question button:hover {
-    color: white;
-    background-color: #007bffc4;
-    transform: scale(0.9);
-}
-
-#answerResultText {
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-#winMessageContainer {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 2px solid #333;
-    width: 30vh;
-    height: 30vh;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    font-size: 16px;
-    display: none;
-    /* เริ่มต้นซ่อนไว้ */
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    flex-direction: column;
-    cursor: pointer;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    z-index: 9999;
-}
-
-#winMessageContainer p:hover {
-    color: #000000c8;
-    transform: scale(0.9);
-}
-
-.Description {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
-    /* สีพื้นหลังโปร่งใส */
-    color: white;
-    padding: 12px 16px;
-    border-radius: 10px;
-    font-family: 'Kanit', sans-serif;
-    font-size: 14px;
-    z-index: 9999;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.Description p {
-    margin: 4px 0;
-}
-
-
-@media (max-width: 600px) {
-    .Description {
-        display: none;
-    }
-
-    .board {
-        grid-template-columns: repeat(4, 1fr);
-        /* บอร์ดเล็กลง */
-        gap: 5px;
-        padding: 10px;
-    }
-
-    .cell {
-        padding: 10px;
-        font-size: 14px;
-        border-radius: 5;
-    }
-
-    .control {
-        position: fixed;
-        border: 2px solid #333;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        height: 10%;
-        text-align: center;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 8px 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-    }
-
-    .control input {
-        font-size: 14px;
-        padding: 5px 10px;
-        width: 100px;
-        margin-right: 8px;
-        border: 2px solid #333;
-    }
-
-    .control button {
-        font-size: 14px;
-        padding: 5px 10px;
-        border: 2px solid #333;
-        color: #000;
-    }
-
-    .control button:hover {
-        color: #000000c0;
-        background-color: #28a7469f;
-        transform: scale(0.9);
-    }
-
-    .dice {
-        position: fixed;
-        left: 15%;
-        /* ตำแหน่งตามที่คุณต้องการ */
-        transform: translateX(-50%);
-        top: 40px;
-        width: 45px;
-        height: 40px;
-        padding: 0;
-        /* ลบ padding ออกเพื่อให้ flexbox จัดการเต็มพื้นที่ */
-        border: 2px solid #333;
-        background-color: #b47850;
-        border-radius: 15px;
-        color: #000;
-        z-index: 999;
-        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
-        transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
-        cursor: pointer;
-        /* --- เพิ่มเติมสำหรับการจัดกึ่งกลางตัวอักษร --- */
-        display: flex;
-        /* เปิดใช้งาน Flexbox */
-        justify-content: center;
-        /* จัดเนื้อหาในแนวนอนให้อยู่กึ่งกลาง */
-        align-items: center;
-        /* จัดเนื้อหาในแนวตั้งให้อยู่กึ่งกลาง */
-    }
-
-    /* เพิ่ม CSS สำหรับตอนที่กดทอยลูกเต๋า (active state) */
-    .dice:active {
-        transform: translateX(-50%) translateY(2px);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    }
-
-    .dice p {
-        font-size: 15px;
-        font-weight: bold;
-        /* --- เพิ่มเติมสำหรับการจัดกึ่งกลางตัวอักษร --- */
-        margin: 0;
-        /* ลบ margin เริ่มต้นของ <p> ออก เพื่อให้ flexbox ควบคุมได้เต็มที่ */
-        line-height: 1;
-        /* กำหนด line-height เป็น 1 เพื่อไม่ให้มีพื้นที่ว่างบน/ล่างตัวอักษรเกินจำเป็น */
-    }
-
-    #winMessageContainer {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border: 2px solid #333;
-        width: 30vh;
-        height: 30vh;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        font-size: 16px;
-        display: none;
-        /* เริ่มต้นซ่อนไว้ */
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        flex-direction: column;
-        cursor: pointer;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        z-index: 9999;
-    }
-
-    #winMessageContainer p:hover {
-        color: #000000c8;
-        transform: scale(0.9);
-    }
-
-
-    .math-question {
-        position: absolute;
-        bottom: 10px;
-        /* อยู่ชิดล่าง */
-        left: 5%;
-        right: 5%;
-        top: 80%;
-        width: 84%;
-        height: 38%;
-        /* กำหนดความกว้างที่ responsive */
-        padding: 10px;
-        font-size: 14px;
-        background-color: #fff;
-        border: 2px solid #333;
-        border-radius: 10px;
-        z-index: 1000;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .math-question input {
+        justify-content: start;
+        align-items: flex-start;
         width: 100%;
-        font-size: 14px;
-        padding: 6px;
-        margin-top: 10px;
+        height: 155px;
+      }
+
+      .key.white {
+        width: calc(100% / 21);
+        width: 20px;
+        height: 63%;
+        color: rgb(64, 62, 62);
+        background: white;
+        border: 1px solid black;
         box-sizing: border-box;
+        border-radius: 0 0 3.6px 3.6px;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        line-height: 60px;
+        padding-right: 0.3px;
+      }
+
+      .key.black {
+        position: absolute;
+        width: calc(100% / 42);
+        /* แคบกว่าขาวครึ่งนึง */
+        height: 50px;
+        width: 13px;
+        background: black;
+        z-index: 2;
+        border-radius: 0 0 4px 4px;
+        color: rgb(218, 213, 213);
+        text-align: center;
+        font-size: 12px;
+      }
+
+      /* ตำแหน่งคีย์ดำในแต่ละ octave */
+      .cSharp4 {
+        left: calc(100% / 21 * 0.66);
+      }
+
+      .dSharp4 {
+        left: calc(100% / 21 * 1.66);
+      }
+
+      .fSharp4 {
+        left: calc(100% / 21 * 3.66);
+      }
+
+      .gSharp4 {
+        left: calc(100% / 21 * 4.66);
+      }
+
+      .aSharp4 {
+        left: calc(100% / 21 * 5.66);
+      }
+
+      .cSharp5 {
+        left: calc(100% / 21 * 7.66);
+      }
+
+      .dSharp5 {
+        left: calc(100% / 21 * 8.66);
+      }
+
+      .fSharp5 {
+        left: calc(100% / 21 * 10.66);
+      }
+
+      .gSharp5 {
+        left: calc(100% / 21 * 11.66);
+      }
+
+      .aSharp5 {
+        left: calc(100% / 21 * 12.66);
+      }
+
+      .cSharp6 {
+        left: calc(100% / 21 * 14.66);
+      }
+
+      .dSharp6 {
+        left: calc(100% / 21 * 15.66);
+      }
+
+      .fSharp6 {
+        left: calc(100% / 21 * 17.66);
+      }
+
+      .gSharp6 {
+        left: calc(100% / 21 * 18.66);
+      }
+
+      .aSharp6 {
+        left: calc(100% / 21 * 19.66);
+      }
+
     }
-
-    .math-question button {
-        width: 100%;
-        font-size: 14px;
-        padding: 6px;
-        margin-top: 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .background {
-        width: 80%;
-        position: fixed;
-        z-index: 2000;
-    }
-}
-    </style>
-
-    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
-
+  </style>
 </head>
 
 <body>
-    <div class="background hidden" id="background">
-        <div class="image" id="imageContainer"></div>
+  <div class="container">
+    <div class="piano" id="piano">
+      <!-- ปุ่มขาว C4-B5 -->
+      <div class="key white" data-note="C4">C</div>
+      <div class="key white" data-note="D4">D</div>
+      <div class="key white" data-note="E4">E</div>
+      <div class="key white" data-note="F4">F</div>
+      <div class="key white" data-note="G4">G</div>
+      <div class="key white" data-note="A4">A</div>
+      <div class="key white" data-note="B4">B</div>
 
-        <div class="buttonrandom" id="randomBtn">
-            <p>กดเพื่อสุ่ม</p>
-        </div>
+      <div class="key white" data-note="C5">C</div>
+      <div class="key white" data-note="D5">D</div>
+      <div class="key white" data-note="E5">E</div>
+      <div class="key white" data-note="F5">F</div>
+      <div class="key white" data-note="G5">G</div>
+      <div class="key white" data-note="A5">A</div>
+      <div class="key white" data-note="B5">B</div>
 
-        <!-- ซ่อนไว้ไม่ให้เห็น แต่ใช้ดึงลิงก์ -->
-        <div id="imageLinks" style="display: none;">
-            <a href="1.png"></a>
-            <a href="2.png"></a>
-            <a href="3.png"></a>
-            <a href="4.png"></a>
-            <a href="5.png"></a>
-            <a href="6.png"></a>
-        </div>
+      <!-- ปุ่มดำ octave 4 -->
+      <div class="key black cSharp4" data-note="C#4">C<br>#<br>4</div>
+      <div class="key black dSharp4" data-note="D#4">D<br>#<br>4</div>
+      <div class="key black fSharp4" data-note="F#4">F<br>#<br>4</div>
+      <div class="key black gSharp4" data-note="G#4">G<br>#<br>4</div>
+      <div class="key black aSharp4" data-note="A#4">A<br>#<br>4</div>
+
+      <!-- ปุ่มดำ octave 5 -->
+      <div class="key black cSharp5" data-note="C#5">C<br>#<br>5</div>
+      <div class="key black dSharp5" data-note="D#5">D<br>#<br>5</div>
+      <div class="key black fSharp5" data-note="F#5">F<br>#<br>5</div>
+      <div class="key black gSharp5" data-note="G#5">G<br>#<br>5</div>
+      <div class="key black aSharp5" data-note="A#5">A<br>#<br>5</div>
+
+      <!-- ปุ่มขาว C6–B6 -->
+      <div class="key white" data-note="C6">C</div>
+      <div class="key white" data-note="D6">D</div>
+      <div class="key white" data-note="E6">E</div>
+      <div class="key white" data-note="F6">F</div>
+      <div class="key white" data-note="G6">G</div>
+      <div class="key white" data-note="A6">A</div>
+      <div class="key white" data-note="B6">B</div>
+
+      <!-- ปุ่มดำ octave 6 -->
+      <div class="key black cSharp6" data-note="C#6">C<br>#<br>6</div>
+      <div class="key black dSharp6" data-note="D#6">D<br>#<br>6</div>
+      <div class="key black fSharp6" data-note="F#6">F<br>#<br>6</div><br>#<br>6
+      <div class="key black gSharp6" data-note="G#6">G<br>#<br>6</div>
+      <div class="key black aSharp6" data-note="A#6">A<br>#<br>6</div>
     </div>
+  </div>
 
-    <div class="dice">
-        <p>ลูกเต๋า</p>
-    </div>
+  <div id="chord-list"></div>
 
-    <div class="board">
-        <div class="cell">จุดเริ่ม<div class="player"></div>
-        </div>
-        <!-- ช่องที่ 2–27 -->
-        <div class="cell">2</div>
-        <div class="cell">3</div>
-        <div class="cell">4</div>
-        <div class="cell">5</div>
-        <div class="cell">6</div>
-        <div class="cell">7</div>
-        <div class="cell">8</div>
-        <div class="cell">9</div>
-        <div class="cell">10</div>
-        <div class="cell">11</div>
-        <div class="cell">12</div>
-        <div class="cell">13</div>
-        <div class="cell">14</div>
-        <div class="cell">15</div>
-        <div class="cell">16</div>
-        <div class="cell">17</div>
-        <div class="cell">18</div>
-        <div class="cell">19</div>
-        <div class="cell">20</div>
-        <div class="cell">21</div>
-        <div class="cell">22</div>
-        <div class="cell">23</div>
-        <div class="cell">24</div>
-        <div class="cell">25</div>
-        <div class="cell">26</div>
-        <div class="cell">27</div>
-        <div class="cell">จุดสิ้นสุด</div>
-    </div>
+  <script src="main.js"></script>
 
-    <div class="control">
-        <input type="number" id="moveInput" min="1" max="6" placeholder="ป้อนเลข 1-6">
-        <button onclick="movePlayer()">กดเพื่อเดินหน้า</button>
-    </div>
-    <div class="text">
-        <div id="moveStepsDisplay"></div>
-    </div>
 
-    <div class="math-question" id="mathQuestionBox">
-        <h3>โจทย์คณิตศาสตร์</h3>
-        <p id="mathQuestionText">-</p>
-        <input type="text" id="answerInput" placeholder="พิมพ์คำตอบ..." />
-        <button id="submitAnswerBtn">ส่งคำตอบ</button>
-        <p id="answerResultText"></p>
-    </div>
+  <script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    <div id="winMessageContainer">
-        <h2>ยินดีด้วยคุณชนะเกมนี้แล้ว!</h2>
-        <p id="restartBtn">เริ่มใหม่</p>
-    </div>
+    const noteFreqMap = {
+      'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13, 'E4': 329.63,
+      'F4': 349.23, 'F#4': 369.99, 'G4': 392.00, 'G#4': 415.30, 'A4': 440.00,
+      'A#4': 466.16, 'B4': 493.88,
 
-    <div class="protect" id="protectionNotice" style="display: none;">
-        🚫 สิทธิการป้องกันการถอยหลัง: <span id="protectionCount">1</span> ครั้ง
-    </div>
+      'C5': 523.25, 'C#5': 554.37, 'D5': 587.33, 'D#5': 622.25, 'E5': 659.25,
+      'F5': 698.46, 'F#5': 739.99, 'G5': 783.99, 'G#5': 830.61, 'A5': 880.00,
+      'A#5': 932.33, 'B5': 987.77,
 
-    <div class="Description">
-        <p>กด E เพื่อเปิดหน้าทอยลูกเต๋า</p>
-        <p>กด R เพื่อทอยลูกเต๋า</p>
-    </div>
+      'C6': 1046.50, 'C#6': 1108.73, 'D6': 1174.66, 'D#6': 1244.51, 'E6': 1318.51,
+      'F6': 1396.91, 'F#6': 1479.98, 'G6': 1567.98, 'G#6': 1661.22, 'A6': 1760.00,
+      'A#6': 1864.66, 'B6': 1975.53
+    };
 
-    <audio id="diceSound" src="dice-roll.mp3" preload="auto"></audio>
-
-    <script src="GameRandom.js"></script>
-
-    <script>// โค้ด JavaScript ทั้งหมดที่แก้ไขแล้ว
-  const links = document.querySelectorAll('#imageLinks a');
-        const imageContainer = document.getElementById('imageContainer');
-        const randomBtn = document.getElementById('randomBtn');
-        const diceSound = new Audio('dice-roll.mp3');
-        diceSound.preload = 'auto';
-
-        let intervalId = null;
-        let lastIndex = 0;
-        let questionAnswered = true; // สถานะบ่งชี้ว่าตอบคำถามแล้วหรือไม่
-
-        let numberDisplay = document.createElement('div');
-        numberDisplay.style.fontSize = '1.5rem';
-        numberDisplay.style.marginBottom = '40px';
-        numberDisplay.style.fontWeight = 'bold';
-        numberDisplay.style.color = '#fff';
-        numberDisplay.textContent = '';
-        imageContainer.appendChild(numberDisplay);
-
-        const rows = 4;
-        const cols = 7;
-        const totalCells = rows * cols;
-
-        function showRandomImage() {
-            const randomIndex = Math.floor(Math.random() * links.length);
-            lastIndex = randomIndex;
-            const randomImgSrc = links[randomIndex].getAttribute('href');
-
-            imageContainer.innerHTML = '';
-            imageContainer.appendChild(numberDisplay);
-
-            const img = document.createElement('img');
-            img.src = randomImgSrc;
-            imageContainer.appendChild(img);
-        }
-
-        function placePlayerAt(position) {
-            const cells = document.querySelectorAll('.cell');
-            document.querySelectorAll('.player').forEach(p => p.remove()); // ลบผู้เล่นเก่าออก
-
-            if (position >= 0 && position < totalCells) {
-                const newPlayer = document.createElement('div');
-                newPlayer.classList.add('player');
-                cells[position].appendChild(newPlayer);
-            }
-
-            updatePlayerPositionText(position);
-        }
-
-        function updatePlayerPositionText(position) {
-            const posDisplay = document.getElementById('playerPositionDisplay');
-            if (posDisplay) {
-                posDisplay.textContent = `ตำแหน่งปัจจุบันของผู้เล่น: ${position + 1} / ${totalCells}`;
-            }
-        }
-
-        randomBtn.addEventListener('click', () => {
-            if (!questionAnswered) {
-                alert('❗ กรุณาตอบคำถามก่อนทอยลูกเต๋า');
-                return;
-            }
-            if (intervalId !== null) return; // ป้องกันการกดซ้ำขณะทอยอยู่
-
-            questionAnswered = false; // กำหนดสถานะว่ายังไม่ได้ตอบคำถาม
-            numberDisplay.textContent = '';
-            diceSound.currentTime = 0;
-            diceSound.loop = true;
-            diceSound.play();
-
-            intervalId = setInterval(showRandomImage, 100); // เริ่มแอนิเมชันทอยลูกเต๋า
-
-            setTimeout(() => {
-                clearInterval(intervalId); // หยุดแอนิเมชัน
-                intervalId = null;
-
-                diceSound.pause();
-                diceSound.currentTime = 0;
-
-                numberDisplay.textContent = `ลูกเต๋า : ${lastIndex + 1}`;
-                imageContainer.innerHTML = '';
-                imageContainer.appendChild(numberDisplay);
-
-                const img = document.createElement('img');
-                img.src = links[lastIndex].getAttribute('href');
-                imageContainer.appendChild(img);
-
-                document.getElementById('moveInput').value = lastIndex + 1; // ใส่ค่าลูกเต๋าลงในช่อง input
-                movePlayer(); // เรียกฟังก์ชันเดินผู้เล่น
-            }, 4790); // ระยะเวลาแอนิเมชัน
-        });
-
-        const dice = document.querySelector('.dice');
-        const background = document.getElementById('background');
-
-        dice.addEventListener('click', () => {
-            background.classList.toggle('hidden'); // ซ่อน/แสดงหน้าทอยลูกเต๋า
-        });
-
-        let currentPosition = 0; // ตำแหน่งปัจจุบันของผู้เล่น
-
-        function movePlayer() {
-            const input = document.getElementById('moveInput');
-            let moveSteps = parseInt(input.value);
-
-            if (isNaN(moveSteps) || moveSteps < 1 || moveSteps > 6) {
-                alert('กรุณากรอกเลขระหว่าง 1 ถึง 6');
-                input.value = '';
-                return;
-            }
-
-            let newPosition = currentPosition + moveSteps;
-
-            // ตรวจสอบหากเดินเกินช่องสุดท้าย
-            if (newPosition > totalCells - 1) {
-                const exceed = newPosition - (totalCells - 1);
-                newPosition = (totalCells - 1) - exceed; // ถอยหลังกลับมา
-                showProtectionMessage(`จำนวนลูกเต๋าที่คุณทอยได้เกิน 28 ช่อง ถอยหลังมา ${exceed} ช่อง`);
-            } else {
-                showMoveNotice(`เดินหน้าไป ${moveSteps} ช่อง`);
-            }
-
-            currentPosition = newPosition;
-            placePlayerAt(currentPosition); // อัปเดตตำแหน่งผู้เล่นบนกระดาน
-
-            // แสดงคำถามคณิตศาสตร์เมื่ออยู่บนช่องระหว่าง 1 ถึง 26
-            if (currentPosition >= 1 && currentPosition <= 26) {
-                showRandomMathQuestion();
-            } else {
-                clearMathQuestion(); // เคลียร์คำถามหากไม่อยู่ในช่องคำถาม
-            }
-
-            // ตรวจสอบเงื่อนไขการชนะ
-            if (currentPosition === totalCells - 1) {
-                document.getElementById('winMessageContainer').style.display = 'flex'; // แสดงข้อความชนะ
-            } else {
-                document.getElementById('winMessageContainer').style.display = 'none';
-            }
-
-            input.value = ''; // ล้างค่าในช่อง input
-        }
-
-        // ฟังก์ชันแสดงการแจ้งเตือนการเคลื่อนที่
-        function showMoveNotice(msg) {
-            let moveNotice = document.getElementById('moveNotice');
-            if (!moveNotice) {
-                moveNotice = document.createElement('div');
-                moveNotice.id = 'moveNotice';
-                moveNotice.style.position = 'fixed';
-                moveNotice.style.top = '70px'; // ปรับให้อยู่ด้านบนมากขึ้น
-                moveNotice.style.left = '50%'; // จัดกึ่งกลางแนวนอน
-                moveNotice.style.transform = 'translateX(-50%)'; // เลื่อนกลับ 50% ของความกว้าง
-                moveNotice.style.backgroundColor = '#28a745';
-                moveNotice.style.color = '#fff';
-                moveNotice.style.padding = '10px 20px'; // ปรับ padding ให้เล็กลง
-                moveNotice.style.borderRadius = '8px'; // ปรับความโค้งมน
-                moveNotice.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)'; // ปรับเงา
-                moveNotice.style.fontFamily = 'Kanit, sans-serif';
-                moveNotice.style.fontSize = '16px'; // ปรับขนาดฟอนต์ให้เล็กลง
-                moveNotice.style.zIndex = '8000';
-                moveNotice.style.display = 'none';
-                document.body.appendChild(moveNotice);
-            }
-
-            moveNotice.textContent = msg;
-            moveNotice.style.display = 'block';
-
-            setTimeout(() => {
-                moveNotice.style.display = 'none';
-            }, 3000);
-        }
-
-        // Event listener สำหรับการกด Enter ในช่อง input สำหรับเดิน
-        document.getElementById('moveInput').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') movePlayer();
-        });
-
-        // Event listener สำหรับการกดปุ่ม 'E' หรือ 'e' เพื่อเปิด/ปิดหน้าทอยลูกเต๋า
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'e' || e.key === 'E') {
-                dice.click();
-            }
-        });
-
-        // Event listener สำหรับการกดปุ่ม 'R' หรือ 'r' เพื่อทอยลูกเต๋า
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'r' || e.key === 'R') {
-                if (!questionAnswered) {
-                    alert('❗ กรุณาตอบคำถามก่อนทอยลูกเต๋า');
-                    return;
-                }
-                randomBtn.click();
-            }
-        });
-
-        let currentQuestion = null; // คำถามปัจจุบันที่กำลังแสดง
-       const questions = [
-    { question: 'จงแก้สมการ 2x + 3 = 7', answer: '2', explanation: 'ลบ 3 จากทั้งสองข้างจะได้ 2x = 4 แล้วหาร 2 จะได้ x = 2' },
-    { question: 'จงหาค่า x: x² = 25', answer: ['5','-5', '5 หรือ -5'], explanation: 'x² = 25 ดังนั้น x = √25 ซึ่งคือ 5 หรือ -5\nจะตอบ 5 ก็ได้เนื่องจากโจทย์ถามว่า x² เท่ากับอะไรแล้วได้ 25' }, // Added the missing '}' here
-    { question: 'ให้พื้นที่สี่เหลี่ยมจัตุรัส ด้าน = 4 จงหาค่าของแต่ละด้านว่าคูณกันได้เท่าไหร่', answer: '16', explanation: 'พื้นที่ = ด้าน × ด้าน = 4 × 4 = 16' },
-    { question: 'เซตของจำนวนเฉพาะที่น้อยกว่า 10', answer: '2,3,5,7', explanation: 'จำนวนเฉพาะน้อยกว่า 10 ได้แก่ 2, 3, 5, 7 (หารได้เฉพาะ 1 กับตัวเอง)' },
-    { question: 'พหุนาม: (x + 2)(x - 3) = ?', answer: 'x^2-x-6', explanation: 'ใช้สูตรการกระจาย: x(x - 3) + 2(x - 3) = x^2 - 3x + 2x - 6 = x^2 - x - 6' },
-    { question: 'ความชันของเส้นตรง y = 3x + 1', answer: '3', explanation: 'จากสมการ y = mx + c ค่า m คือความชัน ซึ่งในที่นี้คือ 3' },
-    { question: 'จงหาผลรวม: 1 + 2 + 3 + ... + 10', answer: '55', explanation: 'ใช้สูตร n(n+1)/2 → 10×11/2 = 55' },
-    { question: 'ผลลัพธ์ของ 3^3 คือ?', answer: '27', explanation: '3 × 3 × 3 = 9 × 3 = 27' },
-    { question: 'จงหาค่า x: 4x = 20', answer: '5', explanation: 'หารทั้งสองข้างด้วย 4 จะได้ x = 5' },
-    { question: 'สมการเชิงเส้น y = mx + c แล้ว m คืออะไร?', answer: 'ความชัน', explanation: 'ในสมการเชิงเส้น y = mx + c, m คือความชัน (slope)' },
-    { question: 'มุมภายในของสามเหลี่ยมรวมกันได้กี่องศา?', answer: '180', explanation: 'มุมภายในของสามเหลี่ยมเมื่อรวมกันจะเป็น 180 องศา' },
-    { question: '√49 มีค่าเท่าไร?', answer: '7', explanation: 'เพราะ 7 × 7 = 49 ดังนั้น √49 = 7' },
-    { question: 'จำนวนเฉพาะแรกสุด 3 จำนวนคือ?', answer: '2,3,5', explanation: 'จำนวนเฉพาะ 3 ตัวแรกคือ 2, 3, และ 5 (หารได้แค่ 1 กับตัวมันเอง)' },
-    { question: '10! (แฟกทอเรียลของ 10) คือ?', answer: '3628800', explanation: '10! = 10×9×8×7×6×5×4×3×2×1 = 3628800' },
-    { question: 'ผลลัพธ์ของ 2^5 คือ?', answer: '32', explanation: '2 × 2 × 2 × 2 × 2 = 32' }
-];
-
-        let remainingQuestions = [...questions]; // คัดลอกคำถามทั้งหมดสำหรับแต่ละรอบ
-
-        function getRandomNonRepeatingQuestion() {
-            if (remainingQuestions.length === 0) {
-                remainingQuestions = [...questions]; // รีเซ็ตคำถามหากหมดแล้ว
-            }
-            const index = Math.floor(Math.random() * remainingQuestions.length);
-            return remainingQuestions.splice(index, 1)[0]; // สุ่มและนำคำถามออกจากอาร์เรย์
-        }
-
-        function showRandomMathQuestion() {
-            currentQuestion = getRandomNonRepeatingQuestion();
-            document.getElementById('mathQuestionText').textContent = currentQuestion.question;
-            document.getElementById('answerInput').value = '';
-            document.getElementById('answerInput').disabled = false;
-            document.getElementById('submitAnswerBtn').disabled = false;
-            document.getElementById('answerResultText').textContent = '';
-            questionAnswered = false; // กำหนดสถานะว่าต้องตอบคำถาม
-        }
-
-        function clearMathQuestion() {
-            currentQuestion = null;
-            document.getElementById('mathQuestionText').textContent = '-';
-            document.getElementById('answerInput').value = '';
-            document.getElementById('answerInput').disabled = false;
-            document.getElementById('submitAnswerBtn').disabled = false;
-            document.getElementById('answerResultText').textContent = '';
-            questionAnswered = true; // กำหนดสถานะว่าไม่มีคำถามให้ตอบ
-        }
-
-        let protectionCount = 1; // จำนวนสิทธิ์ป้องกันเริ่มต้น
-
-        // สร้าง element สำหรับข้อความป้องกัน (ถ้ายังไม่มี)
-        const protectionNotice = document.createElement('div');
-        protectionNotice.id = 'protectionNotice';
-        protectionNotice.style.position = 'fixed';
-        // *** แก้ไขตรงนี้ให้แสดงตรงกลางด้านบนของเว็บ (ขนาดไม่ใหญ่) ***
-        protectionNotice.style.top = '70px'; // ปรับให้อยู่ด้านบนมากขึ้น (อาจปรับเพิ่มลดได้ตามความเหมาะสม)
-        protectionNotice.style.left = '50%';
-        protectionNotice.style.transform = 'translateX(-50%)'; // จัดกึ่งกลางแนวนอน
-        // *** ปรับปรุงสไตล์ให้ขนาดไม่ใหญ่และดูโดดเด่นขึ้น ***
-        protectionNotice.style.backgroundColor = '#ffc107'; // สีเหลือง
-        protectionNotice.style.color = '#000'; // ข้อความสีดำ
-        protectionNotice.style.padding = '10px 20px'; // ปรับ padding ให้เล็กลง
-        protectionNotice.style.borderRadius = '8px'; // ปรับความโค้งมน
-        protectionNotice.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)'; // ปรับเงา
-        protectionNotice.style.fontFamily = 'Kanit, sans-serif';
-        protectionNotice.style.fontSize = '16px'; // ปรับขนาดฟอนต์ให้เล็กลง
-        protectionNotice.style.display = 'none';
-        protectionNotice.style.zIndex = '9999';
-
-        document.body.appendChild(protectionNotice);
-
-        // ฟังก์ชันสำหรับแสดงข้อความป้องกัน
-        function showProtectionMessage(msg) {
-            protectionNotice.textContent = msg;
-            protectionNotice.style.display = 'block';
-            setTimeout(() => {
-                protectionNotice.style.display = 'none';
-            }, 3000);
-        }
-
-        // ฟังก์ชันสำหรับตรวจสอบคำตอบ
-      // ฟังก์ชันสำหรับตรวจสอบคำตอบ
-function checkAnswer() {
-    if (questionAnswered) return;
-
-    const userAnswer = document.getElementById('answerInput').value.trim();
-    const resultText = document.getElementById('answerResultText');
-
-    if (!currentQuestion) {
-        resultText.textContent = 'ไม่มีโจทย์ให้ตรวจ';
-        resultText.style.color = 'black';
-        return;
+    function playFreq(freq) {
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.start();
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
+      osc.stop(audioCtx.currentTime + 0.8);
     }
 
-    if (userAnswer === '') {
-        resultText.textContent = 'กรุณากรอกคำตอบ';
-        resultText.style.color = 'black';
-        return;
+    function playNote(note) {
+      const freq = noteFreqMap[note];
+      if (freq) playFreq(freq);
     }
 
-    let isCorrect = false;
-    // ตรวจสอบว่าคำตอบที่ถูกต้องเป็นอาร์เรย์หรือไม่
-    if (Array.isArray(currentQuestion.answer)) {
-        // ถ้าเป็นอาร์เรย์ ให้ตรวจสอบว่าคำตอบของผู้ใช้ตรงกับคำตอบใดคำตอบหนึ่งในอาร์เรย์
-        isCorrect = currentQuestion.answer.includes(userAnswer);
-    } else {
-        // ถ้าไม่ใช่ ให้ตรวจสอบคำตอบแบบปกติ
-        isCorrect = (userAnswer === currentQuestion.answer);
+    const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+    function buildChord(root, type) {
+      let rootIdx = chromaticScale.indexOf(root);
+      if (rootIdx === -1) return [];
+
+      function noteAt(idx, baseOctave) {
+        const noteName = chromaticScale[idx % 12];
+        const octave = baseOctave + Math.floor(idx / 12);
+        return noteName + octave;
+      }
+
+      let octave = 4;
+      let notes = [];
+
+      switch (type) {
+        case 'major':
+          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave)];
+          break;
+        case 'minor':
+          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 7, octave)];
+          break;
+        case '7th':
+          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 10, octave)];
+          break;
+        case 'maj7':
+          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 11, octave)];
+          break;
+        case 'dim':
+          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 6, octave)];
+          break;
+        case 'aug':
+          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 8, octave)];
+          break;
+        case 'sus2':
+          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 2, octave), noteAt(rootIdx + 7, octave)];
+          break;
+        case 'sus4':
+          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 5, octave), noteAt(rootIdx + 7, octave)];
+          break;
+        default:
+          notes = [noteAt(rootIdx, octave)];
+      }
+
+      return notes;
     }
 
-    if (isCorrect) {
-        resultText.innerHTML = `✅ คำตอบถูกต้อง! กรุณาทอยลูกเต๋าเพื่อไปต่อ<br>💡 คำอธิบาย: ${currentQuestion.explanation}`;
-        resultText.style.color = 'green';
-    } else {
-        // ข้อความเมื่อตอบผิด พร้อมคำอธิบาย
-        resultText.innerHTML = `❌ คุณตอบผิด ถอยหลัง 1 ช่อง<br>💡 คำอธิบาย: ${currentQuestion.explanation}`;
-        resultText.style.color = 'red';
+    function playChord(notes) {
+      notes.forEach(note => playNote(note));
+    }
 
-        if (Math.random() < 0.08) { // 7% โอกาสได้สิทธิ์ป้องกันเพิ่ม
-            protectionCount++;
-            showProtectionMessage(`🎉 ยินดีด้วย! คุณได้รับสิทธิ์ป้องกันเพิ่มอีก 1 ครั้ง (รวมเป็น ${protectionCount})`);
+    const piano = document.getElementById('piano');
+    const pianoKeys = {};
+    const activeNotes = new Set();
+
+    piano.querySelectorAll('.key').forEach(key => {
+      const note = key.dataset.note;
+      pianoKeys[note] = key;
+
+      key.addEventListener('pointerdown', (e) => {
+        if (!activeNotes.has(note)) {
+          playNote(note);
+          highlightNoteOnPiano(note);
+          activeNotes.add(note);
         }
+        key.setPointerCapture(e.pointerId);
+        e.preventDefault();
+      });
 
-        if (protectionCount > 0) {
-            protectionCount--;
-            showProtectionMessage(`ใช้สิทธิ์ป้องกันการถอยหลัง เหลืออีก ${protectionCount} ครั้ง`);
-        } else {
-            if (currentPosition > 0) {
-                currentPosition--; // ถอยหลัง 1 ช่อง
-                placePlayerAt(currentPosition);
-            }
+      key.addEventListener('pointerenter', (e) => {
+        if (e.pressure > 0 && !activeNotes.has(note)) {
+          playNote(note);
+          highlightNoteOnPiano(note);
+          activeNotes.add(note);
         }
+      });
+
+      key.addEventListener('pointerup', (e) => {
+        activeNotes.delete(note);
+        key.releasePointerCapture(e.pointerId);
+      });
+
+      key.addEventListener('pointerleave', () => {
+        activeNotes.delete(note);
+      });
+
+      key.addEventListener('pointercancel', () => {
+        activeNotes.delete(note);
+      });
+    });
+
+    piano.addEventListener('touchmove', (e) => {
+      const touches = e.touches;
+      for (let i = 0; i < touches.length; i++) {
+        const touch = touches[i];
+        const el = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (el && el.classList.contains('key')) {
+          const note = el.dataset.note;
+          if (note && !activeNotes.has(note)) {
+            playNote(note);
+            highlightNoteOnPiano(note);
+            activeNotes.add(note);
+          }
+        }
+      }
+      e.preventDefault();
+    });
+
+    function highlightNoteOnPiano(note) {
+      Object.values(pianoKeys).forEach(k => {
+        k.classList.remove('highlight-white', 'highlight-black');
+      });
+      const key = pianoKeys[note];
+      if (!key) return;
+      if (key.classList.contains('white')) {
+        key.classList.add('highlight-white');
+      } else {
+        key.classList.add('highlight-black');
+      }
     }
 
-    // ล็อก input กับปุ่มหลังตอบ เพื่อให้ผู้เล่นทอยลูกเต๋าต่อไป
-    document.getElementById('answerInput').disabled = true;
-    document.getElementById('submitAnswerBtn').disabled = true;
-    questionAnswered = true; // ตั้งค่าเป็น true เพื่ออนุญาตให้ทอยลูกเต๋าครั้งต่อไปได้
-}
+    function createMiniPiano(notes) {
+      const piano = document.createElement('div');
+      piano.className = 'mini-piano';
 
-        // ผูก event listener ปุ่มส่งคำตอบและกด Enter
-        document.getElementById('submitAnswerBtn').addEventListener('click', checkAnswer);
-        document.getElementById('answerInput').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') checkAnswer();
+      const whiteOrder = ['C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6'];
+      whiteOrder.forEach(note => {
+        const k = document.createElement('div');
+        k.className = 'key white';
+        k.textContent = note[0];
+        k.dataset.note = note;
+        piano.appendChild(k);
+      });
+
+      const blackNotes = [
+        { note: 'C#5', cls: 'cSharp' },
+        { note: 'D#5', cls: 'dSharp' },
+        { note: 'F#5', cls: 'fSharp' },
+        { note: 'G#5', cls: 'gSharp' },
+        { note: 'A#5', cls: 'aSharp' },
+        { note: 'C#6', cls: 'cSharp6' },
+        { note: 'D#6', cls: 'dSharp6' }
+      ];
+      blackNotes.forEach(({ note, cls }) => {
+        const k = document.createElement('div');
+        k.className = 'key black ' + cls;
+        k.textContent = note[0] + '#';
+        k.dataset.note = note;
+        piano.appendChild(k);
+      });
+
+      piano.querySelectorAll('.key').forEach(key => {
+        if (notes.includes(key.dataset.note)) {
+          key.classList.add('pressed');
+        }
+      });
+
+      return piano;
+    }
+
+    function highlightChordOnPiano(notes) {
+      Object.values(pianoKeys).forEach(k => {
+        k.classList.remove('highlight-white', 'highlight-black');
+      });
+
+      notes.forEach(note => {
+        const noteOctave4 = note.slice(0, -1) + '4';
+        if (pianoKeys[noteOctave4]) {
+          const key = pianoKeys[noteOctave4];
+          if (key.classList.contains('white')) {
+            key.classList.add('highlight-white');
+          } else {
+            key.classList.add('highlight-black');
+          }
+        } else if (pianoKeys[note]) {
+          const key = pianoKeys[note];
+          if (key.classList.contains('white')) {
+            key.classList.add('highlight-white');
+          } else {
+            key.classList.add('highlight-black');
+          }
+        }
+      });
+    }
+
+    const chords = [];
+    ['C', 'D', 'E', 'F', 'G', 'A', 'B'].forEach(root => {
+      ['major', 'minor', '7th', 'maj7', 'dim', 'aug', 'sus2', 'sus4'].forEach(type => {
+        chords.push({ root, type });
+      });
+    });
+
+    const chordListDiv = document.getElementById('chord-list');
+    let selectedChordIndex = -1;
+
+    function renderChordList() {
+      chordListDiv.innerHTML = '';
+      chords.forEach((chord, idx) => {
+        const chordDiv = document.createElement('div');
+        chordDiv.className = 'chord';
+        chordDiv.textContent = `${chord.root} ${chord.type}`;
+        chordDiv.dataset.index = idx;
+
+        const chordNotes = buildChord(chord.root, chord.type);
+        const miniPiano = createMiniPiano(chordNotes);
+        chordDiv.appendChild(miniPiano);
+
+        chordDiv.addEventListener('click', () => {
+          selectChord(idx);
         });
 
-        // Event listener สำหรับปุ่ม 'เริ่มใหม่' บนหน้าจอชนะ
-        document.getElementById('restartBtn').addEventListener('click', () => {
-            currentPosition = 0; // รีเซ็ตตำแหน่งผู้เล่น
-            placePlayerAt(currentPosition);
-            document.getElementById('winMessageContainer').style.display = 'none'; // ซ่อนหน้าจอชนะ
-            clearMathQuestion(); // เคลียร์คำถาม
-            protectionCount = 1; // รีเซ็ตสิทธิ์ป้องกัน
-            questionAnswered = true; // อนุญาตให้ทอยลูกเต๋าได้
-            showProtectionMessage(`เริ่มใหม่! สิทธิ์ป้องกันรีเซ็ตเป็น ${protectionCount}`);
-            updatePlayerPositionText(currentPosition);
-        });
+        chordListDiv.appendChild(chordDiv);
+      });
+    }
 
-        // กำหนดตำแหน่งเริ่มต้นของผู้เล่นและอัปเดตข้อความ
-        placePlayerAt(currentPosition);
-        updatePlayerPositionText(currentPosition);
-    </script>
+    function selectChord(idx) {
+      if (selectedChordIndex === idx) return;
 
-    <script src="GameRandom.js"></script>
+      selectedChordIndex = idx;
+
+      chordListDiv.querySelectorAll('.chord').forEach((el, i) => {
+        el.classList.toggle('selected', i === idx);
+      });
+
+      const chord = chords[idx];
+      const notes = buildChord(chord.root, chord.type);
+      playChord(notes);
+      highlightChordOnPiano(notes);
+    }
+
+    document.addEventListener("keydown", (e) => {
+      const key = e.key.toLowerCase();
+
+      // โน้ตทั้งหมดเรียงตามลำดับ
+      const allNotes = Object.keys(noteFreqMap); // ["C4","C#4","D4",...,"B6"]
+
+      // คีย์บอร์ดเรียงครบทุกปุ่ม (ตาม QWERTY มาตรฐาน)
+      const keyboardKeys = [
+        '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
+
+        'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\',
+
+        'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
+
+        'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/'
+      ];
+
+      // สร้าง map คีย์บอร์ด -> โน้ตอัตโนมัติ
+      const keyToNote = {};
+      keyboardKeys.forEach((k, i) => {
+        if (i < allNotes.length) {
+          keyToNote[k] = allNotes[i];
+        }
+      });
+
+      // ตรวจว่าปุ่มที่กดมีใน noteFreqMap ไหม
+      const note = keyToNote[key];
+      if (note && noteFreqMap[note]) {
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        playNote(note);
+        highlightNoteOnPiano(note);
+      }
+    });
+  </script>
+
 </body>
 
 </html>
