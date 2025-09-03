@@ -1,619 +1,291 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>piano999</title>
-  <link rel="stylesheet" href="main.css" />
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 40px 0;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      user-select: none;
-    }
-
-    .piano {
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-      max-width: 1680px;
-      position: relative;
-      gap: 0;
-    }
-
-    /* ปุ่มขาว */
-    .key.white {
-      flex: 0 0 calc(100% / 21);
-      width: 50px;
-      height: 200px;
-      background: white;
-      border: 1px solid black;
-      box-sizing: border-box;
-      position: relative;
-      z-index: 1;
-      border-radius: 0 0 8px 8px;
-      text-align: center;
-      line-height: 280px;
-      transition: background-color 0.2s;
-      font-size: 13px;
-    }
-
-    .key.white:active,
-    .piano .key.white:not(.highlight-white):active {
-      background: #ddd;
-      transform: scale(0.99);
-    }
-
-    .piano .key.highlight-white {
-      background-color: #a3c4f3 !important;
-      transform: scale(0.95);
-    }
-
-    /* ปุ่มดำ */
-    .key.black {
-      width: 30px;
-      height: 120px;
-      font-weight: bold;
-      background: black;
-      position: absolute;
-      top: 0;
-      z-index: 2;
-      border-radius: 0 0 6px 6px;
-      border: 1px solid #333;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-      color: white;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.2s;
-    }
-
-    .key.black:active {
-      background: #555;
-    }
-
-    .key.black.g6-down {
-      top: 210px;
-    }
-
-    /* ===== ตำแหน่งคีย์ดำ ===== */
-    .key.black.cSharp4 {
-      left: calc(100% / 21 * 0.7);
-    }
-
-    .key.black.dSharp4 {
-      left: calc(100% / 21 * 1.7);
-    }
-
-    .key.black.fSharp4 {
-      left: calc(100% / 21 * 3.7);
-    }
-
-    .key.black.gSharp4 {
-      left: calc(100% / 21 * 4.7);
-    }
-
-    .key.black.aSharp4 {
-      left: calc(100% / 21 * 5.7);
-    }
-
-    .key.black.cSharp5 {
-      left: calc(100% / 21 * 7.7);
-    }
-
-    .key.black.dSharp5 {
-      left: calc(100% / 21 * 8.7);
-    }
-
-    .key.black.fSharp5 {
-      left: calc(100% / 21 * 10.7);
-    }
-
-    .key.black.gSharp5 {
-      left: calc(100% / 21 * 11.7);
-    }
-
-    .key.black.aSharp5 {
-      left: calc(100% / 21 * 12.7);
-    }
-
-    .key.black.cSharp6 {
-      left: calc(100% / 21 * 14.7);
-    }
-
-    .key.black.dSharp6 {
-      left: calc(100% / 21 * 15.7);
-    }
-
-    .key.black.fSharp6 {
-      left: calc(100% / 21 * 17.7);
-    }
-
-    .key.black.gSharp6 {
-      left: calc(100% / 21 * 18.7);
-    }
-
-    .key.black.aSharp6 {
-      left: calc(100% / 21 * 19.7);
-    }
-
-    /* Highlight */
-    .key.black.highlight-black {
-      background-color: #3b7ddd !important;
-    }
-
-    /* Responsive */
-    @media (max-width: 550px) {
-      .piano {
-        position: relative;
-        display: flex;
-        justify-content: start;
-        align-items: flex-start;
-        width: 100%;
-        height: 155px;
-      }
-
-      .key.white {
-        width: calc(100% / 21);
-        width: 20px;
-        height: 63%;
-        color: rgb(64, 62, 62);
-        background: white;
-        border: 1px solid black;
-        box-sizing: border-box;
-        border-radius: 0 0 3.6px 3.6px;
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        line-height: 60px;
-        padding-right: 0.3px;
-      }
-
-      .key.black {
-        position: absolute;
-        width: calc(100% / 42);
-        /* แคบกว่าขาวครึ่งนึง */
-        height: 50px;
-        width: 13px;
-        background: black;
-        z-index: 2;
-        border-radius: 0 0 4px 4px;
-        color: rgb(218, 213, 213);
-        text-align: center;
-        font-size: 12px;
-      }
-
-      /* ตำแหน่งคีย์ดำในแต่ละ octave */
-      .cSharp4 {
-        left: calc(100% / 21 * 0.66);
-      }
-
-      .dSharp4 {
-        left: calc(100% / 21 * 1.66);
-      }
-
-      .fSharp4 {
-        left: calc(100% / 21 * 3.66);
-      }
-
-      .gSharp4 {
-        left: calc(100% / 21 * 4.66);
-      }
-
-      .aSharp4 {
-        left: calc(100% / 21 * 5.66);
-      }
-
-      .cSharp5 {
-        left: calc(100% / 21 * 7.66);
-      }
-
-      .dSharp5 {
-        left: calc(100% / 21 * 8.66);
-      }
-
-      .fSharp5 {
-        left: calc(100% / 21 * 10.66);
-      }
-
-      .gSharp5 {
-        left: calc(100% / 21 * 11.66);
-      }
-
-      .aSharp5 {
-        left: calc(100% / 21 * 12.66);
-      }
-
-      .cSharp6 {
-        left: calc(100% / 21 * 14.66);
-      }
-
-      .dSharp6 {
-        left: calc(100% / 21 * 15.66);
-      }
-
-      .fSharp6 {
-        left: calc(100% / 21 * 17.66);
-      }
-
-      .gSharp6 {
-        left: calc(100% / 21 * 18.66);
-      }
-
-      .aSharp6 {
-        left: calc(100% / 21 * 19.66);
-      }
-
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ปัญหาความขัดแย้งเรื่องเพศและครอบครัว</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Harmony -->
+    <!-- Application Structure Plan: The application is structured into thematic sections accessible via a sticky navigation bar. This non-linear design allows users to freely explore topics of interest. Key sections include: 1) Understanding the Problem (context and real-world examples), 2) Self-Protection (actionable advice, using interactive tabs to separate gender and family issues), and 3) Handling Bullying (using an interactive accordion for step-by-step guidance). This structure is chosen over a linear slide format to improve usability, group related content logically, and empower users to find the information they need quickly. -->
+    <!-- Visualization & Content Choices: Report Info: Instructional text on conflict causes, protection methods, and bullying responses, now with real news examples. -> Goal: Inform, Guide. -> Viz/Presentation Method: Interactive cards, tabs, and accordions built with HTML/CSS. -> Interaction: Users click tabs and accordion headers to reveal specific information, making complex advice digestible. -> Justification: For qualitative, text-heavy content, interactive UI elements are more effective than data charts at engaging users and preventing information overload. The real news examples ground the abstract concepts in reality, making the content more impactful. -> Library/Method: Vanilla JavaScript for interactions, Tailwind CSS for styling. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #FDFCFB;
+            color: #4A4A4A;
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #D97706; /* amber-600 */
+            border-bottom-color: #D97706;
+        }
+        .tab-btn.active {
+            background-color: #FBBF24; /* amber-400 */
+            color: #4A4A4A;
+        }
+        .tab-btn {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+    </style>
 </head>
+<body class="antialiased">
 
-<body>
-  <div class="container">
-    <div class="piano" id="piano">
-      <!-- ปุ่มขาว C4-B5 -->
-      <div class="key white" data-note="C4">C</div>
-      <div class="key white" data-note="D4">D</div>
-      <div class="key white" data-note="E4">E</div>
-      <div class="key white" data-note="F4">F</div>
-      <div class="key white" data-note="G4">G</div>
-      <div class="key white" data-note="A4">A</div>
-      <div class="key white" data-note="B4">B</div>
+    <header class="bg-amber-100/50 shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <h1 class="text-xl font-bold text-amber-700">ความเข้าใจและความคุ้มครอง</h1>
+                <div class="flex flex-wrap justify-center mt-3 md:mt-0 space-x-2 md:space-x-6 text-sm md:text-base">
+                    <a href="#problem" class="nav-link font-semibold pb-1 border-b-2 border-transparent">เข้าใจปัญหา</a>
+                    <a href="#news" class="nav-link font-semibold pb-1 border-b-2 border-transparent">ตัวอย่างข่าว</a>
+                    <a href="#protection" class="nav-link font-semibold pb-1 border-b-2 border-transparent">การป้องกันตนเอง</a>
+                    <a href="#bullying" class="nav-link font-semibold pb-1 border-b-2 border-transparent">การรับมือบูลลี่</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-      <div class="key white" data-note="C5">C</div>
-      <div class="key white" data-note="D5">D</div>
-      <div class="key white" data-note="E5">E</div>
-      <div class="key white" data-note="F5">F</div>
-      <div class="key white" data-note="G5">G</div>
-      <div class="key white" data-note="A5">A</div>
-      <div class="key white" data-note="B5">B</div>
+    <main>
+        <section id="hero" class="bg-amber-100/30 py-20 px-6">
+            <div class="container mx-auto text-center max-w-4xl">
+                <h2 class="text-4xl md:text-5xl font-bold text-amber-800 leading-tight">ปัญหาความขัดแย้งเรื่องเพศและครอบครัวในปัจจุบัน</h2>
+                <p class="mt-4 text-lg text-gray-600">แนวทางการทำความเข้าใจและเตรียมพร้อมรับมือกับความท้าทายในปัจจุบัน เพื่อสร้างสังคมที่เคารพในความแตกต่าง</p>
+            </div>
+        </section>
 
-      <!-- ปุ่มดำ octave 4 -->
-      <div class="key black cSharp4" data-note="C#4">C<br>#<br>4</div>
-      <div class="key black dSharp4" data-note="D#4">D<br>#<br>4</div>
-      <div class="key black fSharp4" data-note="F#4">F<br>#<br>4</div>
-      <div class="key black gSharp4" data-note="G#4">G<br>#<br>4</div>
-      <div class="key black aSharp4" data-note="A#4">A<br>#<br>4</div>
+        <section id="problem" class="py-16 sm:py-24 px-6">
+            <div class="container mx-auto">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h3 class="text-3xl font-bold text-gray-800">ปัญหาเหล่านี้เกิดขึ้นจากอะไร?</h3>
+                    <p class="mt-4 text-gray-600">ความขัดแย้งเรื่องเพศและครอบครัวมีรากฐานมาจากหลายปัจจัยที่ซับซ้อน การทำความเข้าใจสาเหตุเหล่านี้คือจุดเริ่มต้นของการแก้ไขปัญหา</p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                        <h4 class="font-bold text-lg text-amber-700">การขยายวงกว้างของปัญหา</h4>
+                        <p class="mt-2 text-gray-600">ปัญหาไม่ได้จำกัดอยู่แค่ในบ้าน แต่ขยายไปสู่โรงเรียน สังคม และโลกออนไลน์ ทำให้ผลกระทบมีความรุนแรงและซับซ้อนมากขึ้น</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                        <h4 class="font-bold text-lg text-amber-700">ความหลากหลายทางเพศ</h4>
+                        <p class="mt-2 text-gray-600">การรับรู้และความเข้าใจในความหลากหลายทางเพศที่เพิ่มขึ้น อาจนำไปสู่ความขัดแย้งกับค่านิยมดั้งเดิม ทำให้เกิดความไม่เข้าใจและไม่ยอมรับ</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                        <h4 class="font-bold text-lg text-amber-700">การสื่อสารที่ไม่เข้าใจกัน</h4>
+                        <p class="mt-2 text-gray-600">ช่องว่างระหว่างวัยและทัศนคติที่แตกต่างกันในครอบครัว หากขาดการสื่อสารที่ดี อาจทำให้เกิดปัญหาความสัมพันธ์ที่ซับซ้อนและแก้ไขได้ยาก</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-      <!-- ปุ่มดำ octave 5 -->
-      <div class="key black cSharp5" data-note="C#5">C<br>#<br>5</div>
-      <div class="key black dSharp5" data-note="D#5">D<br>#<br>5</div>
-      <div class="key black fSharp5" data-note="F#5">F<br>#<br>5</div>
-      <div class="key black gSharp5" data-note="G#5">G<br>#<br>5</div>
-      <div class="key black aSharp5" data-note="A#5">A<br>#<br>5</div>
+        <section id="news" class="py-16 sm:py-24 px-6 bg-gray-50">
+             <div class="container mx-auto max-w-3xl">
+                <div class="text-center">
+                    <h3 class="text-3xl font-bold text-gray-800">ตัวอย่างข่าวที่เกี่ยวข้องกับความขัดแย้งเรื่องเพศในปัจจุบัน</h3>
+                    <p class="mt-4 text-gray-600">ตัวอย่างเหล่านี้แสดงให้เห็นว่าปัญหาความรุนแรงและการบูลลี่นั้นเกิดขึ้นจริงในสังคม</p>
+                </div>
+                 <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+                     <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                        <h4 class="font-bold text-lg text-amber-700">ข่าวความรุนแรงในครอบครัว</h4>
+                        <p class="mt-2 text-gray-600">รายงานของมูลนิธิหญิงชายก้าวไกลระบุว่า ในปี 2566 มีข่าวความรุนแรงในครอบครัวกว่า 1,000 เรื่อง และมีถึง 4.2% ที่เป็นความรุนแรงทางเพศในครอบครัว รวมถึงกรณีพ่อทำร้ายลูกแท้ ๆ</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                        <h4 class="font-bold text-lg text-amber-700">ข่าวการบูลลี่ในสถานศึกษา</h4>
+                        <p class="mt-2 text-gray-600">งานวิจัยจากมหาวิทยาลัยมหิดลพบว่า นักเรียน LGBTQ+ มีโอกาสถูกบูลลี่มากกว่านักเรียนทั่วไปถึง 2 เท่า โดยเฉพาะในรูปแบบการบูลลี่ทางคำพูดและการทำร้ายร่างกาย</p>
+                    </div>
+                 </div>
+            </div>
+        </section>
 
-      <!-- ปุ่มขาว C6–B6 -->
-      <div class="key white" data-note="C6">C</div>
-      <div class="key white" data-note="D6">D</div>
-      <div class="key white" data-note="E6">E</div>
-      <div class="key white" data-note="F6">F</div>
-      <div class="key white" data-note="G6">G</div>
-      <div class="key white" data-note="A6">A</div>
-      <div class="key white" data-note="B6">B</div>
+        <section id="protection" class="py-16 sm:py-24 px-6">
+            <div class="container mx-auto">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h3 class="text-3xl font-bold text-gray-800">วิธีการป้องกันและดูแลตนเอง</h3>
+                    <p class="mt-4 text-gray-600">เมื่อต้องเผชิญกับความขัดแย้ง การรู้จักวิธีป้องกันและดูแลตนเองเป็นทักษะที่สำคัญที่สุดในการก้าวผ่านปัญหา</p>
+                </div>
 
-      <!-- ปุ่มดำ octave 6 -->
-      <div class="key black cSharp6" data-note="C#6">C<br>#<br>6</div>
-      <div class="key black dSharp6" data-note="D#6">D<br>#<br>6</div>
-      <div class="key black fSharp6" data-note="F#6">F<br>#<br>6</div><br>#<br>6
-      <div class="key black gSharp6" data-note="G#6">G<br>#<br>6</div>
-      <div class="key black aSharp6" data-note="A#6">A<br>#<br>6</div>
-    </div>
-  </div>
+                <div class="mt-12 max-w-4xl mx-auto">
+                    <div class="flex justify-center border-b-2 border-gray-200">
+                        <button id="tab-gender" class="tab-btn w-1/2 py-3 px-4 font-bold text-gray-500 text-center rounded-t-lg">ความขัดแย้งเรื่องเพศ</button>
+                        <button id="tab-family" class="tab-btn w-1/2 py-3 px-4 font-bold text-gray-500 text-center rounded-t-lg">ปัญหาในครอบครัว</button>
+                    </div>
+                    
+                    <div id="content-gender" class="tab-content bg-white p-8 rounded-b-xl shadow-lg">
+                        <ul class="space-y-4">
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3 mt-1">&#10003;</span><span><strong class="font-semibold">ภูมิใจในตัวเอง:</strong> เชื่อมั่นในคุณค่าและตัวตนของเรา ไม่ว่าเพศสภาพจะเป็นอย่างไร</span></li>
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3 mt-1">&#10003;</span><span><strong class="font-semibold">สร้างขอบเขตที่ชัดเจน:</strong> เรียนรู้ที่จะปฏิเสธและปกป้องตัวเองจากคำพูดหรือการกระทำที่ไม่เหมาะสม</span></li>
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3 mt-1">&#10003;</span><span><strong class="font-semibold">สร้างเครือข่ายที่สนับสนุน:</strong> พูดคุยกับเพื่อนสนิท ครอบครัว หรือคนที่พร้อมรับฟังและเข้าใจเรา</span></li>
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3 mt-1">&#10003;</span><span><strong class="font-semibold">เรียนรู้สิทธิของตนเอง:</strong> ศึกษาข้อมูลเกี่ยวกับกฎหมายที่คุ้มครองสิทธิทางเพศ เพื่อปกป้องตนเองเมื่อถูกละเมิด</span></li>
+                        </ul>
+                    </div>
 
-  <div id="chord-list"></div>
+                    <div id="content-family" class="tab-content bg-white p-8 rounded-b-xl shadow-lg hidden">
+                        <ul class="space-y-4">
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3 mt-1">&#10003;</span><span><strong class="font-semibold">สื่อสารอย่างเปิดอก:</strong> พยายามพูดคุยกับสมาชิกในครอบครัวด้วยเหตุผลและความใจเย็น เพื่อหาทางออกร่วมกัน</span></li>
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3 mt-1">&#10003;</span><span><strong class="font-semibold">ขอความช่วยเหลือจากคนกลาง:</strong> หากการพูดคุยไม่เป็นผล ควรปรึกษาผู้ใหญ่หรือญาติที่ไว้ใจและเป็นกลาง</span></li>
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3 mt-1">&#10003;</span><span><strong class="font-semibold">ปรึกษาผู้เชี่ยวชาญ:</strong> หากปัญหารุนแรงและแก้ไขได้ยาก การขอคำปรึกษาจากนักจิตวิทยาเป็นทางเลือกที่ดีที่สุด</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <script src="main.js"></script>
+        <section id="bullying" class="py-16 sm:py-24 px-6 bg-gray-50">
+            <div class="container mx-auto">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h3 class="text-3xl font-bold text-gray-800">การรับมือเมื่อถูกบูลลี่</h3>
+                     <p class="mt-4 text-gray-600">การถูกกลั่นแกล้งเรื่องเพศหรือครอบครัวเป็นเรื่องที่เจ็บปวด แต่เราสามารถรับมือและก้าวผ่านมันไปได้ นี่คือสิ่งที่ควรทำ</p>
+                </div>
 
+                <div id="accordion-container" class="mt-12 max-w-3xl mx-auto space-y-4">
+                    <div class="accordion-item border rounded-lg overflow-hidden shadow-sm">
+                        <button class="accordion-header w-full flex justify-between items-center text-left p-5 bg-amber-100/60 hover:bg-amber-100 transition">
+                            <span class="font-semibold text-gray-800">1. อย่าเก็บไว้คนเดียว</span>
+                            <span class="accordion-icon text-amber-700 font-bold text-2xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="accordion-content bg-white">
+                            <p class="p-5 text-gray-600">การเก็บปัญหาไว้คนเดียวจะยิ่งทำให้เรารู้สึกโดดเดี่ยวและแย่ลง ควรรีบพูดคุยกับผู้ใหญ่ที่ไว้ใจทันที เช่น ครูที่ปรึกษา พ่อแม่ หรือเพื่อนสนิท การได้ระบายและขอคำปรึกษาคือขั้นตอนแรกที่สำคัญที่สุด</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item border rounded-lg overflow-hidden shadow-sm">
+                        <button class="accordion-header w-full flex justify-between items-center text-left p-5 bg-amber-100/60 hover:bg-amber-100 transition">
+                            <span class="font-semibold text-gray-800">2. อย่าตอบโต้ด้วยความรุนแรง</span>
+                             <span class="accordion-icon text-amber-700 font-bold text-2xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="accordion-content bg-white">
+                             <p class="p-5 text-gray-600">การใช้ความรุนแรงตอบโต้ ไม่ว่าจะทางคำพูดหรือการกระทำ จะยิ่งทำให้สถานการณ์แย่ลงและอาจทำให้เรากลายเป็นฝ่ายผิด พยายามใจเย็นและเดินออกจากสถานการณ์นั้น</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item border rounded-lg overflow-hidden shadow-sm">
+                        <button class="accordion-header w-full flex justify-between items-center text-left p-5 bg-amber-100/60 hover:bg-amber-100 transition">
+                            <span class="font-semibold text-gray-800">3. บันทึกหลักฐาน</span>
+                            <span class="accordion-icon text-amber-700 font-bold text-2xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="accordion-content bg-white">
+                            <p class="p-5 text-gray-600">หากถูกบูลลี่ทางออนไลน์ เช่น โซเชียลมีเดียหรือแชท ควรบันทึกภาพหน้าจอหรือข้อความเหล่านั้นไว้เป็นหลักฐาน เพื่อนำไปแจ้งกับผู้ใหญ่หรือผู้ที่เกี่ยวข้องต่อไป</p>
+                        </div>
+                    </div>
+                     <div class="accordion-item border rounded-lg overflow-hidden shadow-sm">
+                        <button class="accordion-header w-full flex justify-between items-center text-left p-5 bg-amber-100/60 hover:bg-amber-100 transition">
+                            <span class="font-semibold text-gray-800">4. จงเชื่อมั่นในตัวเอง</span>
+                             <span class="accordion-icon text-amber-700 font-bold text-2xl transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="accordion-content bg-white">
+                            <p class="p-5 text-gray-600">จำไว้เสมอว่าการถูกบูลลี่ไม่ใช่ความผิดของคุณ และไม่ได้ลดทอนคุณค่าในตัวคุณเลย จงภูมิใจในสิ่งที่คุณเป็น และอย่าให้คำพูดของคนอื่นมาทำร้ายความรู้สึกดีๆ ที่คุณมีต่อตัวเอง</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <script>
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        <footer class="bg-gray-800 text-white py-6 px-6">
+            <div class="container mx-auto text-center text-sm">
+                <p>&copy; 2025 แหล่งข้อมูลเพื่อความเข้าใจเรื่องเพศและครอบครัว</p>
+            </div>
+        </footer>
+    </main>
 
-    const noteFreqMap = {
-      'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13, 'E4': 329.63,
-      'F4': 349.23, 'F#4': 369.99, 'G4': 392.00, 'G#4': 415.30, 'A4': 440.00,
-      'A#4': 466.16, 'B4': 493.88,
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Smooth scrolling for nav links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
 
-      'C5': 523.25, 'C#5': 554.37, 'D5': 587.33, 'D#5': 622.25, 'E5': 659.25,
-      'F5': 698.46, 'F#5': 739.99, 'G5': 783.99, 'G#5': 830.61, 'A5': 880.00,
-      'A#5': 932.33, 'B5': 987.77,
+            // Active nav link highlighting on scroll
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('nav a.nav-link');
 
-      'C6': 1046.50, 'C#6': 1108.73, 'D6': 1174.66, 'D#6': 1244.51, 'E6': 1318.51,
-      'F6': 1396.91, 'F#6': 1479.98, 'G6': 1567.98, 'G#6': 1661.22, 'A6': 1760.00,
-      'A#6': 1864.66, 'B6': 1975.53
-    };
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
 
-    function playFreq(freq) {
-      const osc = audioCtx.createOscillator();
-      const gainNode = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      osc.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-      gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-      osc.start();
-      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
-      osc.stop(audioCtx.currentTime + 0.8);
-    }
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.href.includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
 
-    function playNote(note) {
-      const freq = noteFreqMap[note];
-      if (freq) playFreq(freq);
-    }
+            // Tabs functionality
+            const tabGender = document.getElementById('tab-gender');
+            const tabFamily = document.getElementById('tab-family');
+            const contentGender = document.getElementById('content-gender');
+            const contentFamily = document.getElementById('content-family');
 
-    const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            function setActiveTab(activeTab, inactiveTab, activeContent, inactiveContent) {
+                activeTab.classList.add('active');
+                inactiveTab.classList.remove('active');
+                activeContent.classList.remove('hidden');
+                inactiveContent.classList.add('hidden');
+            }
+            
+            setActiveTab(tabGender, tabFamily, contentGender, contentFamily);
 
-    function buildChord(root, type) {
-      let rootIdx = chromaticScale.indexOf(root);
-      if (rootIdx === -1) return [];
+            tabGender.addEventListener('click', () => {
+                setActiveTab(tabGender, tabFamily, contentGender, contentFamily);
+            });
 
-      function noteAt(idx, baseOctave) {
-        const noteName = chromaticScale[idx % 12];
-        const octave = baseOctave + Math.floor(idx / 12);
-        return noteName + octave;
-      }
+            tabFamily.addEventListener('click', () => {
+                setActiveTab(tabFamily, tabGender, contentFamily, contentGender);
+            });
 
-      let octave = 4;
-      let notes = [];
+            // Accordion functionality
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                const icon = item.querySelector('.accordion-icon');
 
-      switch (type) {
-        case 'major':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave)];
-          break;
-        case 'minor':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 7, octave)];
-          break;
-        case '7th':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 10, octave)];
-          break;
-        case 'maj7':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 7, octave), noteAt(rootIdx + 11, octave)];
-          break;
-        case 'dim':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 3, octave), noteAt(rootIdx + 6, octave)];
-          break;
-        case 'aug':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 4, octave), noteAt(rootIdx + 8, octave)];
-          break;
-        case 'sus2':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 2, octave), noteAt(rootIdx + 7, octave)];
-          break;
-        case 'sus4':
-          notes = [noteAt(rootIdx, octave), noteAt(rootIdx + 5, octave), noteAt(rootIdx + 7, octave)];
-          break;
-        default:
-          notes = [noteAt(rootIdx, octave)];
-      }
+                header.addEventListener('click', () => {
+                    const isOpened = content.style.maxHeight;
 
-      return notes;
-    }
+                    // Close all other items
+                    accordionItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.querySelector('.accordion-content').style.maxHeight = null;
+                            otherItem.querySelector('.accordion-content').style.paddingTop = '0';
+                            otherItem.querySelector('.accordion-content').style.paddingBottom = '0';
+                            otherItem.querySelector('.accordion-icon').classList.remove('rotate-45');
+                            otherItem.querySelector('.accordion-icon').textContent = '+';
+                        }
+                    });
 
-    function playChord(notes) {
-      notes.forEach(note => playNote(note));
-    }
-
-    const piano = document.getElementById('piano');
-    const pianoKeys = {};
-    const activeNotes = new Set();
-
-    piano.querySelectorAll('.key').forEach(key => {
-      const note = key.dataset.note;
-      pianoKeys[note] = key;
-
-      key.addEventListener('pointerdown', (e) => {
-        if (!activeNotes.has(note)) {
-          playNote(note);
-          highlightNoteOnPiano(note);
-          activeNotes.add(note);
-        }
-        key.setPointerCapture(e.pointerId);
-        e.preventDefault();
-      });
-
-      key.addEventListener('pointerenter', (e) => {
-        if (e.pressure > 0 && !activeNotes.has(note)) {
-          playNote(note);
-          highlightNoteOnPiano(note);
-          activeNotes.add(note);
-        }
-      });
-
-      key.addEventListener('pointerup', (e) => {
-        activeNotes.delete(note);
-        key.releasePointerCapture(e.pointerId);
-      });
-
-      key.addEventListener('pointerleave', () => {
-        activeNotes.delete(note);
-      });
-
-      key.addEventListener('pointercancel', () => {
-        activeNotes.delete(note);
-      });
-    });
-
-    piano.addEventListener('touchmove', (e) => {
-      const touches = e.touches;
-      for (let i = 0; i < touches.length; i++) {
-        const touch = touches[i];
-        const el = document.elementFromPoint(touch.clientX, touch.clientY);
-        if (el && el.classList.contains('key')) {
-          const note = el.dataset.note;
-          if (note && !activeNotes.has(note)) {
-            playNote(note);
-            highlightNoteOnPiano(note);
-            activeNotes.add(note);
-          }
-        }
-      }
-      e.preventDefault();
-    });
-
-    function highlightNoteOnPiano(note) {
-      Object.values(pianoKeys).forEach(k => {
-        k.classList.remove('highlight-white', 'highlight-black');
-      });
-      const key = pianoKeys[note];
-      if (!key) return;
-      if (key.classList.contains('white')) {
-        key.classList.add('highlight-white');
-      } else {
-        key.classList.add('highlight-black');
-      }
-    }
-
-    function createMiniPiano(notes) {
-      const piano = document.createElement('div');
-      piano.className = 'mini-piano';
-
-      const whiteOrder = ['C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6'];
-      whiteOrder.forEach(note => {
-        const k = document.createElement('div');
-        k.className = 'key white';
-        k.textContent = note[0];
-        k.dataset.note = note;
-        piano.appendChild(k);
-      });
-
-      const blackNotes = [
-        { note: 'C#5', cls: 'cSharp' },
-        { note: 'D#5', cls: 'dSharp' },
-        { note: 'F#5', cls: 'fSharp' },
-        { note: 'G#5', cls: 'gSharp' },
-        { note: 'A#5', cls: 'aSharp' },
-        { note: 'C#6', cls: 'cSharp6' },
-        { note: 'D#6', cls: 'dSharp6' }
-      ];
-      blackNotes.forEach(({ note, cls }) => {
-        const k = document.createElement('div');
-        k.className = 'key black ' + cls;
-        k.textContent = note[0] + '#';
-        k.dataset.note = note;
-        piano.appendChild(k);
-      });
-
-      piano.querySelectorAll('.key').forEach(key => {
-        if (notes.includes(key.dataset.note)) {
-          key.classList.add('pressed');
-        }
-      });
-
-      return piano;
-    }
-
-    function highlightChordOnPiano(notes) {
-      Object.values(pianoKeys).forEach(k => {
-        k.classList.remove('highlight-white', 'highlight-black');
-      });
-
-      notes.forEach(note => {
-        const noteOctave4 = note.slice(0, -1) + '4';
-        if (pianoKeys[noteOctave4]) {
-          const key = pianoKeys[noteOctave4];
-          if (key.classList.contains('white')) {
-            key.classList.add('highlight-white');
-          } else {
-            key.classList.add('highlight-black');
-          }
-        } else if (pianoKeys[note]) {
-          const key = pianoKeys[note];
-          if (key.classList.contains('white')) {
-            key.classList.add('highlight-white');
-          } else {
-            key.classList.add('highlight-black');
-          }
-        }
-      });
-    }
-
-    const chords = [];
-    ['C', 'D', 'E', 'F', 'G', 'A', 'B'].forEach(root => {
-      ['major', 'minor', '7th', 'maj7', 'dim', 'aug', 'sus2', 'sus4'].forEach(type => {
-        chords.push({ root, type });
-      });
-    });
-
-    const chordListDiv = document.getElementById('chord-list');
-    let selectedChordIndex = -1;
-
-    function renderChordList() {
-      chordListDiv.innerHTML = '';
-      chords.forEach((chord, idx) => {
-        const chordDiv = document.createElement('div');
-        chordDiv.className = 'chord';
-        chordDiv.textContent = `${chord.root} ${chord.type}`;
-        chordDiv.dataset.index = idx;
-
-        const chordNotes = buildChord(chord.root, chord.type);
-        const miniPiano = createMiniPiano(chordNotes);
-        chordDiv.appendChild(miniPiano);
-
-        chordDiv.addEventListener('click', () => {
-          selectChord(idx);
+                    if (isOpened) {
+                        content.style.maxHeight = null;
+                        content.style.paddingTop = '0';
+                        content.style.paddingBottom = '0';
+                        icon.classList.remove('rotate-45');
+                        icon.textContent = '+';
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        content.style.paddingTop = '1.25rem';
+                        content.style.paddingBottom = '1.25rem';
+                        icon.classList.add('rotate-45');
+                        icon.textContent = '−';
+                    }
+                });
+            });
         });
-
-        chordListDiv.appendChild(chordDiv);
-      });
-    }
-
-    function selectChord(idx) {
-      if (selectedChordIndex === idx) return;
-
-      selectedChordIndex = idx;
-
-      chordListDiv.querySelectorAll('.chord').forEach((el, i) => {
-        el.classList.toggle('selected', i === idx);
-      });
-
-      const chord = chords[idx];
-      const notes = buildChord(chord.root, chord.type);
-      playChord(notes);
-      highlightChordOnPiano(notes);
-    }
-
-    document.addEventListener("keydown", (e) => {
-      const key = e.key.toLowerCase();
-
-      // โน้ตทั้งหมดเรียงตามลำดับ
-      const allNotes = Object.keys(noteFreqMap); // ["C4","C#4","D4",...,"B6"]
-
-      // คีย์บอร์ดเรียงครบทุกปุ่ม (ตาม QWERTY มาตรฐาน)
-      const keyboardKeys = [
-        '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
-
-        'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\',
-
-        'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
-
-        'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/'
-      ];
-
-      // สร้าง map คีย์บอร์ด -> โน้ตอัตโนมัติ
-      const keyToNote = {};
-      keyboardKeys.forEach((k, i) => {
-        if (i < allNotes.length) {
-          keyToNote[k] = allNotes[i];
-        }
-      });
-
-      // ตรวจว่าปุ่มที่กดมีใน noteFreqMap ไหม
-      const note = keyToNote[key];
-      if (note && noteFreqMap[note]) {
-        if (audioCtx.state === "suspended") audioCtx.resume();
-        playNote(note);
-        highlightNoteOnPiano(note);
-      }
-    });
-  </script>
-
+    </script>
 </body>
-
 </html>
